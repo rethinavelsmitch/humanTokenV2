@@ -16,6 +16,8 @@ kotlin {
         }
     }
     
+    jvm("desktop")
+    
     listOf(
         iosX64(),
         iosArm64(),
@@ -29,7 +31,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            //put your multiplatform dependencies here
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.ui)
+            implementation("org.jetbrains.compose.components:components-resources:1.5.1")
+            implementation("moe.tlaster:precompose:1.5.7")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
