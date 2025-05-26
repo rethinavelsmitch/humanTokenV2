@@ -16,6 +16,7 @@ kotlin {
         }
     }
     
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -29,7 +30,9 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+
             //put your multiplatform dependencies here
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -38,7 +41,9 @@ kotlin {
 }
 
 android {
+
     namespace = "com.deepholistics"
+
     compileSdk = 35
     defaultConfig {
         minSdk = 31
@@ -46,5 +51,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+
     }
 }
