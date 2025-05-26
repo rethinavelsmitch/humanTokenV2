@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App name -->
+    <string name="app_name">Deep Holistics</string>
+    
+    <!-- Navigation -->
+    <string name="back">Back</string>
+    
+    <!-- Titles -->
+    <string name="next_steps">Next Steps</string>
+    
+    <!-- Step titles -->
+    <string name="payment_confirmation">Payment Confirmation</string>
+    <string name="at_home_blood_draw">At-Home Blood Draw</string>
+    <string name="access_dashboard">Access your Dashboard</string>
+    
+    <!-- Step descriptions -->
+    <string name="payment_confirmation_desc">Secure online payment will be processed after confirming your details.</string>
+    <string name="blood_draw_desc">A certified phlebotomist will visit your address at the scheduled time for sample collection.</string>
+    <string name="dashboard_desc">After processing your sample, you\'ll get access to your comprehensive health dashboard with detailed biomarker insights.</string>
+    
+    <!-- Button text -->
+    <string name="continue_to_pay">Continue to Pay ₹14,999</string>
+</resources>
