@@ -15,12 +15,10 @@ kotlin {
             }
         }
     }
-    
+
 
     listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
+        iosX64(), iosArm64(), iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
@@ -28,16 +26,41 @@ kotlin {
         }
     }
 
+//    sourceSets {
+//        commonMain.dependencies {
+//        }
+//        commonTest.dependencies {
+//            implementation(libs.kotlin.test)
+//        }
+//    }
+
+
+    android()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
     sourceSets {
-        commonMain.dependencies {
+        val commonMain by getting {
 
-            //put your multiplatform dependencies here
+            dependencies {
+                implementation("org.jetbrains.compose.runtime:runtime:1.8.1")
+                implementation("org.jetbrains.compose.foundation:foundation:1.8.1")
+                implementation("org.jetbrains.compose.material3:material3:1.8.1")
+            }
+
 
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        val androidMain by getting {
+            dependencies {
+                implementation("androidx.activity:activity-compose:1.8.2")
+                implementation("androidx.compose.ui:ui-tooling-preview:1.5.4")
+            }
         }
+        // iOS targets similarly...
     }
+
+
 }
 
 android {

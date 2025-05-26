@@ -5,4 +5,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid).apply(false)
     alias(libs.plugins.kotlinMultiplatform).apply(false)
     alias(libs.plugins.compose.compiler).apply(false)
+
+    id("org.jetbrains.compose") version "1.8.1"
+
 }
