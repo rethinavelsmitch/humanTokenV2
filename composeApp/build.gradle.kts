@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-}
+ }
 
 kotlin {
     androidTarget {
@@ -43,7 +43,11 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+//            implementation(compose.resources)
+
         }
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }

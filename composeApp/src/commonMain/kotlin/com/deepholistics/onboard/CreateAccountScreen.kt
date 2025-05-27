@@ -40,9 +40,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.deepholistics.onboard.helper.PrimaryButton
 import com.deepholistics.onboard.helper.ScreenBackground
 import com.deepholistics.onboard.viewmodel.AuthViewModel
 import com.deepholistics.res.AppColors
+import com.deepholistics.res.AppDimens
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.AppDimens.textSizeXl
@@ -101,27 +103,27 @@ fun CreateAccountScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.app_name),
-                            color = AppColors.TextPrimary,
-                            fontSize = textSizeXl,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }, navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
-                        Icon(
-                            painter = painterResource(Res.drawable.ht_logo_196),
-                            contentDescription = stringResource(Res.string.back),
-                            tint = AppColors.TextPrimary
-                        )
-                    }
-                }, colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppColors.SurfaceDark
-                )
+                        Box(
+                            modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.app_name),
+                                color = AppColors.TextPrimary,
+                                fontSize = textSizeXl,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }, navigationIcon = {
+                        IconButton(onClick = { /* Handle back navigation */ }) {
+                            Icon(
+                                painter = painterResource(Res.drawable.ht_logo_196),
+                                contentDescription = stringResource(Res.string.back),
+                                tint = AppColors.TextPrimary
+                            )
+                        }
+                    }, colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = AppColors.SurfaceDark
+                    )
                 )
             },
             containerColor = AppColors.Transparent,
@@ -142,6 +144,7 @@ fun CreateAccountScreen(
                         color = AppColors.TextPrimary,
                         style = MaterialTheme.typography.headlineMedium,
                         textAlign = TextAlign.Center,
+
                         modifier = Modifier.padding(bottom = 32.dp, top = 32.dp)
                     )
 
@@ -187,28 +190,47 @@ fun CreateAccountScreen(
                         )
                     }
 
-                    Button(
+
+                    PrimaryButton(
+                        modifier = Modifier.padding(vertical = AppDimens.paddingValues),
+                        buttonName = "Create Account",
                         onClick = {
-                            if (password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty()) {
-                                scope.launch {
-                                    withContext(Dispatchers.IO) {
-                                        authViewModel.createAccount(email, password, fullName)
+                            scope.launch {
+                                if (password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty()) {
+                                    scope.launch {
+                                        withContext(Dispatchers.IO) {
+                                            authViewModel.createAccount(email, password, fullName)
+                                        }
                                     }
                                 }
                             }
                         },
-                        modifier = Modifier.fillMaxWidth().height(50.dp),
-                        enabled = !authState.isLoading && password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty()
-                    ) {
-                        if (authState.isLoading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp),
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        } else {
-                            Text("Create Account")
-                        }
-                    }
+                        enable = !authState.isLoading && password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty()
+                    )
+
+
+//                    Button(
+//                        onClick = {
+//                            if (password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty()) {
+//                                scope.launch {
+//                                    withContext(Dispatchers.IO) {
+//                                        authViewModel.createAccount(email, password, fullName)
+//                                    }
+//                                }
+//                            }
+//                        },
+//                        modifier = Modifier.fillMaxWidth().height(50.dp),
+//                        enabled = !authState.isLoading && password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty()
+//                    ) {
+//                        if (authState.isLoading) {
+//                            CircularProgressIndicator(
+//                                modifier = Modifier.size(20.dp),
+//                                color = MaterialTheme.colorScheme.onPrimary
+//                            )
+//                        } else {
+//                            Text("Create Account")
+//                        }
+//                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
