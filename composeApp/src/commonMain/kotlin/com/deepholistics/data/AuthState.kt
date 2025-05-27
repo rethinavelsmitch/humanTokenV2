@@ -4,7 +4,7 @@ data class AuthState(
     val isAuthenticated: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = "",
-    val user: User = User("", "", "")
+    val user: User? = User("", "", "")
 )
 
 data class User(

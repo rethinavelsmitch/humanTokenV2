@@ -6,13 +6,10 @@ object AppColors {
     val BackgroundDark = Color(0xFF1A1A1A)
     val SurfaceDark = Color(0xFF2D2D2D)
     val CardBackground = Color(0xFF3A3A3A)
-
     val TextPrimary = Color(0xFFFFFFFF)
-
-
     val PurpleBackground = Color(76767633)
     val TextGrey = Color(0XFFCBCFD5)
-    val BorderLineColor=Color(0Xff392D3D)
+    val BorderLineColor = Color(0Xff392D3D)
 
 
     val White = Color.White

@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -48,7 +49,6 @@ import humantokenv2.composeapp.generated.resources.back
 import humantokenv2.composeapp.generated.resources.ht_logo_196
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
@@ -57,7 +57,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview()
 @Composable
-fun CreateAccountScreenPreview() {
+fun SampleCollectionPreview() {
     // Provide a fake or mock AuthViewModel for preview purposes
     val fakeAuthViewModel = remember {
         object : AuthViewModel() {
@@ -65,28 +65,30 @@ fun CreateAccountScreenPreview() {
         }
     }
 
-    CreateAccountScreen(
+    SampleCollectionScreen(
         authViewModel = fakeAuthViewModel,
-        onNavigateToHealthProfile = {},
+        onNavigateToScheduleBloodTest = {},
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateAccountScreen(
-    authViewModel: AuthViewModel, onNavigateToHealthProfile: () -> Unit
+fun SampleCollectionScreen(
+    authViewModel: AuthViewModel, onNavigateToScheduleBloodTest: () -> Unit
 ) {
 
     val authState by authViewModel.state.collectAsState()
     var email by remember { mutableStateOf("") }
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var fullName by remember { mutableStateOf("") }
+    var isPasswordVisible by remember { mutableStateOf(false) }
+    var isConfirmPasswordVisible by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(authState.isAuthenticated) {
         if (authState.isAuthenticated) {
-//            onAccountCreated()
-
+          //  onAccountCreated()
         }
     }
 
@@ -132,7 +134,7 @@ fun CreateAccountScreen(
                 ) {
 
                     Text(
-                        text = "Create Account",
+                        text = "Sample Collection Address",
                         color = AppColors.TextPrimary,
                         style = MaterialTheme.typography.headlineMedium,
                         textAlign = TextAlign.Center,
@@ -141,16 +143,16 @@ fun CreateAccountScreen(
                     )
 
                     OutlinedTextField(
-                        value = firstName,
-                        onValueChange = { firstName = it },
-                        label = { Text("First Name") },
+                        value = fullName,
+                        onValueChange = { fullName = it },
+                        label = { Text("Your Address") },
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                         singleLine = true
                     )
                     OutlinedTextField(
-                        value = lastName,
-                        onValueChange = { lastName = it },
-                        label = { Text("Last Name") },
+                        value = fullName,
+                        onValueChange = { fullName = it },
+                        label = { Text("City") },
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                         singleLine = true
                     )
@@ -158,12 +160,29 @@ fun CreateAccountScreen(
                     OutlinedTextField(
                         value = email,
                         onValueChange = { email = it },
-                        label = { Text("Email") },
+                        label = { Text("State") },
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                         singleLine = true
                     )
 
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = { Text("Zipcode") },
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                        singleLine = true
+                    )
+
+                    if (confirmPassword.isNotEmpty() && password != confirmPassword) {
+                        Text(
+                            text = "Passwords do not match",
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                    }
 
                     if (authState.error != null) {
                         Text(
@@ -174,25 +193,22 @@ fun CreateAccountScreen(
                         )
                     }
 
+
                     PrimaryButton(
                         modifier = Modifier.padding(vertical = AppDimens.paddingValues),
-                        buttonName = "Create Account",
+                        buttonName = "Schedule",
                         onClick = {
                             scope.launch {
-                                if (email.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                                if (password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty()) {
                                     scope.launch {
                                         withContext(Dispatchers.IO) {
-                                            delay(1000)
-                                            withContext(Dispatchers.Main) {
-                                                println("Onclick in create account is working..")
-                                                onNavigateToHealthProfile()
-                                            }
+                                            authViewModel.createAccount(email, password, fullName)
                                         }
                                     }
                                 }
                             }
                         },
-                        enable = firstName.isNotEmpty() && email.isNotEmpty() && lastName.isNotEmpty()
+                        enable = !authState.isLoading && password == confirmPassword && password.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty()
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))

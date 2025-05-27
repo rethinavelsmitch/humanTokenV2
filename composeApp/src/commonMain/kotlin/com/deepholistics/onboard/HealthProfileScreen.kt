@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -48,16 +49,16 @@ import humantokenv2.composeapp.generated.resources.back
 import humantokenv2.composeapp.generated.resources.ht_logo_196
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+
 @Preview()
 @Composable
-fun CreateAccountScreenPreview() {
+fun HealthProfileScreenPreview() {
     // Provide a fake or mock AuthViewModel for preview purposes
     val fakeAuthViewModel = remember {
         object : AuthViewModel() {
@@ -65,29 +66,26 @@ fun CreateAccountScreenPreview() {
         }
     }
 
-    CreateAccountScreen(
-        authViewModel = fakeAuthViewModel,
-        onNavigateToHealthProfile = {},
-    )
+    HealthProfileScreen(
+        authViewModel = fakeAuthViewModel, onNavigateToSampleCollection = {})
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateAccountScreen(
-    authViewModel: AuthViewModel, onNavigateToHealthProfile: () -> Unit
+fun HealthProfileScreen(
+    authViewModel: AuthViewModel, onNavigateToSampleCollection: () -> Unit
 ) {
 
-    val authState by authViewModel.state.collectAsState()
-    var email by remember { mutableStateOf("") }
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
+    val sampleCollectionState by authViewModel.sampleCollectionState.collectAsState()
+    var dateOfBirth by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    var weight by remember { mutableStateOf("") }
+    var height by remember { mutableStateOf("") }
+
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(authState.isAuthenticated) {
-        if (authState.isAuthenticated) {
-//            onAccountCreated()
-
-        }
+    LaunchedEffect(sampleCollectionState) {
+        authViewModel.sampleCollectionValidated()
     }
 
     ScreenBackground {
@@ -95,27 +93,27 @@ fun CreateAccountScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.app_name),
-                            color = AppColors.TextPrimary,
-                            fontSize = textSizeXl,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }, navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
-                        Icon(
-                            painter = painterResource(Res.drawable.ht_logo_196),
-                            contentDescription = stringResource(Res.string.back),
-                            tint = AppColors.TextPrimary
-                        )
-                    }
-                }, colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppColors.SurfaceDark
-                )
+                        Box(
+                            modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.app_name),
+                                color = AppColors.TextPrimary,
+                                fontSize = textSizeXl,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }, navigationIcon = {
+                        IconButton(onClick = { /* Handle back navigation */ }) {
+                            Icon(
+                                painter = painterResource(Res.drawable.ht_logo_196),
+                                contentDescription = stringResource(Res.string.back),
+                                tint = AppColors.TextPrimary
+                            )
+                        }
+                    }, colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = AppColors.SurfaceDark
+                    )
                 )
             },
             containerColor = AppColors.Transparent,
@@ -132,7 +130,7 @@ fun CreateAccountScreen(
                 ) {
 
                     Text(
-                        text = "Create Account",
+                        text = "Your Health Profile",
                         color = AppColors.TextPrimary,
                         style = MaterialTheme.typography.headlineMedium,
                         textAlign = TextAlign.Center,
@@ -141,33 +139,41 @@ fun CreateAccountScreen(
                     )
 
                     OutlinedTextField(
-                        value = firstName,
-                        onValueChange = { firstName = it },
-                        label = { Text("First Name") },
+                        value = height,
+                        onValueChange = { height = it },
+                        label = { Text("Date of Birth") },
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                         singleLine = true
                     )
                     OutlinedTextField(
-                        value = lastName,
-                        onValueChange = { lastName = it },
-                        label = { Text("Last Name") },
+                        value = height,
+                        onValueChange = { height = it },
+                        label = { Text("Gender") },
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                         singleLine = true
                     )
 
                     OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        label = { Text("Email") },
+                        value = dateOfBirth,
+                        onValueChange = { dateOfBirth = it },
+                        label = { Text("Weight") },
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                         singleLine = true
                     )
 
+                    OutlinedTextField(
+                        value = dateOfBirth,
+                        onValueChange = { dateOfBirth = it },
+                        label = { Text("Height") },
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                        singleLine = true
+                    )
 
-                    if (authState.error != null) {
+                    if (weight.isNotEmpty() && gender != weight) {
                         Text(
-                            text = authState.error.toString(),
+                            text = "Passwords do not match",
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(bottom = 16.dp)
@@ -176,23 +182,19 @@ fun CreateAccountScreen(
 
                     PrimaryButton(
                         modifier = Modifier.padding(vertical = AppDimens.paddingValues),
-                        buttonName = "Create Account",
+                        buttonName = "Continue",
                         onClick = {
                             scope.launch {
-                                if (email.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                                if (gender == weight && gender.isNotEmpty() && dateOfBirth.isNotEmpty() && height.isNotEmpty()) {
                                     scope.launch {
                                         withContext(Dispatchers.IO) {
-                                            delay(1000)
-                                            withContext(Dispatchers.Main) {
-                                                println("Onclick in create account is working..")
-                                                onNavigateToHealthProfile()
-                                            }
+                                            authViewModel.createAccount(dateOfBirth, gender, height)
                                         }
                                     }
                                 }
                             }
                         },
-                        enable = firstName.isNotEmpty() && email.isNotEmpty() && lastName.isNotEmpty()
+                        enable = true
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))

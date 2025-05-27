@@ -23,7 +23,7 @@ fun PrimaryButton(
         onClick = onClick,
         modifier = modifier.fillMaxWidth().height(height = AppDimens.buttonHeight),
         colors = ButtonColors(
-            containerColor = AppColors.CardBackground,
+            containerColor = AppColors.TextGrey,
             contentColor = AppColors.TextPrimary,
             disabledContentColor = AppColors.SurfaceDark,
             disabledContainerColor = AppColors.BackgroundDark,

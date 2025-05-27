@@ -11,13 +11,13 @@ import com.deepholistics.onboard.viewmodel.OnboardingViewModel
 
 
 enum class Screen {
-    ONBOARDING, LOGIN, CREATE_ACCOUNT, MAIN, PAYMENT
+    ONBOARDING, LOGIN, CREATE_ACCOUNT, PAYMENT, HEALTH_PROFILE, SAMPLE_COLLECTION, SCHEDULE_BLOOD_TEST
 }
 
 @Composable
 fun App() {
 
-    var currentScreen by remember { mutableStateOf(Screen.PAYMENT) }
+    var currentScreen by remember { mutableStateOf(Screen.ONBOARDING) }
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel() }
 
@@ -31,21 +31,31 @@ fun App() {
             Screen.LOGIN -> {
                 LoginScreen(
                     authViewModel = authViewModel,
-                    onNavigateToCreateAccount = { currentScreen = Screen.CREATE_ACCOUNT },
-                    onLoginSuccess = { currentScreen = Screen.MAIN })
+                    onLoginSuccess = { currentScreen = Screen.CREATE_ACCOUNT })
             }
 
             Screen.CREATE_ACCOUNT -> {
                 CreateAccountScreen(
                     authViewModel = authViewModel,
-                    onNavigateToLogin = { currentScreen = Screen.LOGIN },
-                    onAccountCreated = { currentScreen = Screen.MAIN })
+                    onNavigateToHealthProfile = { currentScreen = Screen.HEALTH_PROFILE },
+                )
             }
 
-            Screen.MAIN -> {
-                MainScreen(authViewModel = authViewModel) {
-                    currentScreen = Screen.LOGIN
-                }
+            Screen.HEALTH_PROFILE -> {
+                HealthProfileScreen(
+                    authViewModel = authViewModel,
+                    onNavigateToSampleCollection = { currentScreen = Screen.SAMPLE_COLLECTION })
+            }
+
+            Screen.SAMPLE_COLLECTION -> {
+                SampleCollectionScreen(
+                    authViewModel = authViewModel,
+                    onNavigateToScheduleBloodTest = { currentScreen = Screen.SCHEDULE_BLOOD_TEST },
+                )
+            }
+
+            Screen.SCHEDULE_BLOOD_TEST -> {
+
             }
 
             Screen.PAYMENT -> {

@@ -12,6 +12,13 @@ open class AuthViewModel {
     private val _state = MutableStateFlow(AuthState())
     val state: StateFlow<AuthState> = _state.asStateFlow()
 
+    private val _sampleCollectionState = MutableStateFlow(false)
+    val sampleCollectionState: StateFlow<Boolean> = _sampleCollectionState.asStateFlow()
+
+    fun sampleCollectionValidated() {
+        _sampleCollectionState.value = true
+    }
+
     suspend fun login(email: String, password: String) {
         _state.value = _state.value.copy(isLoading = true, error = null)
 
@@ -38,6 +45,7 @@ open class AuthViewModel {
             )
         }
     }
+
 
     suspend fun createAccount(email: String, password: String, fullName: String) {
         _state.value = _state.value.copy(isLoading = true, error = null)
@@ -71,5 +79,12 @@ open class AuthViewModel {
 
     fun clearError() {
         _state.value = _state.value.copy(error = null)
+    }
+
+    fun setAuthenticated(isAuthenticated: Boolean) {
+        _state.value = _state.value.copy(
+            isAuthenticated = isAuthenticated, isLoading = false, user = null, error = null
+        )
+        println("_state.Value ${_state.value}")
     }
 }
