@@ -26,16 +26,15 @@ import humantokenv2.composeapp.generated.resources.ht_logo_196
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
-//@Preview
-//@Composable
-//fun PhoneNumberInputPreview() {
-//    PhoneNumberInput(
-//        countryCode = "+1",
-//        onCountryCodeClick = {},
-//        phoneNumber = "1234567890",
-//        onPhoneNumberChange = {""}
-//}
-//
+@Preview
+@Composable
+fun PhoneNumberInputPreview() {
+    PhoneNumberInput(
+        countryCode = "+1",
+        onCountryCodeClick = {},
+        phoneNumber = "1234567890",
+        onPhoneNumberChange = { "" })
+}
 
 @Composable
 fun PhoneNumberInput(
