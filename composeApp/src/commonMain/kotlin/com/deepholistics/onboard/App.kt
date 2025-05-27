@@ -55,7 +55,9 @@ fun App() {
             }
 
             Screen.SCHEDULE_BLOOD_TEST -> {
-
+                ScheduleBloodTestScreen(onClick = {
+                    currentScreen = Screen.PAYMENT
+                })
             }
 
             Screen.PAYMENT -> {
