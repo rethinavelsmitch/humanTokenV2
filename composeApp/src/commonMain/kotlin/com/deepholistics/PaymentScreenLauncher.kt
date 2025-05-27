@@ -51,6 +51,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreenLauncher() {
@@ -76,129 +77,62 @@ fun PaymentScreenLauncher() {
     val textSizeXl = 20.sp
     val textSizeMd = 14.sp
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.app_name),
-                            color = textPrimaryColor,
-                            fontSize = textSizeXl,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
-                        Icon(
-                            painter = painterResource(Res.drawable.ht_logo_196),
-                            contentDescription = stringResource(Res.string.back),
-                            tint = textPrimaryColor
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = surfaceColor
-                )
-            )
-        },
-        bottomBar = {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = surfaceColor,
-                shadowElevation = 8.dp
-            ) {
-                Button(
-                    onClick = { /* Handle payment */ },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(buttonHeight)
-                        .padding(buttonMargin),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = primaryColor,
-                        contentColor = textPrimaryColor
-                    ),
-                    shape = RoundedCornerShape(buttonCornerRadius)
-                ) {
-                    Text(
-                        text = stringResource(Res.string.continue_to_pay),
-                        fontSize = textSizeMd,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-        },
-        containerColor = backgroundColor
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = spacingMd)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(spacingLg)
-        ) {
-            Spacer(modifier = Modifier.height(spacingLg))
+    Spacer(modifier = Modifier.height(spacingLg))
 
-            Text(
-                text = stringResource(Res.string.next_steps),
-                fontSize = textSizeTitle,
-                fontWeight = FontWeight.Bold,
-                color = textPrimaryColor
-            )
+    Text(
+        text = stringResource(Res.string.next_steps),
+        fontSize = textSizeTitle,
+        fontWeight = FontWeight.Bold,
+        color = textPrimaryColor
+    )
 
-            Spacer(modifier = Modifier.height(spacingMd))
+    Spacer(modifier = Modifier.height(spacingMd))
 
-            StepCard(
-                icon = painterResource(Res.drawable.ht_logo_196),
-                title = stringResource(Res.string.payment_confirmation),
-                description = stringResource(Res.string.payment_confirmation_desc),
-                backgroundColor = cardBackgroundColor,
-                textPrimaryColor = textPrimaryColor,
-                textSecondaryColor = textSecondaryColor,
-                cardPadding = cardPadding,
-                cardCornerRadius = cardCornerRadius,
-                iconSize = iconSizeMd,
-                titleSize = textSizeXl,
-                descriptionSize = textSizeMd
-            )
+    StepCard(
+        icon = painterResource(Res.drawable.ht_logo_196),
+        title = stringResource(Res.string.payment_confirmation),
+        description = stringResource(Res.string.payment_confirmation_desc),
+        backgroundColor = cardBackgroundColor,
+        textPrimaryColor = textPrimaryColor,
+        textSecondaryColor = textSecondaryColor,
+        cardPadding = cardPadding,
+        cardCornerRadius = cardCornerRadius,
+        iconSize = iconSizeMd,
+        titleSize = textSizeXl,
+        descriptionSize = textSizeMd
+    )
 
-            StepCard(
-                icon = painterResource(Res.drawable.ht_logo_196),
-                title = stringResource(Res.string.at_home_blood_draw),
-                description = stringResource(Res.string.blood_draw_desc),
-                backgroundColor = cardBackgroundColor,
-                textPrimaryColor = textPrimaryColor,
-                textSecondaryColor = textSecondaryColor,
-                cardPadding = cardPadding,
-                cardCornerRadius = cardCornerRadius,
-                iconSize = iconSizeMd,
-                titleSize = textSizeXl,
-                descriptionSize = textSizeMd
-            )
+    StepCard(
+        icon = painterResource(Res.drawable.ht_logo_196),
+        title = stringResource(Res.string.at_home_blood_draw),
+        description = stringResource(Res.string.blood_draw_desc),
+        backgroundColor = cardBackgroundColor,
+        textPrimaryColor = textPrimaryColor,
+        textSecondaryColor = textSecondaryColor,
+        cardPadding = cardPadding,
+        cardCornerRadius = cardCornerRadius,
+        iconSize = iconSizeMd,
+        titleSize = textSizeXl,
+        descriptionSize = textSizeMd
+    )
 
-            StepCard(
-                icon = painterResource(Res.drawable.ht_logo_196),
-                title = stringResource(Res.string.access_dashboard),
-                description = stringResource(Res.string.dashboard_desc),
-                backgroundColor = cardBackgroundColor,
-                textPrimaryColor = textPrimaryColor,
-                textSecondaryColor = textSecondaryColor,
-                cardPadding = cardPadding,
-                cardCornerRadius = cardCornerRadius,
-                iconSize = iconSizeMd,
-                titleSize = textSizeXl,
-                descriptionSize = textSizeMd
-            )
+    StepCard(
+        icon = painterResource(Res.drawable.ht_logo_196),
+        title = stringResource(Res.string.access_dashboard),
+        description = stringResource(Res.string.dashboard_desc),
+        backgroundColor = cardBackgroundColor,
+        textPrimaryColor = textPrimaryColor,
+        textSecondaryColor = textSecondaryColor,
+        cardPadding = cardPadding,
+        cardCornerRadius = cardCornerRadius,
+        iconSize = iconSizeMd,
+        titleSize = textSizeXl,
+        descriptionSize = textSizeMd
+    )
 
-            Spacer(modifier = Modifier.height(spacingXl))
-        }
-    }
+    Spacer(modifier = Modifier.height(spacingXl))
 }
+
 
 @Composable
 private fun StepCard(
