@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -26,15 +28,19 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.deepholistics.onboard.helper.ScreenBackground
 import com.deepholistics.res.AppColors
-import com.deepholistics.res.AppColors.PurpleBackground
+import com.deepholistics.res.AppColors.PurpleCardBackground
 import com.deepholistics.res.AppFonts
 import com.deepholistics.res.Dimens
 import com.deepholistics.res.Dimens.dp_1
+import com.deepholistics.res.Dimens.dp_12
 import com.deepholistics.res.TextSizes
+import com.deepholistics.utils.PrimaryButton
+import com.deepholistics.utils.SystemBarPadding
 import humantokenv2.composeapp.generated.resources.Res
 import humantokenv2.composeapp.generated.resources.access_dashboard
 import humantokenv2.composeapp.generated.resources.at_home_blood_draw
 import humantokenv2.composeapp.generated.resources.blood_draw_desc
+import humantokenv2.composeapp.generated.resources.continue_to_pay
 import humantokenv2.composeapp.generated.resources.dashboard_desc
 import humantokenv2.composeapp.generated.resources.ic_payment
 import humantokenv2.composeapp.generated.resources.ic_puzzle
@@ -44,46 +50,55 @@ import humantokenv2.composeapp.generated.resources.payment_confirmation
 import humantokenv2.composeapp.generated.resources.payment_confirmation_desc
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun PaymentScreenLauncher() {
-    ScreenBackground {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = Dimens.dp_16)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(Dimens.dp_24)
-        ) {
-            Spacer(modifier = Modifier.height(Dimens.dp_56))
+fun PaymentScreenLauncher(onClick: () -> Unit) {
+    SystemBarPadding {
+        ScreenBackground {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(horizontal = Dimens.dp_16)
+                    .padding(bottom = Dimens.dp_16)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(Dimens.dp_24)
+            ) {
+                Spacer(modifier = Modifier.height(Dimens.dp_56))
 
-            Text(
-                text = stringResource(Res.string.next_steps),
-                fontSize = TextSizes.sp_28,
-                fontFamily = AppFonts.medium(),
-                color = AppColors.White
-            )
+                Text(
+                    text = stringResource(Res.string.next_steps),
+                    fontSize = TextSizes.sp_28,
+                    fontFamily = AppFonts.medium(),
+                    color = AppColors.White
+                )
 
-            Spacer(modifier = Modifier.height(Dimens.dp_16))
+                Spacer(modifier = Modifier.height(Dimens.dp_16))
 
-            StepCard(
-                icon = painterResource(Res.drawable.ic_payment),
-                title = stringResource(Res.string.payment_confirmation),
-                description = stringResource(Res.string.payment_confirmation_desc),
-            )
+                StepCard(
+                    icon = painterResource(Res.drawable.ic_payment),
+                    title = stringResource(Res.string.payment_confirmation),
+                    description = stringResource(Res.string.payment_confirmation_desc),
+                )
 
-            StepCard(
-                icon = painterResource(Res.drawable.ic_tag),
-                title = stringResource(Res.string.at_home_blood_draw),
-                description = stringResource(Res.string.blood_draw_desc),
-            )
+                StepCard(
+                    icon = painterResource(Res.drawable.ic_tag),
+                    title = stringResource(Res.string.at_home_blood_draw),
+                    description = stringResource(Res.string.blood_draw_desc),
+                )
 
-            StepCard(
-                icon = painterResource(Res.drawable.ic_puzzle),
-                title = stringResource(Res.string.access_dashboard),
-                description = stringResource(Res.string.dashboard_desc),
-            )
+                StepCard(
+                    icon = painterResource(Res.drawable.ic_puzzle),
+                    title = stringResource(Res.string.access_dashboard),
+                    description = stringResource(Res.string.dashboard_desc),
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    PrimaryButton(onClick=onClick, buttonName = stringResource(Res.string.continue_to_pay))
+                }
+            }
         }
     }
 }
@@ -96,26 +111,23 @@ private fun StepCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = PurpleBackground),
-        shape = RoundedCornerShape(Dimens.dp_12),
+        colors = CardDefaults.cardColors(containerColor = PurpleCardBackground),
+        shape = RoundedCornerShape(dp_12),
         border = BorderStroke(width = dp_1, color = AppColors.BorderLineColor)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Dimens.dp_16),
+            modifier = Modifier.fillMaxWidth().padding(Dimens.dp_16),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.Top
         ) {
 
             Column(
                 modifier = Modifier.size(Dimens.dp_32).background(
-                    color = AppColors.PurpleDarkColor,
-                    shape = RoundedCornerShape(Dimens.dp_12)
+                    color = AppColors.PurpleIconBackground, shape = RoundedCornerShape(dp_12)
                 ).border(
                     width = dp_1,
                     color = AppColors.BorderLineColor,
-                    shape = RoundedCornerShape(Dimens.dp_12)
+                    shape = RoundedCornerShape(dp_12)
                 ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -129,8 +141,7 @@ private fun StepCard(
 
 
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
                     text = title,
@@ -151,8 +162,3 @@ private fun StepCard(
     }
 }
 
-@Preview
-@Composable
-fun PaymentScreenLauncherPreview() {
-    PaymentScreenLauncher()
-}

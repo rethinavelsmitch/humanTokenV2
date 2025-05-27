@@ -49,7 +49,9 @@ fun App() {
             }
 
             Screen.PAYMENT -> {
-                PaymentScreenLauncher()
+                PaymentScreenLauncher(onClick = {
+
+                })
             }
         }
     }
