@@ -1,5 +1,6 @@
 package com.deepholistics.onboard
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,15 +25,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.deepholistics.onboard.helper.PrimaryButton
 import com.deepholistics.onboard.helper.ScreenBackground
 import com.deepholistics.onboard.viewmodel.AuthViewModel
 import com.deepholistics.res.AppColors
+import com.deepholistics.res.AppDimens
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
@@ -86,29 +91,34 @@ fun LoginScreen(
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
-            OutlinedTextField(
-                value = email.value.toString(),
-                onValueChange = { email.value = it },
-                label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                singleLine = true
-            )
+            var phone: String = remember { mutableStateOf("").toString() }
+            PhoneNumberInput(countryCode = "91", onCountryCodeClick = {
+                // Show country code dropdown (custom)
+            }, phoneNumber = "9159439327", onPhoneNumberChange = { phone = it })
 
-            OutlinedTextField(
-                value = password.value,
-                onValueChange = { password.value = it },
-                label = { Text("Password") },
-                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
-                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                trailingIcon = {
-                    TextButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                        Text(if (isPasswordVisible) "Hide" else "Show")
-                    }
-                },
-                singleLine = true
-            )
+//            OutlinedTextField(
+//                value = email.value.toString(),
+//                onValueChange = { email.value = it },
+//                label = { Text("Email") },
+//                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+//                singleLine = true
+//            )
+//
+//            OutlinedTextField(
+//                value = password.value,
+//                onValueChange = { password.value = it },
+//                label = { Text("Password") },
+//                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
+//                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+//                trailingIcon = {
+//                    TextButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+//                        Text(if (isPasswordVisible) "Hide" else "Show")
+//                    }
+//                },
+//                singleLine = true
+//            )
 
             if (authState.value.error != null) {
                 Text(
@@ -119,35 +129,28 @@ fun LoginScreen(
                 )
             }
 
-            Button(
+
+            PrimaryButton(
+                modifier = Modifier.padding(vertical = AppDimens.paddingValues),
+                buttonName = "Continue",
+                enable = !authState.value.isLoading && email.value.isNotEmpty() && password.value.isNotEmpty(),
                 onClick = {
                     scope.launch {
                         authViewModel.login(email.toString(), password.toString())
                     }
-                },
-                modifier = Modifier.fillMaxWidth().height(50.dp),
-                enabled = !authState.value.isLoading && email.value.isNotEmpty() && password.value.isNotEmpty()
-            ) {
-                if (authState.value.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp), color = MaterialTheme.colorScheme.onPrimary
-                    )
-                } else {
-                    Text("Sign In")
-                }
-            }
+                })
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            TextButton(onClick = onNavigateToCreateAccount) {
-                Text("Don't have an account? Create one")
-            }
+        TextButton(onClick = onNavigateToCreateAccount) {
+            Text("Don't have an account? Create one")
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            TextButton(onClick = { /* Handle forgot password */ }) {
-                Text("Forgot Password?")
-            }
+        TextButton(onClick = { /* Handle forgot password */ }) {
+            Text("Forgot Password?")
         }
     }
 }

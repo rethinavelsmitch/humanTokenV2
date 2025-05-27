@@ -13,10 +13,14 @@ object AppDimens {
     val buttonCornerRadius = 8.dp
     val buttonMargin = 16.dp
     val iconSizeMd = 32.dp
+    val paddingValues = 12.dp
 
     val textSizeTitle = 28.sp
     val textSizeXl = 20.sp
     val textSizeMd = 14.sp
+
+    val textSizeMedium = 18.sp
+
 }
 
 object Dimens {
