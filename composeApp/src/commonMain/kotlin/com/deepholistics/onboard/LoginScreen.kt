@@ -133,25 +133,26 @@ fun LoginScreen(
             PrimaryButton(
                 modifier = Modifier.padding(vertical = AppDimens.paddingValues),
                 buttonName = "Continue",
-                enable = !authState.value.isLoading && email.value.isNotEmpty() && password.value.isNotEmpty(),
                 onClick = {
                     scope.launch {
                         authViewModel.login(email.toString(), password.toString())
                     }
-                })
+                },
+                enable = !authState.value.isLoading && email.value.isNotEmpty() && password.value.isNotEmpty(),
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextButton(onClick = onNavigateToCreateAccount) {
-            Text("Don't have an account? Create one")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TextButton(onClick = { /* Handle forgot password */ }) {
-            Text("Forgot Password?")
-        }
+//        TextButton(onClick = onNavigateToCreateAccount) {
+//            Text("Don't have an account? Create one")
+//        }
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        TextButton(onClick = { /* Handle forgot password */ }) {
+//            Text("Forgot Password?")
+//        }
     }
 }
 
