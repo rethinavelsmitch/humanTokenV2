@@ -2,6 +2,8 @@ package com.deepholistics.onboard
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,12 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.deepholistics.onboard.helper.ScreenBackground
 import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppColors.PurpleBackground
+import com.deepholistics.res.AppFonts
 import com.deepholistics.res.Dimens
 import com.deepholistics.res.Dimens.dp_1
 import com.deepholistics.res.TextSizes
@@ -60,7 +61,7 @@ fun PaymentScreenLauncher() {
             Text(
                 text = stringResource(Res.string.next_steps),
                 fontSize = TextSizes.sp_28,
-                fontWeight = FontWeight.Bold,
+                fontFamily = AppFonts.medium(),
                 color = AppColors.White
             )
 
@@ -107,11 +108,25 @@ private fun StepCard(
             verticalAlignment = Alignment.Top
         ) {
 
-            Image(
-                modifier = Modifier.size(Dimens.dp_32),
-                painter = icon,
-                contentDescription = null,
-            )
+            Column(
+                modifier = Modifier.size(Dimens.dp_32).background(
+                    color = AppColors.PurpleDarkColor,
+                    shape = RoundedCornerShape(Dimens.dp_12)
+                ).border(
+                    width = dp_1,
+                    color = AppColors.BorderLineColor,
+                    shape = RoundedCornerShape(Dimens.dp_12)
+                ),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    modifier = Modifier.size(Dimens.dp_20),
+                    painter = icon,
+                    contentDescription = "icon",
+                )
+            }
+
 
             Column(
                 modifier = Modifier.weight(1f),
@@ -120,15 +135,16 @@ private fun StepCard(
                 Text(
                     text = title,
                     fontSize = TextSizes.sp_20,
-                    fontWeight = FontWeight.Bold,
+                    fontFamily = AppFonts.medium(),
                     color = AppColors.White
                 )
 
                 Text(
                     text = description,
                     fontSize = TextSizes.sp_14,
+                    fontFamily = AppFonts.regular(),
                     color = AppColors.TextGrey,
-                    lineHeight = 20.sp
+                    lineHeight = TextSizes.sp_20
                 )
             }
         }
