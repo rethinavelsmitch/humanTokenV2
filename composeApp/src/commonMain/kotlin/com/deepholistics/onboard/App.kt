@@ -17,6 +17,7 @@ enum class Screen {
 @Composable
 fun App() {
 
+    
     var currentScreen by remember { mutableStateOf(Screen.ONBOARDING) }
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel() }
@@ -55,7 +56,9 @@ fun App() {
             }
 
             Screen.SCHEDULE_BLOOD_TEST -> {
-
+                ScheduleBloodTestScreen(onClick = {
+                    currentScreen = Screen.PAYMENT
+                })
             }
 
             Screen.PAYMENT -> {

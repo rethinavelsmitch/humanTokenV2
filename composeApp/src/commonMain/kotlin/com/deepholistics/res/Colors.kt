@@ -20,6 +20,8 @@ object AppColors {
     val TextGrey = Color(0XFFCBCFD5)
      val White = Color.White
     val Transparent = Color.Transparent
+
+
 }
 
 
