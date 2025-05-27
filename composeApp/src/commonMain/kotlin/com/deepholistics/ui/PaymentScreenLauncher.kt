@@ -1,4 +1,4 @@
-package com.deepholistics
+package com.deepholistics.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,10 +31,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.deepholistics.ui.theme.BackgroundDark
+import com.deepholistics.ui.theme.CardBackground
+import com.deepholistics.ui.theme.Dimens.dp_12
+import com.deepholistics.ui.theme.Dimens.dp_16
+import com.deepholistics.ui.theme.Dimens.dp_24
+import com.deepholistics.ui.theme.Dimens.dp_32
+import com.deepholistics.ui.theme.Dimens.dp_56
+import com.deepholistics.ui.theme.Dimens.dp_8
+import com.deepholistics.ui.theme.Primary
+import com.deepholistics.ui.theme.SurfaceDark
+import com.deepholistics.ui.theme.TextPrimary
+import com.deepholistics.ui.theme.TextSecondary
+import com.deepholistics.ui.theme.TextSizes
+import com.deepholistics.ui.theme.TextSizes.sp_20
+import com.deepholistics.ui.theme.TextSizes.sp_28
 import humantokenv2.composeapp.generated.resources.Res
 import humantokenv2.composeapp.generated.resources.access_dashboard
 import humantokenv2.composeapp.generated.resources.app_name
@@ -62,19 +75,6 @@ fun PaymentScreenLauncher() {
     val textPrimaryColor = TextPrimary
     val textSecondaryColor = TextSecondary
 
-    // Define dimensions (simulated from dimens.xml)
-    val spacingMd = 16.dp
-    val spacingLg = 24.dp
-    val spacingXl = 32.dp
-    val cardCornerRadius = 12.dp
-    val cardPadding = 16.dp
-    val buttonHeight = 56.dp
-    val buttonCornerRadius = 8.dp
-    val buttonMargin = 16.dp
-    val iconSizeMd = 32.dp
-    val textSizeTitle = 28.sp
-    val textSizeXl = 20.sp
-    val textSizeMd = 14.sp
 
     Scaffold(
         topBar = {
@@ -87,7 +87,7 @@ fun PaymentScreenLauncher() {
                         Text(
                             text = stringResource(Res.string.app_name),
                             color = textPrimaryColor,
-                            fontSize = textSizeXl,
+                            fontSize = sp_20,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -116,17 +116,17 @@ fun PaymentScreenLauncher() {
                     onClick = { /* Handle payment */ },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(buttonHeight)
-                        .padding(buttonMargin),
+                        .height(dp_56)
+                        .padding(dp_16),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = primaryColor,
                         contentColor = textPrimaryColor
                     ),
-                    shape = RoundedCornerShape(buttonCornerRadius)
+                    shape = RoundedCornerShape(dp_8)
                 ) {
                     Text(
                         text = stringResource(Res.string.continue_to_pay),
-                        fontSize = textSizeMd,
+                        fontSize = TextSizes.sp_14,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
@@ -138,20 +138,20 @@ fun PaymentScreenLauncher() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = spacingMd)
+                .padding(horizontal = dp_16)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(spacingLg)
+            verticalArrangement = Arrangement.spacedBy(dp_24)
         ) {
-            Spacer(modifier = Modifier.height(spacingLg))
+            Spacer(modifier = Modifier.height(dp_24))
 
             Text(
                 text = stringResource(Res.string.next_steps),
-                fontSize = textSizeTitle,
+                fontSize = sp_28,
                 fontWeight = FontWeight.Bold,
                 color = textPrimaryColor
             )
 
-            Spacer(modifier = Modifier.height(spacingMd))
+            Spacer(modifier = Modifier.height(dp_16))
 
             StepCard(
                 icon = painterResource(Res.drawable.ht_logo_196),
@@ -160,11 +160,6 @@ fun PaymentScreenLauncher() {
                 backgroundColor = cardBackgroundColor,
                 textPrimaryColor = textPrimaryColor,
                 textSecondaryColor = textSecondaryColor,
-                cardPadding = cardPadding,
-                cardCornerRadius = cardCornerRadius,
-                iconSize = iconSizeMd,
-                titleSize = textSizeXl,
-                descriptionSize = textSizeMd
             )
 
             StepCard(
@@ -174,11 +169,6 @@ fun PaymentScreenLauncher() {
                 backgroundColor = cardBackgroundColor,
                 textPrimaryColor = textPrimaryColor,
                 textSecondaryColor = textSecondaryColor,
-                cardPadding = cardPadding,
-                cardCornerRadius = cardCornerRadius,
-                iconSize = iconSizeMd,
-                titleSize = textSizeXl,
-                descriptionSize = textSizeMd
             )
 
             StepCard(
@@ -188,14 +178,9 @@ fun PaymentScreenLauncher() {
                 backgroundColor = cardBackgroundColor,
                 textPrimaryColor = textPrimaryColor,
                 textSecondaryColor = textSecondaryColor,
-                cardPadding = cardPadding,
-                cardCornerRadius = cardCornerRadius,
-                iconSize = iconSizeMd,
-                titleSize = textSizeXl,
-                descriptionSize = textSizeMd
             )
 
-            Spacer(modifier = Modifier.height(spacingXl))
+            Spacer(modifier = Modifier.height(dp_32))
         }
     }
 }
@@ -207,30 +192,25 @@ private fun StepCard(
     backgroundColor: Color,
     textPrimaryColor: Color,
     textSecondaryColor: Color,
-    cardPadding: Dp,
-    cardCornerRadius: Dp,
-    iconSize: Dp,
-    titleSize: TextUnit,
-    descriptionSize: TextUnit,
     icon: Painter,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(cardCornerRadius),
+        shape = RoundedCornerShape(dp_12),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(cardPadding),
+                .padding(dp_16),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.Top
         ) {
             Icon(
                 painter = icon,
                 contentDescription = null,
-                modifier = Modifier.size(iconSize),
+                modifier = Modifier.size(dp_32),
                 tint = textPrimaryColor
             )
 
@@ -240,14 +220,14 @@ private fun StepCard(
             ) {
                 Text(
                     text = title,
-                    fontSize = titleSize,
+                    fontSize = sp_20,
                     fontWeight = FontWeight.Bold,
                     color = textPrimaryColor
                 )
 
                 Text(
                     text = description,
-                    fontSize = descriptionSize,
+                    fontSize = TextSizes.sp_14,
                     color = textSecondaryColor,
                     lineHeight = 20.sp
                 )

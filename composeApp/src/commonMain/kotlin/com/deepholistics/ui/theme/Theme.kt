@@ -1,5 +1,5 @@
 
-package com.deepholistics
+package com.deepholistics.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
