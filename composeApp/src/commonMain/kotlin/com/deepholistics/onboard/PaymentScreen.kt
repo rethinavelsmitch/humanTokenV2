@@ -32,8 +32,8 @@ import com.deepholistics.res.Dimens
 import com.deepholistics.res.Dimens.dp_1
 import com.deepholistics.res.Dimens.dp_12
 import com.deepholistics.res.TextSizes
-import com.deepholistics.utils.PrimaryButton
-import com.deepholistics.utils.SystemBarPadding
+import com.deepholistics.utils.ui.PrimaryButton
+import com.deepholistics.utils.ui.SystemBarPadding
 import humantokenv2.composeapp.generated.resources.Res
 import humantokenv2.composeapp.generated.resources.access_dashboard
 import humantokenv2.composeapp.generated.resources.at_home_blood_draw
