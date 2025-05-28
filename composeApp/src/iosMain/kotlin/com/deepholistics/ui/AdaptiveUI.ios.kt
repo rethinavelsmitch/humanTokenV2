@@ -1,5 +1,6 @@
 package com.deepholistics.ui
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -14,4 +15,25 @@ actual fun CommonButton(modifier: Modifier, onClick: () -> Unit) {
     UIKitViewController(modifier = modifier.height(Dimens.dp_50).width(Dimens.dp_100), factory = {
         view.createButtonView(label = "Button", onClick = onClick)
     })
+}
+
+@Composable
+actual fun ShowDatePicker(
+    modifier: Modifier,
+    selectedDate: String,
+    onDismiss: () -> Unit,
+    onDateSelected: (String) -> Unit,
+) {
+    val view = LocalNativeViewFactory.current
+    UIKitViewController(modifier = modifier.height(Dimens.dp_160).fillMaxWidth(), factory = {
+        view.showDatePicker(
+            selectedDate = selectedDate,
+            onDismiss = onDismiss,
+            onDateSelected = onDateSelected
+        )
+    })
+}
+
+@Composable
+actual fun GraphUI(onDismiss: () -> Unit) {
 }

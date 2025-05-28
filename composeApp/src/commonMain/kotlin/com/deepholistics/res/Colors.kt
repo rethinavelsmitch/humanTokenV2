@@ -18,6 +18,7 @@ object AppColors {
     val PurpleButtonBackground = Color(0XFF54414E)
     val BorderLineColor = Color(0Xff392D3D)
     val TextGrey = Color(0XFFCBCFD5)
+    val ColorPrimaryDark = Color(0XFF0053C7)
     val White = Color.White
     val Transparent = Color.Transparent
 

@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="_24dp">24dp</dimen>
+    <dimen name="_12dp">12dp</dimen>
+</resources>

@@ -37,6 +37,7 @@ import com.deepholistics.res.Dimens
 import com.deepholistics.res.Dimens.dp_1
 import com.deepholistics.res.Dimens.dp_12
 import com.deepholistics.res.TextSizes
+import com.deepholistics.ui.ShowDatePicker
 import com.deepholistics.utils.ui.PrimaryButton
 import com.deepholistics.utils.ui.SystemBarPadding
 import com.deepholistics.utils.ui.onIconClick
@@ -55,7 +56,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun ScheduleBloodTestScreen(onClick: () -> Unit) {
     var selectedSlot by remember { mutableStateOf<String?>(null) }
-
+    var showDate by remember { mutableStateOf(false) }
     val timeSlots = listOf(
         "06:00 AM", "06:30 AM",
         "08:00 AM", "08:30 AM",
@@ -126,7 +127,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                     ) {
                         Icon(
                             modifier = Modifier.size(Dimens.dp_20).onIconClick(onClick = {
-
+                                showDate = true
                             }),
                             painter = painterResource(Res.drawable.ic_summary_calendar), // Using available icon
                             contentDescription = stringResource(Res.string.calendar),
@@ -186,10 +187,20 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                         isEnable = selectedSlot != null
                     )
                 }
+
+                if (showDate) {
+                    ShowDatePicker(modifier = Modifier, selectedDate = "", onDismiss = {
+                        showDate = false
+                    }, onDateSelected = { date ->
+                        println("Date Selected:$date")
+                        showDate = false
+                    })
+                }
             }
         }
     }
 }
+
 
 @Composable
 private fun TimeSlotCard(
