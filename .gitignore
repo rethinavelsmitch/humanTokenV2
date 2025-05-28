@@ -100,8 +100,49 @@ fastlane/readme.md
 .kotlin/sessions/
 
 /.kotlin/sessions
+.kotlin/metadata/
+.kotlin/errors/
 
 /build
 .cxx
 .gradle.properties
 
+/composeApp/build/
+/composeApp/build/xcode-frameworks
+
+/composeApp/build
+
+
+**/build/
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# macOS metadata
+.DS_Store
+
+# Kotlin/Native & KMP iOS builds
+*.klib
+*.kexe
+*.dSYM
+*.hmap
+*.modulemap
+
+# Xcode user-specific files
+*.xcuserstate
+*.xcworkspace/
+*.xcodeproj/
+DerivedData/
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Logs and other temp files
+*.log
+
+
+/composeApp/build/xcode-frameworks/

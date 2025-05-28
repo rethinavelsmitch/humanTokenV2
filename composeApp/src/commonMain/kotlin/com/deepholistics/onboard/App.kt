@@ -9,14 +9,14 @@ import androidx.compose.runtime.setValue
 import com.deepholistics.onboard.viewmodel.AuthViewModel
 import com.deepholistics.onboard.viewmodel.OnboardingViewModel
 
-
 enum class Screen {
     ONBOARDING, LOGIN, CREATE_ACCOUNT, PAYMENT, HEALTH_PROFILE, SAMPLE_COLLECTION, SCHEDULE_BLOOD_TEST
 }
 
 @Composable
 fun App() {
-    var currentScreen by remember { mutableStateOf(Screen.SCHEDULE_BLOOD_TEST) }
+
+    var currentScreen by remember { mutableStateOf(Screen.ONBOARDING) }
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel() }
 
