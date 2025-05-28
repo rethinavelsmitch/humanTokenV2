@@ -1,0 +1,16 @@
+modules = ["swift-5.8"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Run Desktop"
+
+[[workflows.workflow]]
+name = "Run Desktop"
+author = 42624767
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./gradlew :shared:desktopRun"
