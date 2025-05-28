@@ -10,6 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Devices
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -130,7 +133,7 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                     
                     Text(
                         text = "Add an extra layer of security to your account",
-                        color = AppColors.TextSecondary,
+                        color = AppColors.textSecondary,
                         fontSize = 14.sp,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
@@ -198,7 +201,7 @@ private fun ProfileSection(
         
         Text(
             text = subtitle,
-            color = AppColors.TextSecondary,
+            color = AppColors.textSecondary,
             fontSize = 14.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -256,7 +259,7 @@ private fun UserProfileCard(
             )
             Text(
                 text = email,
-                color = AppColors.TextSecondary,
+                color = AppColors.textSecondary,
                 fontSize = 14.sp
             )
         }
@@ -305,7 +308,7 @@ private fun SubscriptionCard(
         
         Text(
             text = "Next billing date: $nextBillingDate",
-            color = AppColors.TextSecondary,
+            color = AppColors.textSecondary,
             fontSize = 14.sp
         )
     }
@@ -344,7 +347,7 @@ private fun ProfileMenuItem(
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = "Navigate",
-            tint = AppColors.TextSecondary,
+            tint = AppColors.textSecondary,
             modifier = Modifier.size(16.dp)
         )
     }
