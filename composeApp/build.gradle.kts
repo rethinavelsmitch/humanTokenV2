@@ -46,7 +46,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
 
             // Ktor client dependencies
             implementation("io.ktor:ktor-client-core:2.3.7")
