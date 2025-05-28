@@ -45,6 +45,7 @@ import humantokenv2.composeapp.generated.resources.continue_button
 import humantokenv2.composeapp.generated.resources.fasting_note
 import humantokenv2.composeapp.generated.resources.fasting_test
 import humantokenv2.composeapp.generated.resources.ic_payment
+import humantokenv2.composeapp.generated.resources.ic_summary_calendar
 import humantokenv2.composeapp.generated.resources.schedule_blood_test_description
 import humantokenv2.composeapp.generated.resources.schedule_blood_test_title
 import humantokenv2.composeapp.generated.resources.test_date
@@ -125,7 +126,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                     ) {
                         Icon(
                             modifier = Modifier.size(Dimens.dp_20),
-                            painter = painterResource(Res.drawable.ic_payment), // Using available icon
+                            painter = painterResource(Res.drawable.ic_summary_calendar), // Using available icon
                             contentDescription = stringResource(Res.string.calendar),
                             tint = AppColors.White
                         )
