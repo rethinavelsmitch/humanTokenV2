@@ -40,7 +40,14 @@ import com.deepholistics.res.TextSizes
 import com.deepholistics.utils.PrimaryButton
 import com.deepholistics.utils.SystemBarPadding
 import humantokenv2.composeapp.generated.resources.Res
+import humantokenv2.composeapp.generated.resources.calendar
+import humantokenv2.composeapp.generated.resources.continue_button
+import humantokenv2.composeapp.generated.resources.fasting_note
+import humantokenv2.composeapp.generated.resources.fasting_test
 import humantokenv2.composeapp.generated.resources.ic_payment
+import humantokenv2.composeapp.generated.resources.schedule_blood_test_description
+import humantokenv2.composeapp.generated.resources.schedule_blood_test_title
+import humantokenv2.composeapp.generated.resources.test_date
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
