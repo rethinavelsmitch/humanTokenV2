@@ -1,4 +1,4 @@
-package com.deepholistics.utils
+package com.deepholistics.utils.ui
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape

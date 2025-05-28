@@ -16,8 +16,6 @@ enum class Screen {
 
 @Composable
 fun App() {
-
-
     var currentScreen by remember { mutableStateOf(Screen.SCHEDULE_BLOOD_TEST) }
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel() }

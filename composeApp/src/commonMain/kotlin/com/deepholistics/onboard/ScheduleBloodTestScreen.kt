@@ -37,14 +37,14 @@ import com.deepholistics.res.Dimens
 import com.deepholistics.res.Dimens.dp_1
 import com.deepholistics.res.Dimens.dp_12
 import com.deepholistics.res.TextSizes
-import com.deepholistics.utils.PrimaryButton
-import com.deepholistics.utils.SystemBarPadding
+import com.deepholistics.utils.ui.PrimaryButton
+import com.deepholistics.utils.ui.SystemBarPadding
+import com.deepholistics.utils.ui.onIconClick
 import humantokenv2.composeapp.generated.resources.Res
 import humantokenv2.composeapp.generated.resources.calendar
 import humantokenv2.composeapp.generated.resources.continue_button
 import humantokenv2.composeapp.generated.resources.fasting_note
 import humantokenv2.composeapp.generated.resources.fasting_test
-import humantokenv2.composeapp.generated.resources.ic_payment
 import humantokenv2.composeapp.generated.resources.ic_summary_calendar
 import humantokenv2.composeapp.generated.resources.schedule_blood_test_description
 import humantokenv2.composeapp.generated.resources.schedule_blood_test_title
@@ -125,10 +125,12 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
-                            modifier = Modifier.size(Dimens.dp_20),
+                            modifier = Modifier.size(Dimens.dp_20).onIconClick (onClick = {
+
+                            }),
                             painter = painterResource(Res.drawable.ic_summary_calendar), // Using available icon
                             contentDescription = stringResource(Res.string.calendar),
-                            tint = AppColors.White
+                            tint = AppColors.White,
                         )
                     }
                 }
