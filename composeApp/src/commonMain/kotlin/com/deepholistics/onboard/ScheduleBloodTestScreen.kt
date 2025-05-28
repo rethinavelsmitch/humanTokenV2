@@ -40,7 +40,6 @@ import com.deepholistics.res.TextSizes
 import com.deepholistics.utils.PrimaryButton
 import com.deepholistics.utils.SystemBarPadding
 import humantokenv2.composeapp.generated.resources.Res
- import humantokenv2.composeapp.generated.resources.ic_payment
 import humantokenv2.composeapp.generated.resources.ic_payment
 import org.jetbrains.compose.resources.painterResource
 
@@ -82,48 +81,48 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                 )
 
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(Dimens.dp_16),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            Text(
-                                text = "Wednesday, 28 May, 2025",
-                                fontSize = TextSizes.sp_20,
-                                fontFamily = AppFonts.medium(),
-                                color = AppColors.White
-                            )
-                            Text(
-                                text = "Fasting test",
-                                fontSize = TextSizes.sp_14,
-                                fontFamily = AppFonts.regular(),
-                                color = AppColors.TextGrey
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        Column(
-                            modifier = Modifier.size(Dimens.dp_32).background(
-                                color = AppColors.PurpleIconBackground,
-                                shape = RoundedCornerShape(dp_12)
-                            ).border(
-                                width = dp_1,
-                                color = AppColors.BorderLineColor,
-                                shape = RoundedCornerShape(dp_12)
-                            ),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(Dimens.dp_20),
-                                painter = painterResource(Res.drawable.ic_payment), // Using available icon
-                                contentDescription = "calendar",
-                                tint = AppColors.White
-                            )
-                        }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(Dimens.dp_16),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "Wednesday, 28 May, 2025",
+                            fontSize = TextSizes.sp_20,
+                            fontFamily = AppFonts.medium(),
+                            color = AppColors.White
+                        )
+                        Text(
+                            text = "Fasting test",
+                            fontSize = TextSizes.sp_14,
+                            fontFamily = AppFonts.regular(),
+                            color = AppColors.TextGrey
+                        )
                     }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Column(
+                        modifier = Modifier.size(Dimens.dp_32).background(
+                            color = AppColors.PurpleIconBackground,
+                            shape = RoundedCornerShape(dp_12)
+                        ).border(
+                            width = dp_1,
+                            color = AppColors.BorderLineColor,
+                            shape = RoundedCornerShape(dp_12)
+                        ),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(Dimens.dp_20),
+                            painter = painterResource(Res.drawable.ic_payment), // Using available icon
+                            contentDescription = "calendar",
+                            tint = AppColors.White
+                        )
+                    }
+                }
 
                 // Time Slots Grid
                 Column(
@@ -134,7 +133,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                     } else {
                         timeSlots
                     }
-                    
+
                     paddedTimeSlots.chunked(2).forEach { rowSlots ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
