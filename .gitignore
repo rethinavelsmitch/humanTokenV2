@@ -143,3 +143,6 @@ gradle-app.setting
 
 # Logs and other temp files
 *.log
+
+
+/composeApp/build/xcode-frameworks/
