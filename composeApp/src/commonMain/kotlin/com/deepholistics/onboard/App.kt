@@ -10,15 +10,18 @@ import com.deepholistics.onboard.viewmodel.AuthViewModel
 import com.deepholistics.onboard.viewmodel.OnboardingViewModel
 
 enum class Screen {
-    ONBOARDING, LOGIN, CREATE_ACCOUNT, PAYMENT, HEALTH_PROFILE, SAMPLE_COLLECTION, SCHEDULE_BLOOD_TEST
+    ONBOARDING, LOGIN, CREATE_ACCOUNT, PAYMENT, HEALTH_PROFILE, SAMPLE_COLLECTION, SCHEDULE_BLOOD_TEST, MAIN, PROFILE
 }
 
 @Composable
 fun App() {
 
-    var currentScreen by remember { mutableStateOf(Screen.ONBOARDING) }
+    var currentScreen by remember { mutableStateOf(Screen.MAIN) }
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel() }
+
+
+
 
     MaterialTheme {
         when (currentScreen) {
@@ -61,7 +64,19 @@ fun App() {
 
             Screen.PAYMENT -> {
                 PaymentScreenLauncher(onClick = {
+                    currentScreen = Screen.MAIN
+                })
+            }
 
+            Screen.MAIN -> {
+                MainScreen(onNavigateToProfile = {
+                    currentScreen = Screen.PROFILE
+                })
+            }
+
+            Screen.PROFILE -> {
+                ProfileScreen(onNavigateBack = {
+                    currentScreen = Screen.MAIN
                 })
             }
         }
