@@ -129,18 +129,28 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    timeSlots.chunked(2).forEach { rowSlots ->
+                    val paddedTimeSlots = if (timeSlots.size % 2 != 0) {
+                        timeSlots + ""
+                    } else {
+                        timeSlots
+                    }
+                    
+                    paddedTimeSlots.chunked(2).forEach { rowSlots ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             rowSlots.forEach { slot ->
-                                TimeSlotCard(
-                                    time = slot,
-                                    isSelected = selectedSlot == slot,
-                                    onClick = { selectedSlot = slot },
-                                    modifier = Modifier.weight(1f)
-                                )
+                                if (slot.isNotEmpty()) {
+                                    TimeSlotCard(
+                                        time = slot,
+                                        isSelected = selectedSlot == slot,
+                                        onClick = { selectedSlot = slot },
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                } else {
+                                    Spacer(modifier = Modifier.weight(1f))
+                                }
                             }
                         }
                     }
