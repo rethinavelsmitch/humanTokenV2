@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.deepholistics.interaction.DatePickerController
 import com.deepholistics.onboard.helper.ScreenBackground
 import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppColors.PurpleCardBackground
@@ -125,8 +126,10 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
-                            modifier = Modifier.size(Dimens.dp_20).onIconClick (onClick = {
-
+                            modifier = Modifier.size(Dimens.dp_20).onIconClick(onClick = {
+                                DatePickerController.showDatePicker { year, month, day ->
+                                    println("Selected Date: $year-${month + 1}-$day")
+                                }
                             }),
                             painter = painterResource(Res.drawable.ic_summary_calendar), // Using available icon
                             contentDescription = stringResource(Res.string.calendar),
