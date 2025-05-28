@@ -46,7 +46,7 @@ fun LoginScreenPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    authViewModel: AuthViewModel, onLoginSuccess: () -> Unit
+    authViewModel: AuthViewModel, onLoginSuccess: () -> Unit,
 ) {
 
     val authState = authViewModel.state.collectAsState()
@@ -102,9 +102,11 @@ fun LoginScreen(
 //                    authViewModel.login(phonenumber.toString(), phonenumber.toString())
                     }
                 },
-                enable =true
+                enable = true
             )
         }
+
+
 
         Spacer(modifier = Modifier.height(16.dp))
 

@@ -16,7 +16,7 @@ enum class Screen {
 @Composable
 fun App() {
 
-    var currentScreen by remember { mutableStateOf(Screen.MAIN) }
+    var currentScreen by remember { mutableStateOf(Screen.ONBOARDING) }
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel() }
 
