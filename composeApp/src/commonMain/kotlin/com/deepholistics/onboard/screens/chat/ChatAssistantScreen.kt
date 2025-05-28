@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.deepholistics.res.AppColors
+import com.deepholistics.res.AppDimens
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.AppDimens.textSizeXl
@@ -34,8 +35,8 @@ fun ChatAssistantScreen() {
         
         Text(
             text = "Chat with our AI health assistant. Get instant answers to your health questions based on your biomarker results and health data.",
-            color = AppColors.TextSecondary,
-            fontSize = AppColors.TextSecondary
+            color = AppColors.TextGrey,
+            fontSize = AppDimens.textSizeMedium
         )
         
         // Add chat assistant content here

@@ -16,9 +16,12 @@ enum class Screen {
 @Composable
 fun App() {
 
-    var currentScreen by remember { mutableStateOf(Screen.ONBOARDING) }
+    var currentScreen by remember { mutableStateOf(Screen.MAIN) }
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel() }
+
+
+
 
     MaterialTheme {
         when (currentScreen) {
@@ -64,13 +67,13 @@ fun App() {
                     currentScreen = Screen.MAIN
                 })
             }
-            
+
             Screen.MAIN -> {
                 MainScreen(onNavigateToProfile = {
                     currentScreen = Screen.PROFILE
                 })
             }
-            
+
             Screen.PROFILE -> {
                 ProfileScreen(onNavigateBack = {
                     currentScreen = Screen.MAIN

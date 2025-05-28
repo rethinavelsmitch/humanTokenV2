@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.deepholistics.res.AppColors
+import com.deepholistics.res.AppDimens
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.AppDimens.textSizeXl
@@ -34,10 +35,9 @@ fun BioMarkersScreen() {
         
         Text(
             text = "View your comprehensive biomarker analysis. Track 100+ advanced biomarkers measuring everything from energy and mood-related markers to cancers, heart diseases and more.",
-            color = AppColors.TextSecondary,
-            fontSize = AppColors.TextSecondary
+            color = AppColors.TextGrey,
+            fontSize = AppDimens.textSizeMedium
         )
         
-        // Add biomarkers content here
-    }
+     }
 }

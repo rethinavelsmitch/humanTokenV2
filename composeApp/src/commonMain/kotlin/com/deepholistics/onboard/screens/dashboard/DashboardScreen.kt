@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.deepholistics.res.AppColors
+import com.deepholistics.res.AppDimens
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.AppDimens.textSizeXl
@@ -34,8 +35,8 @@ fun DashboardScreen() {
         
         Text(
             text = "Welcome to your health dashboard. Here you can view your health overview, recent test results, and important health metrics.",
-            color = AppColors.TextSecondary,
-            fontSize = AppColors.TextSecondary
+            color = AppColors.TextGrey,
+            fontSize = AppDimens.textSizeMd
         )
         
         // Add more dashboard content here
