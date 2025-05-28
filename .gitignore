@@ -105,3 +105,5 @@ fastlane/readme.md
 .cxx
 .gradle.properties
 
+/composeApp/build/
+/composeApp/build/xcode-frameworks
