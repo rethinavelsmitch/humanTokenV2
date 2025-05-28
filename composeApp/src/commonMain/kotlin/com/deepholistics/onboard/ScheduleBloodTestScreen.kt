@@ -42,6 +42,7 @@ import com.deepholistics.utils.SystemBarPadding
 import humantokenv2.composeapp.generated.resources.Res
 import humantokenv2.composeapp.generated.resources.ic_payment
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleBloodTestScreen(onClick: () -> Unit) {
@@ -66,14 +67,14 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                 Spacer(modifier = Modifier.height(Dimens.dp_56))
 
                 Text(
-                    text = "Schedule your blood test",
+                    text = stringResource(Res.string.schedule_blood_test_title),
                     fontSize = TextSizes.sp_28,
                     fontFamily = AppFonts.medium(),
                     color = AppColors.White
                 )
 
                 Text(
-                    text = "Get started with 100+ advanced biomarkers measuring everything from energy and mood-related markers to cancers, heart diseases and more. We connect the dots across your entire health profile.",
+                    text = stringResource(Res.string.schedule_blood_test_description),
                     fontSize = TextSizes.sp_14,
                     fontFamily = AppFonts.regular(),
                     color = AppColors.TextGrey,
@@ -88,13 +89,13 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                 ) {
                     Column {
                         Text(
-                            text = "Wednesday, 28 May, 2025",
+                            text = stringResource(Res.string.test_date),
                             fontSize = TextSizes.sp_20,
                             fontFamily = AppFonts.medium(),
                             color = AppColors.White
                         )
                         Text(
-                            text = "Fasting test",
+                            text = stringResource(Res.string.fasting_test),
                             fontSize = TextSizes.sp_14,
                             fontFamily = AppFonts.regular(),
                             color = AppColors.TextGrey
@@ -118,7 +119,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                         Icon(
                             modifier = Modifier.size(Dimens.dp_20),
                             painter = painterResource(Res.drawable.ic_payment), // Using available icon
-                            contentDescription = "calendar",
+                            contentDescription = stringResource(Res.string.calendar),
                             tint = AppColors.White
                         )
                     }
@@ -156,7 +157,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                 }
 
                 Text(
-                    text = "Please note: This is a fasting blood test only. Select your time accordingly and ensure that you take the test empty stomach.",
+                    text = stringResource(Res.string.fasting_note),
                     fontSize = TextSizes.sp_14,
                     fontFamily = AppFonts.regular(),
                     color = AppColors.TextGrey,
@@ -171,7 +172,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                 ) {
                     PrimaryButton(
                         onClick = onClick,
-                        buttonName = "Continue",
+                        buttonName = stringResource(Res.string.continue_button),
                         isEnable = selectedSlot != null
                     )
                 }
