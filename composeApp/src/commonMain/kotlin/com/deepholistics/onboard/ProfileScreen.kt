@@ -1,6 +1,7 @@
 
 package com.deepholistics.onboard
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,17 +9,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.filled.Security
-import androidx.compose.material.icons.filled.Devices
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,6 +32,9 @@ import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.AppDimens.textSizeXl
+import humantokenv2.composeapp.generated.resources.Res
+import humantokenv2.composeapp.generated.resources.ic_payment
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,11 +53,11 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                     },
                     navigationIcon = {
                         IconButton(onClick = onNavigateBack) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = "Back",
-                                tint = AppColors.TextPrimary
-                            )
+//                            Icon(
+//                                imageVector = Icons.Default.ArrowBack,
+//                                contentDescription = "Back",
+//                                tint = AppColors.TextPrimary
+//                            )
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -81,13 +88,13 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                     )
                     
                     ProfileMenuItem(
-                        icon = Icons.Default.Edit,
+                        icon = painterResource(Res.drawable.ic_payment),
                         title = "Edit Profile",
                         onClick = { /* Handle edit profile */ }
                     )
                     
                     ProfileMenuItem(
-                        icon = Icons.Default.Lock,
+                        icon = painterResource(Res.drawable.ic_payment),
                         title = "Change Password",
                         onClick = { /* Handle change password */ }
                     )
@@ -105,13 +112,13 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                     )
                     
                     ProfileMenuItem(
-                        icon = Icons.Default.Refresh,
+                        icon = painterResource(Res.drawable.ic_payment),
                         title = "Change Plan",
                         onClick = { /* Handle change plan */ }
                     )
                     
                     ProfileMenuItem(
-                        icon = Icons.Default.Clear,
+                        icon = painterResource(Res.drawable.ic_payment),
                         title = "Cancel Subscription",
                         textColor = Color(0xFFFF6B6B),
                         onClick = { /* Handle cancel subscription */ }
@@ -133,13 +140,13 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                     
                     Text(
                         text = "Add an extra layer of security to your account",
-                        color = AppColors.textSecondary,
+                        color = AppColors.TextPrimary,
                         fontSize = 14.sp,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     
                     ProfileMenuItem(
-                        icon = Icons.Default.Security,
+                        icon = painterResource(Res.drawable.ic_payment),
                         title = "Enable 2FA",
                         onClick = { /* Handle enable 2FA */ }
                     )
@@ -151,13 +158,13 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                     subtitle = "Manage your active sessions"
                 ) {
                     ProfileMenuItem(
-                        icon = Icons.Default.Devices,
+                        icon = painterResource(Res.drawable.ic_payment),
                         title = "View Active Sessions",
                         onClick = { /* Handle view sessions */ }
                     )
                     
                     ProfileMenuItem(
-                        icon = Icons.Default.ExitToApp,
+                        icon = painterResource(Res.drawable.ic_payment),
                         title = "Log Out",
                         onClick = { /* Handle logout */ }
                     )
@@ -170,7 +177,7 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                     titleColor = Color(0xFFFF6B6B)
                 ) {
                     ProfileMenuItem(
-                        icon = Icons.Default.Delete,
+                        icon = painterResource(Res.drawable.ic_payment),
                         title = "Delete Account",
                         textColor = Color(0xFFFF6B6B),
                         onClick = { /* Handle delete account */ }
@@ -201,7 +208,7 @@ private fun ProfileSection(
         
         Text(
             text = subtitle,
-            color = AppColors.textSecondary,
+            color = AppColors.TextPrimary,
             fontSize = 14.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -240,10 +247,9 @@ private fun UserProfileCard(
                 .background(Color(0xFF8B5CF6)),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.Person,
+            Image(
+                painter = painterResource(Res.drawable.ic_payment),
                 contentDescription = "Profile Picture",
-                tint = Color.White,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -259,7 +265,7 @@ private fun UserProfileCard(
             )
             Text(
                 text = email,
-                color = AppColors.textSecondary,
+                color = AppColors.TextPrimary,
                 fontSize = 14.sp
             )
         }
@@ -308,7 +314,7 @@ private fun SubscriptionCard(
         
         Text(
             text = "Next billing date: $nextBillingDate",
-            color = AppColors.textSecondary,
+            color = AppColors.TextPrimary,
             fontSize = 14.sp
         )
     }
@@ -316,7 +322,7 @@ private fun SubscriptionCard(
 
 @Composable
 private fun ProfileMenuItem(
-    icon: ImageVector,
+    icon: Painter,
     title: String,
     textColor: Color = AppColors.TextPrimary,
     onClick: () -> Unit
@@ -328,10 +334,9 @@ private fun ProfileMenuItem(
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = icon,
+        Image(
+            painter = icon,
             contentDescription = title,
-            tint = textColor,
             modifier = Modifier.size(20.dp)
         )
         
@@ -343,11 +348,10 @@ private fun ProfileMenuItem(
             fontSize = 16.sp,
             modifier = Modifier.weight(1f)
         )
-        
-        Icon(
-            imageVector = Icons.Default.ChevronRight,
+
+        Image(
+            painter = icon,
             contentDescription = "Navigate",
-            tint = AppColors.textSecondary,
             modifier = Modifier.size(16.dp)
         )
     }
