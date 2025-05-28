@@ -1,4 +1,3 @@
-
 package com.deepholistics.onboard
 
 import androidx.compose.foundation.BorderStroke
@@ -41,23 +40,22 @@ import com.deepholistics.res.TextSizes
 import com.deepholistics.utils.PrimaryButton
 import com.deepholistics.utils.SystemBarPadding
 import humantokenv2.composeapp.generated.resources.Res
-import humantokenv2.composeapp.generated.resources.ic_calendar
+ import humantokenv2.composeapp.generated.resources.ic_payment
 import humantokenv2.composeapp.generated.resources.ic_payment
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleBloodTestScreen(onClick: () -> Unit) {
     var selectedSlot by remember { mutableStateOf<String?>(null) }
-    
+
     val timeSlots = listOf(
         "06:00 AM", "06:30 AM",
-        "08:00 AM", "08:30 AM", 
+        "08:00 AM", "08:30 AM",
         "09:00 AM", "09:30 AM",
         "10:00 AM", "10:30 AM",
         "11:00 AM"
     )
-    
+
     SystemBarPadding {
         ScreenBackground {
             Column(
@@ -74,7 +72,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                     fontFamily = AppFonts.medium(),
                     color = AppColors.White
                 )
-                
+
                 Text(
                     text = "Get started with 100+ advanced biomarkers measuring everything from energy and mood-related markers to cancers, heart diseases and more. We connect the dots across your entire health profile.",
                     fontSize = TextSizes.sp_14,
@@ -83,13 +81,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                     lineHeight = TextSizes.sp_20
                 )
 
-                // Date Card
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = PurpleCardBackground),
-                    shape = RoundedCornerShape(dp_12),
-                    border = BorderStroke(width = dp_1, color = AppColors.BorderLineColor)
-                ) {
+
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(Dimens.dp_16),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -109,12 +101,12 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                                 color = AppColors.TextGrey
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.weight(1f))
-                        
+
                         Column(
                             modifier = Modifier.size(Dimens.dp_32).background(
-                                color = AppColors.PurpleIconBackground, 
+                                color = AppColors.PurpleIconBackground,
                                 shape = RoundedCornerShape(dp_12)
                             ).border(
                                 width = dp_1,
@@ -132,7 +124,6 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                             )
                         }
                     }
-                }
 
                 // Time Slots Grid
                 Column(
@@ -172,7 +163,7 @@ fun ScheduleBloodTestScreen(onClick: () -> Unit) {
                     PrimaryButton(
                         onClick = onClick,
                         buttonName = "Continue",
-                        enable = selectedSlot != null
+                        isEnable = selectedSlot != null
                     )
                 }
             }
@@ -185,12 +176,12 @@ private fun TimeSlotCard(
     time: String,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val backgroundColor = if (isSelected) AppColors.White else PurpleCardBackground
     val textColor = if (isSelected) AppColors.Black else AppColors.White
     val borderColor = if (isSelected) AppColors.White else AppColors.BorderLineColor
-    
+
     Card(
         modifier = modifier
             .clip(RoundedCornerShape(dp_12))

@@ -14,10 +14,11 @@ import com.deepholistics.res.TextSizes
 
 
 @Composable
-fun PrimaryButton(onClick: () -> Unit, buttonName: String) {
+fun PrimaryButton(onClick: () -> Unit, buttonName: String, isEnable: Boolean = true) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(Dimens.dp_12),
+        enabled = isEnable,
         colors = ButtonColors(
             containerColor = AppColors.PurpleButtonBackground,
             contentColor = AppColors.PurpleButtonBackground,
