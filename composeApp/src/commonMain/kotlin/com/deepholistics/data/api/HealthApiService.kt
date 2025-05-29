@@ -13,6 +13,7 @@ import kotlinx.serialization.json.Json
 class HealthApiService {
     private val client = HttpClient {
         install(ContentNegotiation) {
+
             json(Json {
                 prettyPrint = true
                 isLenient = true
