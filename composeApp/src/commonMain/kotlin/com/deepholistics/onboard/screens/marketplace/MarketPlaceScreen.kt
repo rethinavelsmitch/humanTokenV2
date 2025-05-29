@@ -270,6 +270,41 @@ private fun ProductCard(
     }
 }
 
+@Composable
+private fun FilterOptionChip(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        onClick = onClick,
+        color = if (isSelected) Color(0xFF8B5CF6) else Color.Transparent,
+        shape = RoundedCornerShape(24.dp),
+        border = BorderStroke(1.dp, if (isSelected) Color(0xFF8B5CF6) else Color(0xFFE0E0E0)),
+        modifier = modifier
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                painter = painterResource(Res.drawable.ht_logo_196),
+                contentDescription = null,
+                tint = if (isSelected) Color.White else Color(0xFF666666),
+                modifier = Modifier.size(20.dp)
+            )
+            Text(
+                text = text,
+                color = if (isSelected) Color.White else Color(0xFF1A1A1A),
+                fontSize = TextSizes.sp_14,
+                fontWeight = FontWeight.Medium
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FilterBottomSheet(
@@ -278,8 +313,10 @@ private fun FilterBottomSheet(
     val sheetState = rememberModalBottomSheetState()
     var selectedCategories by remember { mutableStateOf(setOf<String>()) }
     var selectedHealthNeeds by remember { mutableStateOf(setOf<String>()) }
+    var showMoreCategories by remember { mutableStateOf(false) }
+    var showMoreHealthNeeds by remember { mutableStateOf(false) }
     
-    val categories = listOf("Product", "Blood", "Gene", "Gut")
+    val categories = listOf("Product", "Blood", "Gene", "Gut", "Lab Tests", "Supplements")
     val healthNeeds = listOf(
         "Amino Acids",
         "Bone & Joint", 
@@ -289,16 +326,19 @@ private fun FilterBottomSheet(
         "Fish Oil & Omegas",
         "Sleep Quality",
         "Gut Health",
-        "Immunity"
+        "Immunity",
+        "Heart Health",
+        "Brain Health",
+        "Digestive Health"
     )
     
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = Color(0xFF1A1A1A),
-        contentColor = AppColors.TextPrimary,
+        containerColor = Color.White,
+        contentColor = Color(0xFF1A1A1A),
         dragHandle = {
-            BottomSheetDefaults.DragHandle(color = AppColors.TextGrey)
+            BottomSheetDefaults.DragHandle(color = Color(0xFFE0E0E0))
         }
     ) {
         Column(
@@ -307,106 +347,107 @@ private fun FilterBottomSheet(
                 .padding(horizontal = spacingMd)
                 .padding(bottom = 32.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(spacingLg)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            Text(
-                text = "Filter Options",
-                color = AppColors.TextPrimary,
-                fontSize = TextSizes.sp_20,
-                fontWeight = FontWeight.Bold
-            )
-            
             // Categories Section
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text = "Categories",
-                    color = AppColors.TextPrimary,
-                    fontSize = TextSizes.sp_16,
-                    fontWeight = FontWeight.Medium
+                    color = Color(0xFF1A1A1A),
+                    fontSize = TextSizes.sp_18,
+                    fontWeight = FontWeight.Bold
                 )
                 
-                categories.forEach { category ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = selectedCategories.contains(category),
-                                onClick = {
-                                    selectedCategories = if (selectedCategories.contains(category)) {
-                                        selectedCategories - category
-                                    } else {
-                                        selectedCategories + category
-                                    }
-                                }
-                            )
-                            .padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = selectedCategories.contains(category),
-                            onCheckedChange = null,
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = Color(0xFF8B5CF6),
-                                uncheckedColor = AppColors.TextGrey,
-                                checkmarkColor = Color.White
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
+                // Categories Grid
+                val visibleCategories = if (showMoreCategories) categories else categories.take(4)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.height(if (showMoreCategories) 150.dp else 100.dp)
+                ) {
+                    items(visibleCategories) { category ->
+                        FilterOptionChip(
                             text = category,
-                            color = AppColors.TextPrimary,
-                            fontSize = TextSizes.sp_14
+                            isSelected = selectedCategories.contains(category),
+                            onClick = {
+                                selectedCategories = if (selectedCategories.contains(category)) {
+                                    selectedCategories - category
+                                } else {
+                                    selectedCategories + category
+                                }
+                            }
                         )
                     }
                 }
+                
+                if (categories.size > 4) {
+                    Text(
+                        text = if (showMoreCategories) "Show less" else "Show more",
+                        color = Color(0xFF8B5CF6),
+                        fontSize = TextSizes.sp_14,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .clickable { showMoreCategories = !showMoreCategories }
+                            .padding(vertical = 4.dp)
+                    )
+                }
             }
+            
+            // Divider
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xFFE0E0E0))
+            )
             
             // Health Needs Section
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text = "Health Needs",
-                    color = AppColors.TextPrimary,
-                    fontSize = TextSizes.sp_16,
-                    fontWeight = FontWeight.Medium
+                    color = Color(0xFF1A1A1A),
+                    fontSize = TextSizes.sp_18,
+                    fontWeight = FontWeight.Bold
                 )
                 
-                healthNeeds.forEach { healthNeed ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = selectedHealthNeeds.contains(healthNeed),
-                                onClick = {
-                                    selectedHealthNeeds = if (selectedHealthNeeds.contains(healthNeed)) {
-                                        selectedHealthNeeds - healthNeed
-                                    } else {
-                                        selectedHealthNeeds + healthNeed
-                                    }
-                                }
-                            )
-                            .padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = selectedHealthNeeds.contains(healthNeed),
-                            onCheckedChange = null,
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = Color(0xFF8B5CF6),
-                                uncheckedColor = AppColors.TextGrey,
-                                checkmarkColor = Color.White
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
+                // Health Needs Grid
+                val visibleHealthNeeds = if (showMoreHealthNeeds) healthNeeds else healthNeeds.take(6)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.height(if (showMoreHealthNeeds) 250.dp else 150.dp)
+                ) {
+                    items(visibleHealthNeeds) { healthNeed ->
+                        FilterOptionChip(
                             text = healthNeed,
-                            color = AppColors.TextPrimary,
-                            fontSize = TextSizes.sp_14
+                            isSelected = selectedHealthNeeds.contains(healthNeed),
+                            onClick = {
+                                selectedHealthNeeds = if (selectedHealthNeeds.contains(healthNeed)) {
+                                    selectedHealthNeeds - healthNeed
+                                } else {
+                                    selectedHealthNeeds + healthNeed
+                                }
+                            }
                         )
                     }
+                }
+                
+                if (healthNeeds.size > 6) {
+                    Text(
+                        text = if (showMoreHealthNeeds) "Show less" else "Show more",
+                        color = Color(0xFF8B5CF6),
+                        fontSize = TextSizes.sp_14,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .clickable { showMoreHealthNeeds = !showMoreHealthNeeds }
+                            .padding(vertical = 4.dp)
+                    )
                 }
             }
         }
