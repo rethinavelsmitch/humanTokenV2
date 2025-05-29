@@ -34,6 +34,3 @@ actual fun ShowDatePicker(
     })
 }
 
-@Composable
-actual fun GraphUI(onDismiss: () -> Unit) {
-}

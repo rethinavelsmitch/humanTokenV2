@@ -13,6 +13,3 @@ expect fun ShowDatePicker(
     onDismiss: () -> Unit,
     onDateSelected: (String) -> Unit,
 )
-
-@Composable
-expect fun GraphUI(onDismiss: () -> Unit)

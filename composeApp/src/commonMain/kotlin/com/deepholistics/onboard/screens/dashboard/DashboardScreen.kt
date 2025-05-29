@@ -1,20 +1,14 @@
-
 package com.deepholistics.onboard.screens.dashboard
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.deepholistics.data.models.Biomarker
 import com.deepholistics.data.models.HealthMetric
 import com.deepholistics.data.models.TestResult
@@ -36,7 +29,9 @@ import com.deepholistics.res.AppColors
 
 @Composable
 fun DashboardScreen() {
-    val viewModel: DashboardViewModel = viewModel()
+
+}
+   /* val viewModel: DashboardViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     Box(
@@ -55,12 +50,14 @@ fun DashboardScreen() {
             uiState.isLoading -> {
                 LoadingScreen()
             }
+
             uiState.error != null -> {
                 ErrorScreen(
                     error = uiState.error,
                     onRetry = { viewModel.retry() }
                 )
             }
+
             uiState.healthOverview != null -> {
                 HealthDashboardContent(
                     healthOverview = uiState.healthOverview,
@@ -98,7 +95,7 @@ private fun LoadingScreen() {
 @Composable
 private fun ErrorScreen(
     error: String,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -146,7 +143,7 @@ private fun ErrorScreen(
 @Composable
 private fun HealthDashboardContent(
     healthOverview: com.deepholistics.data.models.HealthOverview,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -192,7 +189,7 @@ private fun HealthDashboardContent(
 private fun DashboardHeader(
     overallScore: Int,
     riskLevel: String,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -608,7 +605,7 @@ private fun RecommendationsSection(recommendations: List<String>) {
 @Composable
 private fun NextStepsSection(
     nextTestDue: String,
-    lastUpdated: String
+    lastUpdated: String,
 ) {
     Column {
         Text(
@@ -679,4 +676,4 @@ private fun getIconForMetric(iconName: String): ImageVector {
         "activity" -> Icons.Default.DirectionsRun
         else -> Icons.Default.Timeline
     }
-}
+}*/
