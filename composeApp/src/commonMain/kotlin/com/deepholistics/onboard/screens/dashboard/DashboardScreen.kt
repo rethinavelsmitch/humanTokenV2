@@ -1,3 +1,4 @@
+/*
 package com.deepholistics.onboard.screens.dashboard
 
 import androidx.compose.animation.core.animateFloatAsState
@@ -652,3 +653,4 @@ private fun getIconForMetric(iconName: String): ImageVector {
         else -> chatAssistant
     }
 }
+*/

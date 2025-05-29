@@ -20,6 +20,9 @@ object AppColors {
     val ColorPrimaryDark = Color(0XFF0053C7)
     val White = Color.White
     val Transparent = Color.Transparent
+
+    val alertDialogColor = Color(0XFFE6F1FF)
+
 }
 
 
