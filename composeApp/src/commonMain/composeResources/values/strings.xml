@@ -30,4 +30,7 @@
     <string name="fasting_note">Please note: This is a fasting blood test only. Select your time accordingly and ensure that you take the test empty stomach.</string>
     <string name="continue_button">Continue</string>
     <string name="calendar">calendar</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>
