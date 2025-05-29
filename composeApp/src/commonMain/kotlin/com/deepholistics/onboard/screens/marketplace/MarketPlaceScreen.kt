@@ -475,19 +475,6 @@ fun MarketPlaceScreen() {
             }
         }
         
-        // Product Categories
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(spacingMd),
-            contentPadding = PaddingValues(horizontal = spacingMd)
-        ) {
-            items(listOf("All", "Supplements", "Devices", "Services", "Nutrition")) { category ->
-                FilterChip(
-                    text = category,
-                    isSelected = category == "All"
-                )
-            }
-        }
-        
         // Products Grid
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
