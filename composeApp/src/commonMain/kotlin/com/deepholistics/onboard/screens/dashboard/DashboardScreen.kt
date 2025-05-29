@@ -1,22 +1,38 @@
-
 package com.deepholistics.onboard.screens.dashboard
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,44 +44,47 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.deepholistics.bioMarkerIcon
+import com.deepholistics.chatAssistant
+import com.deepholistics.dashboardIcon
 import com.deepholistics.data.models.Biomarker
 import com.deepholistics.data.models.HealthMetric
 import com.deepholistics.data.models.TestResult
 import com.deepholistics.onboard.viewmodel.DashboardViewModel
+import com.deepholistics.recommendationIcon
 import com.deepholistics.res.AppColors
 
 @Composable
 fun DashboardScreen() {
+
     val viewModel: DashboardViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
 
+    println("--> Launched Dashboard Screen.. ${uiState.healthOverview?.lastUpdated}")
+
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF1A1A1A),
-                        Color(0xFF2D2D2D)
-                    )
+        modifier = Modifier.fillMaxSize().background(
+            Brush.verticalGradient(
+                colors = listOf(
+                    Color(0xFF1A1A1A), Color(0xFF2D2D2D)
                 )
             )
+        )
     ) {
         when {
             uiState.isLoading -> {
                 LoadingScreen()
             }
+
             uiState.error != null -> {
                 ErrorScreen(
-                    error = uiState.error,
-                    onRetry = { viewModel.retry() }
-                )
+                    error = uiState.error!!, onRetry = { viewModel.retry() })
             }
+
             uiState.healthOverview != null -> {
                 HealthDashboardContent(
-                    healthOverview = uiState.healthOverview,
-                    onRefresh = { viewModel.loadHealthOverview() }
-                )
+                    healthOverview = uiState.healthOverview!!,
+                    onRefresh = { viewModel.loadHealthOverview() })
             }
         }
     }
@@ -74,17 +93,14 @@ fun DashboardScreen() {
 @Composable
 private fun LoadingScreen() {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             CircularProgressIndicator(
-                color = Color(0xFF8B5CF6),
-                strokeWidth = 3.dp,
-                modifier = Modifier.size(48.dp)
+                color = Color(0xFF8B5CF6), strokeWidth = 3.dp, modifier = Modifier.size(48.dp)
             )
             Text(
                 text = "Loading your health data...",
@@ -97,12 +113,10 @@ private fun LoadingScreen() {
 
 @Composable
 private fun ErrorScreen(
-    error: String,
-    onRetry: () -> Unit
+    error: String, onRetry: () -> Unit
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -110,7 +124,7 @@ private fun ErrorScreen(
             modifier = Modifier.padding(32.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.Error,
+                imageVector = bioMarkerIcon,
                 contentDescription = "Error",
                 tint = Color(0xFFFF6B6B),
                 modifier = Modifier.size(48.dp)
@@ -129,14 +143,12 @@ private fun ErrorScreen(
                 textAlign = TextAlign.Center
             )
             Button(
-                onClick = onRetry,
-                colors = ButtonDefaults.buttonColors(
+                onClick = onRetry, colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF8B5CF6)
                 )
             ) {
                 Text(
-                    text = "Try Again",
-                    color = Color.White
+                    text = "Try Again", color = Color.White
                 )
             }
         }
@@ -145,13 +157,10 @@ private fun ErrorScreen(
 
 @Composable
 private fun HealthDashboardContent(
-    healthOverview: com.deepholistics.data.models.HealthOverview,
-    onRefresh: () -> Unit
+    healthOverview: com.deepholistics.data.models.HealthOverview, onRefresh: () -> Unit
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         contentPadding = PaddingValues(vertical = 24.dp)
     ) {
@@ -181,8 +190,7 @@ private fun HealthDashboardContent(
 
         item {
             NextStepsSection(
-                nextTestDue = healthOverview.nextTestDue,
-                lastUpdated = healthOverview.lastUpdated
+                nextTestDue = healthOverview.nextTestDue, lastUpdated = healthOverview.lastUpdated
             )
         }
     }
@@ -190,20 +198,15 @@ private fun HealthDashboardContent(
 
 @Composable
 private fun DashboardHeader(
-    overallScore: Int,
-    riskLevel: String,
-    onRefresh: () -> Unit
+    overallScore: Int, riskLevel: String, onRefresh: () -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = Color(0xFF2A2A2A)
-        ),
-        shape = RoundedCornerShape(16.dp)
+        ), shape = RoundedCornerShape(16.dp)
     ) {
         Column(
-            modifier = Modifier.padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -218,7 +221,7 @@ private fun DashboardHeader(
                 )
                 IconButton(onClick = onRefresh) {
                     Icon(
-                        imageVector = Icons.Default.Refresh,
+                        imageVector = recommendationIcon,
                         contentDescription = "Refresh",
                         tint = Color(0xFF8B5CF6)
                     )
@@ -229,8 +232,7 @@ private fun DashboardHeader(
 
             // Circular Progress for Overall Score
             Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.size(120.dp)
+                contentAlignment = Alignment.Center, modifier = Modifier.size(120.dp)
             ) {
                 val animatedProgress by animateFloatAsState(
                     targetValue = overallScore / 100f,
@@ -260,9 +262,7 @@ private fun DashboardHeader(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Health Score",
-                        color = AppColors.TextSecondary,
-                        fontSize = 12.sp
+                        text = "Health Score", color = AppColors.TextPrimary, fontSize = 12.sp
                     )
                 }
             }
@@ -274,8 +274,7 @@ private fun DashboardHeader(
                     "low" -> Color(0xFF4CAF50)
                     "medium" -> Color(0xFFFFA726)
                     else -> Color(0xFFFF6B6B)
-                },
-                shape = RoundedCornerShape(20.dp)
+                }, shape = RoundedCornerShape(20.dp)
             ) {
                 Text(
                     text = "$riskLevel Risk",
@@ -314,15 +313,12 @@ private fun HealthMetricsSection(healthMetrics: List<HealthMetric>) {
 @Composable
 private fun HealthMetricCard(metric: HealthMetric) {
     Card(
-        modifier = Modifier.width(140.dp),
-        colors = CardDefaults.cardColors(
+        modifier = Modifier.width(140.dp), colors = CardDefaults.cardColors(
             containerColor = Color(0xFF2A2A2A)
-        ),
-        shape = RoundedCornerShape(12.dp)
+        ), shape = RoundedCornerShape(12.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
                 imageVector = getIconForMetric(metric.icon),
@@ -361,10 +357,7 @@ private fun HealthMetricCard(metric: HealthMetric) {
 
             LinearProgressIndicator(
                 progress = { animatedProgress },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-                    .clip(RoundedCornerShape(2.dp)),
+                modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
                 color = if (metric.isPositive) Color(0xFF4CAF50) else Color(0xFFFF6B6B),
                 trackColor = Color(0xFF3A3A3A)
             )
@@ -402,11 +395,9 @@ private fun BiomarkersSection(biomarkers: List<Biomarker>) {
 @Composable
 private fun BiomarkerCard(biomarker: Biomarker) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = Color(0xFF2A2A2A)
-        ),
-        shape = RoundedCornerShape(12.dp)
+        ), shape = RoundedCornerShape(12.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -428,8 +419,7 @@ private fun BiomarkerCard(biomarker: Biomarker) {
                         "normal" -> Color(0xFF4CAF50)
                         "low", "high" -> Color(0xFFFFA726)
                         else -> Color(0xFFFF6B6B)
-                    },
-                    shape = RoundedCornerShape(12.dp)
+                    }, shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
                         text = biomarker.status,
@@ -443,8 +433,7 @@ private fun BiomarkerCard(biomarker: Biomarker) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = "${biomarker.value} ${biomarker.unit}",
@@ -493,16 +482,12 @@ private fun RecentTestsSection(recentTests: List<TestResult>) {
 @Composable
 private fun TestResultCard(test: TestResult) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = Color(0xFF2A2A2A)
-        ),
-        shape = RoundedCornerShape(12.dp)
+        ), shape = RoundedCornerShape(12.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -516,14 +501,10 @@ private fun TestResultCard(test: TestResult) {
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = test.date,
-                    color = AppColors.TextSecondary,
-                    fontSize = 14.sp
+                    text = test.date, color = AppColors.TextSecondary, fontSize = 14.sp
                 )
                 Text(
-                    text = test.category,
-                    color = Color(0xFF8B5CF6),
-                    fontSize = 12.sp
+                    text = test.category, color = Color(0xFF8B5CF6), fontSize = 12.sp
                 )
             }
 
@@ -537,8 +518,7 @@ private fun TestResultCard(test: TestResult) {
                     fontWeight = FontWeight.Bold
                 )
                 Surface(
-                    color = Color(0xFF4CAF50),
-                    shape = RoundedCornerShape(8.dp)
+                    color = Color(0xFF4CAF50), shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
                         text = test.status,
@@ -564,26 +544,20 @@ private fun RecommendationsSection(recommendations: List<String>) {
         )
 
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
+            modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
                 containerColor = Color(0xFF2A2A2A)
-            ),
-            shape = RoundedCornerShape(12.dp)
+            ), shape = RoundedCornerShape(12.dp)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
                 recommendations.forEachIndexed { index, recommendation ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.Top
+                        modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top
                     ) {
                         Box(
-                            modifier = Modifier
-                                .size(8.dp)
-                                .clip(CircleShape)
-                                .background(Color(0xFF8B5CF6))
-                                .padding(top = 6.dp)
+                            modifier = Modifier.size(8.dp).clip(CircleShape)
+                                .background(Color(0xFF8B5CF6)).padding(top = 6.dp)
                         )
 
                         Spacer(modifier = Modifier.width(12.dp))
@@ -607,8 +581,7 @@ private fun RecommendationsSection(recommendations: List<String>) {
 
 @Composable
 private fun NextStepsSection(
-    nextTestDue: String,
-    lastUpdated: String
+    nextTestDue: String, lastUpdated: String
 ) {
     Column {
         Text(
@@ -620,11 +593,9 @@ private fun NextStepsSection(
         )
 
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
+            modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
                 containerColor = Color(0xFF8B5CF6).copy(alpha = 0.1f)
-            ),
-            shape = RoundedCornerShape(12.dp)
+            ), shape = RoundedCornerShape(12.dp)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp)
@@ -633,7 +604,7 @@ private fun NextStepsSection(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Schedule,
+                        imageVector = dashboardIcon,
                         contentDescription = "Schedule",
                         tint = Color(0xFF8B5CF6),
                         modifier = Modifier.size(20.dp)
@@ -653,7 +624,7 @@ private fun NextStepsSection(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Update,
+                        imageVector = chatAssistant,
                         contentDescription = "Update",
                         tint = AppColors.TextSecondary,
                         modifier = Modifier.size(16.dp)
@@ -673,10 +644,10 @@ private fun NextStepsSection(
 @Composable
 private fun getIconForMetric(iconName: String): ImageVector {
     return when (iconName.lowercase()) {
-        "heart" -> Icons.Default.Favorite
-        "sleep" -> Icons.Default.Bedtime
-        "stress" -> Icons.Default.Psychology
-        "activity" -> Icons.Default.DirectionsRun
-        else -> Icons.Default.Timeline
+        "heart" -> chatAssistant
+        "sleep" -> chatAssistant
+        "stress" -> chatAssistant
+        "activity" -> chatAssistant
+        else -> chatAssistant
     }
 }

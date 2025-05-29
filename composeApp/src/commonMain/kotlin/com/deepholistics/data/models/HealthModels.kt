@@ -1,4 +1,3 @@
-
 package com.deepholistics.data.models
 
 import kotlinx.serialization.Serializable
@@ -29,11 +28,7 @@ data class Biomarker(
 
 @Serializable
 data class TestResult(
-    val testName: String,
-    val date: String,
-    val status: String,
-    val score: Int,
-    val category: String
+    val testName: String, val date: String, val status: String, val score: Int, val category: String
 )
 
 @Serializable
@@ -46,9 +41,14 @@ data class HealthMetric(
     val progress: Float
 )
 
+
+@Serializable
+data class ApiResult(
+    val success: Boolean, val message: String?
+)
+
+
 @Serializable
 data class ApiResponse<T>(
-    val success: Boolean,
-    val data: T?,
-    val message: String?
+    val success: Boolean, val data: T?, val message: String?
 )

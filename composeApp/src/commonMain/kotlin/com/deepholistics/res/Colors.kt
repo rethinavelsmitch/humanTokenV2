@@ -3,14 +3,13 @@ package com.deepholistics.res
 import androidx.compose.ui.graphics.Color
 
 object AppColors {
-
-
     val Primary = Color(0xFF341539)
     val Black = Color(0xFF000000)
     val BackgroundDark = Color(0xFF1A1A1A)
     val SurfaceDark = Color(0xFF2D2D2D)
     val CardBackground = Color(0xFF3A3A3A)
     val TextPrimary = Color(0xFFFFFFFF)
+    val TextSecondary  = Color(0xFFFFFFFF)
 
     val PurpleBackground = Color(76767633)
     val PurpleCardBackground = Color(0xFF2E2332)
@@ -20,8 +19,6 @@ object AppColors {
     val TextGrey = Color(0XFFCBCFD5)
     val White = Color.White
     val Transparent = Color.Transparent
-
-
 }
 
 
