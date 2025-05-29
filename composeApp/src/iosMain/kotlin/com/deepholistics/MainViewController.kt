@@ -4,7 +4,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.window.ComposeUIViewController
-import com.deepholistics.networking.createHttpClient
+import com.deepholistics.data.networking.createHttpClient
 import com.deepholistics.onboard.App
 import io.ktor.client.engine.darwin.Darwin
 
