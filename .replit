@@ -4,7 +4,7 @@ modules = ["swift-5.8"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Run Desktop"
+runButton = "Run Android"
 
 [[workflows.workflow]]
 name = "Run Desktop"
@@ -14,3 +14,12 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "./gradlew :shared:desktopRun"
+
+[[workflows.workflow]]
+name = "Run Android"
+author = 42679470
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./gradlew :composeApp:installDebug"
