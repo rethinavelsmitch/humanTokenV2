@@ -27,6 +27,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Card
@@ -39,6 +40,8 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -408,6 +411,7 @@ private fun FilterBottomSheet(
 @Composable
 fun MarketPlaceScreen() {
     var showFilterBottomSheet by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
     
     Column(
         modifier = Modifier
@@ -416,12 +420,47 @@ fun MarketPlaceScreen() {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(spacingLg)
     ) {
-        // Top row with filter button
+        // Top row with search and filter
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Search field
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = {
+                    Text(
+                        text = "Search products...",
+                        color = AppColors.TextGrey,
+                        fontSize = TextSizes.sp_14
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search",
+                        tint = AppColors.TextGrey,
+                        modifier = Modifier.size(20.dp)
+                    )
+                },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF8B5CF6),
+                    unfocusedBorderColor = Color(0xFF3A3A3A),
+                    focusedTextColor = AppColors.TextPrimary,
+                    unfocusedTextColor = AppColors.TextPrimary,
+                    cursorColor = Color(0xFF8B5CF6)
+                ),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp)
+            )
+            
+            Spacer(modifier = Modifier.width(12.dp))
+            
+            // Filter button
             IconButton(
                 onClick = { 
                     showFilterBottomSheet = true 
