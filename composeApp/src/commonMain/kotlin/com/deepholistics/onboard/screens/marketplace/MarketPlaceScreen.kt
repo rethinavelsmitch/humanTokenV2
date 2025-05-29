@@ -21,20 +21,38 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.ui.graphics.painter.Painter
+import org.jetbrains.compose.resources.painterResource
+import humantokenv2.composeapp.generated.resources.Res
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -136,7 +154,7 @@ private fun ProductCard(
                 }
                 
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Product Image",
                     tint = AppColors.TextGrey,
                     modifier = Modifier.size(32.dp)
@@ -168,7 +186,7 @@ private fun ProductCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Default.Star,
+                    painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Rating",
                     tint = Color(0xFFFFD700),
                     modifier = Modifier.size(12.dp)
@@ -221,7 +239,7 @@ private fun ProductCard(
                     modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Add,
+                        painter = painterResource(Res.drawable.ht_logo_196),
                         contentDescription = "Add to Cart",
                         tint = Color(0xFF8B5CF6),
                         modifier = Modifier.size(16.dp)
@@ -250,8 +268,154 @@ private fun ProductCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FilterBottomSheet(
+    onDismiss: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState()
+    var selectedCategories by remember { mutableStateOf(setOf<String>()) }
+    var selectedHealthNeeds by remember { mutableStateOf(setOf<String>()) }
+    
+    val categories = listOf("Product", "Blood", "Gene", "Gut")
+    val healthNeeds = listOf(
+        "Amino Acids",
+        "Bone & Joint", 
+        "Children's Health",
+        "Cognition & Focus",
+        "Energy",
+        "Fish Oil & Omegas",
+        "Sleep Quality",
+        "Gut Health",
+        "Immunity"
+    )
+    
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = Color(0xFF1A1A1A),
+        contentColor = AppColors.TextPrimary,
+        dragHandle = {
+            BottomSheetDefaults.DragHandle(color = AppColors.TextGrey)
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = spacingMd)
+                .padding(bottom = 32.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(spacingLg)
+        ) {
+            Text(
+                text = "Filter Options",
+                color = AppColors.TextPrimary,
+                fontSize = TextSizes.sp_20,
+                fontWeight = FontWeight.Bold
+            )
+            
+            // Categories Section
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = "Categories",
+                    color = AppColors.TextPrimary,
+                    fontSize = TextSizes.sp_16,
+                    fontWeight = FontWeight.Medium
+                )
+                
+                categories.forEach { category ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = selectedCategories.contains(category),
+                                onClick = {
+                                    selectedCategories = if (selectedCategories.contains(category)) {
+                                        selectedCategories - category
+                                    } else {
+                                        selectedCategories + category
+                                    }
+                                }
+                            )
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = selectedCategories.contains(category),
+                            onCheckedChange = null,
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = Color(0xFF8B5CF6),
+                                uncheckedColor = AppColors.TextGrey,
+                                checkmarkColor = Color.White
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = category,
+                            color = AppColors.TextPrimary,
+                            fontSize = TextSizes.sp_14
+                        )
+                    }
+                }
+            }
+            
+            // Health Needs Section
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = "Health Needs",
+                    color = AppColors.TextPrimary,
+                    fontSize = TextSizes.sp_16,
+                    fontWeight = FontWeight.Medium
+                )
+                
+                healthNeeds.forEach { healthNeed ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = selectedHealthNeeds.contains(healthNeed),
+                                onClick = {
+                                    selectedHealthNeeds = if (selectedHealthNeeds.contains(healthNeed)) {
+                                        selectedHealthNeeds - healthNeed
+                                    } else {
+                                        selectedHealthNeeds + healthNeed
+                                    }
+                                }
+                            )
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = selectedHealthNeeds.contains(healthNeed),
+                            onCheckedChange = null,
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = Color(0xFF8B5CF6),
+                                uncheckedColor = AppColors.TextGrey,
+                                checkmarkColor = Color.White
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = healthNeed,
+                            color = AppColors.TextPrimary,
+                            fontSize = TextSizes.sp_14
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 fun MarketPlaceScreen() {
+    var showFilterBottomSheet by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -259,28 +423,57 @@ fun MarketPlaceScreen() {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(spacingLg)
     ) {
-        Text(
-            text = "MarketPlace",
-            color = AppColors.TextPrimary,
-            fontSize = TextSizes.sp_24,
-            fontWeight = FontWeight.Bold
-        )
-        
-        Text(
-            text = "Discover health products, supplements, and services tailored to your unique health profile and biomarker results.",
-            color = AppColors.TextGrey,
-            fontSize = TextSizes.sp_16
-        )
-        
-        // Product Categories
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(spacingMd),
-            contentPadding = PaddingValues(horizontal = spacingMd)
+        // Top row with search and filter
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            items(listOf("All", "Supplements", "Devices", "Services", "Nutrition")) { category ->
-                FilterChip(
-                    text = category,
-                    isSelected = category == "All"
+            // Search field
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = {
+                    Text(
+                        text = "Search products...",
+                        color = AppColors.TextGrey,
+                        fontSize = TextSizes.sp_14
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(Res.drawable.ht_logo_196),
+                        contentDescription = "Search",
+                        tint = AppColors.TextGrey,
+                        modifier = Modifier.size(20.dp)
+                    )
+                },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF8B5CF6),
+                    unfocusedBorderColor = Color(0xFF3A3A3A),
+                    focusedTextColor = AppColors.TextPrimary,
+                    unfocusedTextColor = AppColors.TextPrimary,
+                    cursorColor = Color(0xFF8B5CF6)
+                ),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp)
+            )
+            
+            Spacer(modifier = Modifier.width(12.dp))
+            
+            // Filter button
+            IconButton(
+                onClick = { 
+                    showFilterBottomSheet = true 
+                }
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.ht_logo_196),
+                    contentDescription = "Filter",
+                    tint = AppColors.TextPrimary,
+                    modifier = Modifier.size(24.dp)
                 )
             }
         }
@@ -296,5 +489,12 @@ fun MarketPlaceScreen() {
                 ProductCard(product = product)
             }
         }
+    }
+    
+    // Filter Bottom Sheet
+    if (showFilterBottomSheet) {
+        FilterBottomSheet(
+            onDismiss = { showFilterBottomSheet = false }
+        )
     }
 }
