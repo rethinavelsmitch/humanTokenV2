@@ -453,12 +453,17 @@ fun MarketPlaceScreen() {
                     unfocusedBorderColor = Color(0xFF3A3A3A),
                     focusedTextColor = AppColors.TextPrimary,
                     unfocusedTextColor = AppColors.TextPrimary,
-                    cursorColor = Color(0xFF8B5CF6)
+                    cursorColor = Color(0xFF8B5CF6),
+                    containerColor = Color(0xFF2A2A2A),
+                    focusedContainerColor = Color(0xFF2A2A2A),
+                    unfocusedContainerColor = Color(0xFF2A2A2A)
                 ),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(24.dp),
+                singleLine = true,
                 modifier = Modifier
                     .weight(1f)
-                    .height(48.dp)
+                    .height(52.dp)
+                    .padding(end = 8.dp)
             )
             
             Spacer(modifier = Modifier.width(12.dp))
