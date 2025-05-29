@@ -457,19 +457,7 @@ private fun FilterBottomSheet(
 @Composable
 fun MarketPlaceScreen() {
     var showFilterBottomSheet by remember { mutableStateOf(false) }
-    var showSearchScreen by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
-    
-    if (showSearchScreen) {
-        SearchScreen(
-            onBackPressed = { showSearchScreen = false },
-            onSearchProduct = { query ->
-                searchQuery = query
-                showSearchScreen = false
-            }
-        )
-        return
-    }
     
     Column(
         modifier = Modifier
@@ -520,7 +508,6 @@ fun MarketPlaceScreen() {
                     .weight(1f)
                     .height(52.dp)
                     .padding(end = 8.dp)
-                    .clickable { showSearchScreen = true }
             )
             
             Spacer(modifier = Modifier.width(12.dp))
