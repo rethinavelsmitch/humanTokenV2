@@ -1,4 +1,4 @@
-package com.deepholistics.networking
+package com.deepholistics.data.networking
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -23,7 +23,7 @@ fun createHttpClient(engine: HttpClientEngine): HttpClient {
                 prettyPrint = true
             })
         }
-        
+
         defaultRequest {
             header("client_id", "6tVjHMtvhLEKtcx0XDgzmKH5TY9YeC1Waroq")
             header("content-type", "application/json")

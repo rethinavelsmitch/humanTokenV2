@@ -1,6 +1,7 @@
 
 package com.deepholistics.onboard.screens.marketplace
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -123,7 +124,7 @@ private fun ProductCard(
             .fillMaxWidth()
             .clickable { },
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF2A2A2A)
+            containerColor = Color.White
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -136,7 +137,7 @@ private fun ProductCard(
                     .fillMaxWidth()
                     .height(120.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color(0xFF3A3A3A)),
+                    .background(Color(0xFFF5F5F5)),
                 contentAlignment = Alignment.Center
             ) {
                 // Health Score Badge
@@ -168,7 +169,7 @@ private fun ProductCard(
             // Product Name
             Text(
                 text = product.name,
-                color = AppColors.TextPrimary,
+                color = Color(0xFF1A1A1A),
                 fontSize = TextSizes.sp_14,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2
@@ -177,7 +178,7 @@ private fun ProductCard(
             // Store Name
             Text(
                 text = product.store,
-                color = AppColors.TextGrey,
+                color = Color(0xFF666666),
                 fontSize = TextSizes.sp_12
             )
             
@@ -196,13 +197,13 @@ private fun ProductCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "${product.rating}",
-                    color = AppColors.TextPrimary,
+                    color = Color(0xFF1A1A1A),
                     fontSize = TextSizes.sp_12
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "(${product.reviewCount})",
-                    color = AppColors.TextGrey,
+                    color = Color(0xFF666666),
                     fontSize = TextSizes.sp_12
                 )
             }
@@ -220,7 +221,7 @@ private fun ProductCard(
                 ) {
                     Text(
                         text = product.price,
-                        color = AppColors.TextPrimary,
+                        color = Color(0xFF1A1A1A),
                         fontSize = TextSizes.sp_14,
                         fontWeight = FontWeight.Bold
                     )
@@ -229,7 +230,7 @@ private fun ProductCard(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = originalPrice,
-                            color = AppColors.TextGrey,
+                            color = Color(0xFF666666),
                             fontSize = TextSizes.sp_12,
                             textDecoration = TextDecoration.LineThrough
                         )
@@ -253,19 +254,55 @@ private fun ProductCard(
             Row {
                 product.categories.take(2).forEach { category ->
                     Surface(
-                        color = Color(0xFF3A3A3A),
+                        color = Color.Transparent,
                         shape = RoundedCornerShape(6.dp),
+                        border = BorderStroke(1.dp, Color(0xFFE0E0E0)),
                         modifier = Modifier.padding(end = 4.dp)
                     ) {
                         Text(
                             text = category,
-                            color = AppColors.TextGrey,
+                            color = Color(0xFF666666),
                             fontSize = TextSizes.sp_10,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun FilterOptionChip(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        onClick = onClick,
+        color = if (isSelected) Color(0xFF8B5CF6) else Color.Transparent,
+        shape = RoundedCornerShape(24.dp),
+        border = BorderStroke(1.dp, if (isSelected) Color(0xFF8B5CF6) else Color(0xFFE0E0E0)),
+        modifier = modifier
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                painter = painterResource(Res.drawable.ht_logo_196),
+                contentDescription = null,
+                tint = if (isSelected) Color.White else Color(0xFF666666),
+                modifier = Modifier.size(20.dp)
+            )
+            Text(
+                text = text,
+                color = if (isSelected) Color.White else Color(0xFF1A1A1A),
+                fontSize = TextSizes.sp_14,
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 }
@@ -278,8 +315,10 @@ private fun FilterBottomSheet(
     val sheetState = rememberModalBottomSheetState()
     var selectedCategories by remember { mutableStateOf(setOf<String>()) }
     var selectedHealthNeeds by remember { mutableStateOf(setOf<String>()) }
+var showMoreCategories by remember { mutableStateOf(false) }
+    var showMoreHealthNeeds by remember { mutableStateOf(false) }
 
-    val categories = listOf("Product", "Blood", "Gene", "Gut")
+    val categories = listOf("Product", "Blood", "Gene", "Gut", "Lab Tests", "Supplements")
     val healthNeeds = listOf(
         "Amino Acids",
         "Bone & Joint",
@@ -289,16 +328,19 @@ private fun FilterBottomSheet(
         "Fish Oil & Omegas",
         "Sleep Quality",
         "Gut Health",
-        "Immunity"
+        "Immunity",
+        "Heart Health",
+        "Brain Health",
+        "Digestive Health"
     )
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = Color(0xFF1A1A1A),
-        contentColor = AppColors.TextPrimary,
+        containerColor = Color.White,
+        contentColor = Color(0xFF1A1A1A),
         dragHandle = {
-            BottomSheetDefaults.DragHandle(color = AppColors.TextGrey)
+            BottomSheetDefaults.DragHandle(color = Color(0xFFE0E0E0))
         }
     ) {
         Column(
@@ -307,106 +349,106 @@ private fun FilterBottomSheet(
                 .padding(horizontal = spacingMd)
                 .padding(bottom = 32.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(spacingLg)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            Text(
-                text = "Filter Options",
-                color = AppColors.TextPrimary,
-                fontSize = TextSizes.sp_20,
-                fontWeight = FontWeight.Bold
-            )
-
             // Categories Section
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text = "Categories",
-                    color = AppColors.TextPrimary,
-                    fontSize = TextSizes.sp_16,
-                    fontWeight = FontWeight.Medium
+                    color = Color(0xFF1A1A1A),
+                    fontSize = TextSizes.sp_18,
+                    fontWeight = FontWeight.Bold
                 )
 
-                categories.forEach { category ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = selectedCategories.contains(category),
-                                onClick = {
-                                    selectedCategories = if (selectedCategories.contains(category)) {
-                                        selectedCategories - category
-                                    } else {
-                                        selectedCategories + category
-                                    }
-                                }
-                            )
-                            .padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = selectedCategories.contains(category),
-                            onCheckedChange = null,
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = Color(0xFF8B5CF6),
-                                uncheckedColor = AppColors.TextGrey,
-                                checkmarkColor = Color.White
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
+                // Categories Grid
+                val visibleCategories = if (showMoreCategories) categories else categories.take(4)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.height(if (showMoreCategories) 150.dp else 100.dp)
+                ) {
+                    items(visibleCategories) { category ->
+                        FilterOptionChip(
                             text = category,
-                            color = AppColors.TextPrimary,
-                            fontSize = TextSizes.sp_14
+                            isSelected = selectedCategories.contains(category),
+                            onClick = {
+                                selectedCategories = if (selectedCategories.contains(category)) {
+                                    selectedCategories - category
+                                } else {
+                                    selectedCategories + category
+                                }
+                            }
                         )
                     }
                 }
+
+                if (categories.size > 4) {
+                    Text(
+                        text = if (showMoreCategories) "Show less" else "Show more",
+                        color = Color(0xFF8B5CF6),
+                        fontSize = TextSizes.sp_14,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .clickable { showMoreCategories = !showMoreCategories }
+                            .padding(vertical = 4.dp)
+                    )
+                }
             }
+// Divider
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xFFE0E0E0))
+            )
 
             // Health Needs Section
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text = "Health Needs",
-                    color = AppColors.TextPrimary,
-                    fontSize = TextSizes.sp_16,
-                    fontWeight = FontWeight.Medium
+                    color = Color(0xFF1A1A1A),
+                    fontSize = TextSizes.sp_18,
+                    fontWeight = FontWeight.Bold
                 )
 
-                healthNeeds.forEach { healthNeed ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = selectedHealthNeeds.contains(healthNeed),
-                                onClick = {
-                                    selectedHealthNeeds = if (selectedHealthNeeds.contains(healthNeed)) {
-                                        selectedHealthNeeds - healthNeed
-                                    } else {
-                                        selectedHealthNeeds + healthNeed
-                                    }
-                                }
-                            )
-                            .padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = selectedHealthNeeds.contains(healthNeed),
-                            onCheckedChange = null,
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = Color(0xFF8B5CF6),
-                                uncheckedColor = AppColors.TextGrey,
-                                checkmarkColor = Color.White
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
+                // Health Needs Grid
+                val visibleHealthNeeds = if (showMoreHealthNeeds) healthNeeds else healthNeeds.take(6)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.height(if (showMoreHealthNeeds) 250.dp else 150.dp)
+                ) {
+                    items(visibleHealthNeeds) { healthNeed ->
+                        FilterOptionChip(
                             text = healthNeed,
-                            color = AppColors.TextPrimary,
-                            fontSize = TextSizes.sp_14
+                            isSelected = selectedHealthNeeds.contains(healthNeed),
+                            onClick = {
+                                selectedHealthNeeds = if (selectedHealthNeeds.contains(healthNeed)) {
+                                    selectedHealthNeeds - healthNeed
+                                } else {
+                                    selectedHealthNeeds + healthNeed
+                                }
+                            }
                         )
                     }
+                }
+
+                if (healthNeeds.size > 6) {
+                    Text(
+                        text = if (showMoreHealthNeeds) "Show less" else "Show more",
+                        color = Color(0xFF8B5CF6),
+                        fontSize = TextSizes.sp_14,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier
+                            .clickable { showMoreHealthNeeds = !showMoreHealthNeeds }
+                            .padding(vertical = 4.dp)
+                    )
                 }
             }
         }
@@ -421,6 +463,7 @@ fun MarketPlaceScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color(0xFFF1F3F6))
             .padding(horizontal = spacingMd)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(spacingLg)
@@ -438,7 +481,7 @@ fun MarketPlaceScreen() {
                 placeholder = {
                     Text(
                         text = "Search products...",
-                        color = AppColors.TextGrey,
+                        color = Color(0xFF999999),
                         fontSize = TextSizes.sp_14
                     )
                 },
@@ -452,15 +495,20 @@ fun MarketPlaceScreen() {
                 },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF8B5CF6),
-                    unfocusedBorderColor = Color(0xFF3A3A3A),
-                    focusedTextColor = AppColors.TextPrimary,
-                    unfocusedTextColor = AppColors.TextPrimary,
-                    cursorColor = Color(0xFF8B5CF6)
+                    unfocusedBorderColor = Color(0xFFE0E0E0),
+                    focusedTextColor = Color(0xFF1A1A1A),
+                    unfocusedTextColor = Color(0xFF1A1A1A),
+                    cursorColor = Color(0xFF8B5CF6),
+                    containerColor = Color.White,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White
                 ),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(24.dp),
+                singleLine = true,
                 modifier = Modifier
                     .weight(1f)
-                    .height(48.dp)
+                    .height(52.dp)
+                    .padding(end = 8.dp)
             )
 
             Spacer(modifier = Modifier.width(12.dp))
@@ -474,7 +522,7 @@ fun MarketPlaceScreen() {
                 Icon(
                     painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Filter",
-                    tint = AppColors.TextPrimary,
+                    tint = Color(0xFF1A1A1A),
                     modifier = Modifier.size(24.dp)
                 )
             }
