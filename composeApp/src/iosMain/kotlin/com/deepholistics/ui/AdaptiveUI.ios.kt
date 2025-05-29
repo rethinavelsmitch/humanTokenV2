@@ -34,3 +34,16 @@ actual fun ShowDatePicker(
     })
 }
 
+@Composable
+actual fun AlertDialog(
+    modifier: Modifier,
+    title: String,
+    message: String,
+    onDismiss: () -> Unit
+) {
+    val view = LocalNativeViewFactory.current
+    UIKitViewController(modifier = modifier.height(Dimens.dp_160).fillMaxWidth(), factory = {
+        view.showAlertDialog(primaryText = title, secondaryText = message, onDismiss = onDismiss)
+    }
+    )
+}

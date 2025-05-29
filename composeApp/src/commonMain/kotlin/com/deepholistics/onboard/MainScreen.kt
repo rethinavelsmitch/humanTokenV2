@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import com.deepholistics.dashboardIcon
 import com.deepholistics.onboard.helper.ScreenBackground
-import com.deepholistics.onboard.screens.dashboard.DashboardScreen
+//import com.deepholistics.onboard.screens.dashboard.DashboardScreen
 import com.deepholistics.onboard.screens.biomarkers.BioMarkersScreen
 import com.deepholistics.onboard.screens.recommendations.RecommendationsScreen
 import com.deepholistics.onboard.screens.marketplace.MarketPlaceScreen
@@ -51,7 +51,7 @@ fun MainScreen(onNavigateToProfile: () -> Unit) {
         BottomNavigationItem(
             title = "Dashboard",
             icon = { Icon(imageVector = dashboardIcon, contentDescription = "Dashboard") },
-            screen = { DashboardScreen() }), BottomNavigationItem(
+            screen = { BioMarkersScreen() }), BottomNavigationItem(
             title = "BioMarkers",
             icon = { Icon(imageVector = dashboardIcon, contentDescription = "BioMarkers") },
             screen = { BioMarkersScreen() }), BottomNavigationItem(
