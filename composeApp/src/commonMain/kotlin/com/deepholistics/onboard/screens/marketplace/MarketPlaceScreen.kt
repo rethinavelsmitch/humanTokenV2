@@ -1,6 +1,7 @@
 
 package com.deepholistics.onboard.screens.marketplace
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -121,7 +122,7 @@ private fun ProductCard(
             .fillMaxWidth()
             .clickable { },
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF2A2A2A)
+            containerColor = Color.White
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -134,7 +135,7 @@ private fun ProductCard(
                     .fillMaxWidth()
                     .height(120.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color(0xFF3A3A3A)),
+                    .background(Color(0xFFF5F5F5)),
                 contentAlignment = Alignment.Center
             ) {
                 // Health Score Badge
@@ -166,7 +167,7 @@ private fun ProductCard(
             // Product Name
             Text(
                 text = product.name,
-                color = AppColors.TextPrimary,
+                color = Color(0xFF1A1A1A),
                 fontSize = TextSizes.sp_14,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2
@@ -175,7 +176,7 @@ private fun ProductCard(
             // Store Name
             Text(
                 text = product.store,
-                color = AppColors.TextGrey,
+                color = Color(0xFF666666),
                 fontSize = TextSizes.sp_12
             )
             
@@ -194,13 +195,13 @@ private fun ProductCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "${product.rating}",
-                    color = AppColors.TextPrimary,
+                    color = Color(0xFF1A1A1A),
                     fontSize = TextSizes.sp_12
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "(${product.reviewCount})",
-                    color = AppColors.TextGrey,
+                    color = Color(0xFF666666),
                     fontSize = TextSizes.sp_12
                 )
             }
@@ -218,7 +219,7 @@ private fun ProductCard(
                 ) {
                     Text(
                         text = product.price,
-                        color = AppColors.TextPrimary,
+                        color = Color(0xFF1A1A1A),
                         fontSize = TextSizes.sp_14,
                         fontWeight = FontWeight.Bold
                     )
@@ -227,7 +228,7 @@ private fun ProductCard(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = originalPrice,
-                            color = AppColors.TextGrey,
+                            color = Color(0xFF666666),
                             fontSize = TextSizes.sp_12,
                             textDecoration = TextDecoration.LineThrough
                         )
@@ -251,13 +252,14 @@ private fun ProductCard(
             Row {
                 product.categories.take(2).forEach { category ->
                     Surface(
-                        color = Color(0xFF3A3A3A),
+                        color = Color.Transparent,
                         shape = RoundedCornerShape(6.dp),
+                        border = BorderStroke(1.dp, Color(0xFFE0E0E0)),
                         modifier = Modifier.padding(end = 4.dp)
                     ) {
                         Text(
                             text = category,
-                            color = AppColors.TextGrey,
+                            color = Color(0xFF666666),
                             fontSize = TextSizes.sp_10,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
@@ -419,6 +421,7 @@ fun MarketPlaceScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color(0xFFF1F3F6))
             .padding(horizontal = spacingMd)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(spacingLg)
@@ -436,7 +439,7 @@ fun MarketPlaceScreen() {
                 placeholder = {
                     Text(
                         text = "Search products...",
-                        color = AppColors.TextGrey,
+                        color = Color(0xFF999999),
                         fontSize = TextSizes.sp_14
                     )
                 },
@@ -450,13 +453,13 @@ fun MarketPlaceScreen() {
                 },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF8B5CF6),
-                    unfocusedBorderColor = Color(0xFF3A3A3A),
-                    focusedTextColor = AppColors.TextPrimary,
-                    unfocusedTextColor = AppColors.TextPrimary,
+                    unfocusedBorderColor = Color(0xFFE0E0E0),
+                    focusedTextColor = Color(0xFF1A1A1A),
+                    unfocusedTextColor = Color(0xFF1A1A1A),
                     cursorColor = Color(0xFF8B5CF6),
-                    containerColor = Color(0xFF2A2A2A),
-                    focusedContainerColor = Color(0xFF2A2A2A),
-                    unfocusedContainerColor = Color(0xFF2A2A2A)
+                    containerColor = Color.White,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White
                 ),
                 shape = RoundedCornerShape(24.dp),
                 singleLine = true,
@@ -477,7 +480,7 @@ fun MarketPlaceScreen() {
                 Icon(
                     painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Filter",
-                    tint = AppColors.TextPrimary,
+                    tint = Color(0xFF1A1A1A),
                     modifier = Modifier.size(24.dp)
                 )
             }
