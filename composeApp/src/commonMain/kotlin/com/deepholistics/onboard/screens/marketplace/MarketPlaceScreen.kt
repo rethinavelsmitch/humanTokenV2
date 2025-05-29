@@ -139,12 +139,11 @@ private fun ProductCard(
                 contentAlignment = Alignment.Center
             ) {
                 // Health Score Badge
-                Surface(
-                    color = Color(0xFF8B5CF6),
-                    shape = RoundedCornerShape(12.dp),
+                Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(8.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFF8B5CF6))
                 ) {
                     Text(
                         text = "${product.healthScore} Score",
@@ -251,11 +250,12 @@ private fun ProductCard(
             // Categories
             Row {
                 product.categories.take(2).forEach { category ->
-                    Surface(
-                        color = Color.Transparent,
-                        shape = RoundedCornerShape(6.dp),
-                        border = BorderStroke(1.dp, Color(0xFFE0E0E0)),
-                        modifier = Modifier.padding(end = 4.dp)
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(Color.Transparent)
+                            .border(BorderStroke(1.dp, Color(0xFFE0E0E0)), RoundedCornerShape(6.dp))
                     ) {
                         Text(
                             text = category,
@@ -277,12 +277,18 @@ private fun FilterOptionChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        onClick = onClick,
-        color = if (isSelected) Color(0xFF8B5CF6) else Color.Transparent,
-        shape = RoundedCornerShape(24.dp),
-        border = BorderStroke(1.dp, if (isSelected) Color(0xFF8B5CF6) else Color(0xFFE0E0E0)),
+    Box(
         modifier = modifier
+            .clickable { onClick() }
+            .clip(RoundedCornerShape(24.dp))
+            .background(Color.Transparent)
+            .border(
+                BorderStroke(
+                    width = if (isSelected) 2.dp else 1.dp,
+                    color = if (isSelected) Color(0xFF8B5CF6) else Color(0xFFE0E0E0)
+                ),
+                RoundedCornerShape(24.dp)
+            )
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -292,14 +298,14 @@ private fun FilterOptionChip(
             Icon(
                 painter = painterResource(Res.drawable.ht_logo_196),
                 contentDescription = null,
-                tint = if (isSelected) Color.White else Color(0xFF666666),
+                tint = if (isSelected) Color(0xFF8B5CF6) else Color(0xFF666666),
                 modifier = Modifier.size(20.dp)
             )
             Text(
                 text = text,
-                color = if (isSelected) Color.White else Color(0xFF1A1A1A),
+                color = if (isSelected) Color(0xFF8B5CF6) else Color(0xFF1A1A1A),
                 fontSize = TextSizes.sp_14,
-                fontWeight = FontWeight.Medium
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
             )
         }
     }
@@ -457,19 +463,7 @@ private fun FilterBottomSheet(
 @Composable
 fun MarketPlaceScreen() {
     var showFilterBottomSheet by remember { mutableStateOf(false) }
-    var showSearchScreen by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
-    
-    if (showSearchScreen) {
-        SearchScreen(
-            onBackPressed = { showSearchScreen = false },
-            onSearchProduct = { query ->
-                searchQuery = query
-                showSearchScreen = false
-            }
-        )
-        return
-    }
     
     Column(
         modifier = Modifier
@@ -520,7 +514,6 @@ fun MarketPlaceScreen() {
                     .weight(1f)
                     .height(52.dp)
                     .padding(end = 8.dp)
-                    .clickable { showSearchScreen = true }
             )
             
             Spacer(modifier = Modifier.width(12.dp))
