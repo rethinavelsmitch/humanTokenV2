@@ -13,3 +13,6 @@ expect fun ShowDatePicker(
     onDismiss: () -> Unit,
     onDateSelected: (String) -> Unit,
 )
+
+@Composable
+expect fun AlertDialog(modifier: Modifier, title: String, message: String, onDismiss: () -> Unit)

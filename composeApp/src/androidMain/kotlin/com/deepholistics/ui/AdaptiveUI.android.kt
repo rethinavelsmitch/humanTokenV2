@@ -34,4 +34,13 @@ actual fun ShowDatePicker(
     }, selectedDate = LocalDateTime.now())
 }
 
+@Composable
+actual fun AlertDialog(
+    modifier: Modifier,
+    title: String,
+    message: String,
+    onDismiss: () -> Unit
+) {
+    TODO("Not yet implemented")
+}
 
