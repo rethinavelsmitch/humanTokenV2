@@ -46,7 +46,7 @@ import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppDimens
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
-import com.deepholistics.res.AppDimens.textSizeXl
+import com.deepholistics.res.TextSizes
 
 data class Product(
     val id: Int,
@@ -81,7 +81,7 @@ private fun FilterChip(
             Text(
                 text = text,
                 color = if (isSelected) Color.White else AppColors.TextPrimary,
-                fontSize = AppDimens.textSizeSmall
+                fontSize = TextSizes.sp_12
             )
         },
         selected = isSelected,
@@ -130,7 +130,7 @@ private fun ProductCard(
                     Text(
                         text = "${product.healthScore} Score",
                         color = Color.White,
-                        fontSize = AppDimens.textSizeXSmall,
+                        fontSize = TextSizes.sp_10,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
@@ -149,7 +149,7 @@ private fun ProductCard(
             Text(
                 text = product.name,
                 color = AppColors.TextPrimary,
-                fontSize = AppDimens.textSizeSmall,
+                fontSize = TextSizes.sp_14,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2
             )
@@ -158,7 +158,7 @@ private fun ProductCard(
             Text(
                 text = product.store,
                 color = AppColors.TextGrey,
-                fontSize = AppDimens.textSizeXSmall
+                fontSize = TextSizes.sp_12
             )
             
             Spacer(modifier = Modifier.height(4.dp))
@@ -177,13 +177,13 @@ private fun ProductCard(
                 Text(
                     text = "${product.rating}",
                     color = AppColors.TextPrimary,
-                    fontSize = AppDimens.textSizeXSmall
+                    fontSize = TextSizes.sp_12
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "(${product.reviewCount})",
                     color = AppColors.TextGrey,
-                    fontSize = AppDimens.textSizeXSmall
+                    fontSize = TextSizes.sp_12
                 )
             }
             
@@ -201,7 +201,7 @@ private fun ProductCard(
                     Text(
                         text = product.price,
                         color = AppColors.TextPrimary,
-                        fontSize = AppDimens.textSizeSmall,
+                        fontSize = TextSizes.sp_14,
                         fontWeight = FontWeight.Bold
                     )
                     
@@ -210,7 +210,7 @@ private fun ProductCard(
                         Text(
                             text = originalPrice,
                             color = AppColors.TextGrey,
-                            fontSize = AppDimens.textSizeXSmall,
+                            fontSize = TextSizes.sp_12,
                             textDecoration = TextDecoration.LineThrough
                         )
                     }
@@ -240,7 +240,7 @@ private fun ProductCard(
                         Text(
                             text = category,
                             color = AppColors.TextGrey,
-                            fontSize = AppDimens.textSizeXSmall,
+                            fontSize = TextSizes.sp_10,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
                     }
@@ -262,14 +262,14 @@ fun MarketPlaceScreen() {
         Text(
             text = "MarketPlace",
             color = AppColors.TextPrimary,
-            fontSize = textSizeXl,
+            fontSize = TextSizes.sp_24,
             fontWeight = FontWeight.Bold
         )
         
         Text(
             text = "Discover health products, supplements, and services tailored to your unique health profile and biomarker results.",
             color = AppColors.TextGrey,
-            fontSize = AppDimens.textSizeMedium
+            fontSize = TextSizes.sp_16
         )
         
         // Product Categories
