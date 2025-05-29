@@ -24,12 +24,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
+
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.ui.graphics.painter.Painter
 import org.jetbrains.compose.resources.painterResource
@@ -48,6 +45,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -65,7 +63,6 @@ import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.TextSizes
-import humantokenv2.composeapp.generated.resources.Res
 import humantokenv2.composeapp.generated.resources.ht_logo_196
 import org.jetbrains.compose.resources.painterResource
 
@@ -358,7 +355,7 @@ var showMoreCategories by remember { mutableStateOf(false) }
                 Text(
                     text = "Categories",
                     color = Color(0xFF1A1A1A),
-                    fontSize = TextSizes.sp_18,
+                    fontSize = TextSizes.sp_16,
                     fontWeight = FontWeight.Bold
                 )
 
@@ -412,7 +409,7 @@ var showMoreCategories by remember { mutableStateOf(false) }
                 Text(
                     text = "Health Needs",
                     color = Color(0xFF1A1A1A),
-                    fontSize = TextSizes.sp_18,
+                    fontSize = TextSizes.sp_16,
                     fontWeight = FontWeight.Bold
                 )
 
@@ -493,15 +490,19 @@ fun MarketPlaceScreen() {
                         modifier = Modifier.size(20.dp)
                     )
                 },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF8B5CF6),
-                    unfocusedBorderColor = Color(0xFFE0E0E0),
-                    focusedTextColor = Color(0xFF1A1A1A),
-                    unfocusedTextColor = Color(0xFF1A1A1A),
-                    cursorColor = Color(0xFF8B5CF6),
-                    containerColor = Color.White,
+                colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    cursorColor = Color(0xFF8B5CF6),
+                    errorCursorColor = Color.White,
+                    selectionColors = TextSelectionColors(
+                        handleColor = Color.White,
+                        backgroundColor = Color.White
+                    ),
+                    focusedIndicatorColor = Color.White,
+                    unfocusedIndicatorColor = Color.White,
+                    disabledIndicatorColor = Color.White,
                 ),
                 shape = RoundedCornerShape(24.dp),
                 singleLine = true,
