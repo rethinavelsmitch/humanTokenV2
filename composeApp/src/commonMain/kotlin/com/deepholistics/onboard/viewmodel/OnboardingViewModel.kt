@@ -66,7 +66,7 @@ class OnboardingViewModel {
                 val result = commonRepository.getHealthOverview()
                 result.fold(
                     onSuccess = { apiResult ->
-                        _apiState.value = apiResult
+//                        _apiState.value = apiResult
                         println("Health overview API success: ${apiResult.message}")
                     },
                     onFailure = { exception ->

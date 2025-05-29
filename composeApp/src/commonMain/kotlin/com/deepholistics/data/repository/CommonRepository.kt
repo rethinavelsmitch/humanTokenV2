@@ -1,6 +1,5 @@
 package com.deepholistics.data.repository
 
-package com.deepholistics.data.repository
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.data.api.HealthApiService
@@ -12,7 +11,7 @@ class CommonRepository {
     private val healthApiService = HealthApiService()
     private val httpClient = httpClient()
     
-    suspend fun getHealthOverview(): Result<ApiResult> {
+    suspend fun getHealthOverview(): Result<com.deepholistics.data.models.ApiResult> {
         return healthApiService.getHealthOverview()
     }
     

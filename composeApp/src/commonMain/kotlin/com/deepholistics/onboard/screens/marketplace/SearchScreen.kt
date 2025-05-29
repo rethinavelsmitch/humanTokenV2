@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -25,6 +26,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +43,7 @@ import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.TextSizes
 import org.jetbrains.compose.resources.painterResource
 import humantokenv2.composeapp.generated.resources.Res
+import humantokenv2.composeapp.generated.resources.ht_logo_196
 
 data class SearchSuggestion(
     val title: String,
@@ -193,15 +196,19 @@ fun SearchScreen(
                     modifier = Modifier.size(20.dp)
                 )
             },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFFE0E0E0),
-                unfocusedBorderColor = Color(0xFFE0E0E0),
-                focusedTextColor = Color(0xFF1A1A1A),
-                unfocusedTextColor = Color(0xFF1A1A1A),
-                cursorColor = Color(0xFF8B5CF6),
-                containerColor = Color.White,
+            colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White
+                unfocusedContainerColor = Color.White,
+                disabledContainerColor = Color.White,
+                cursorColor = Color(0xFF8B5CF6),
+                errorCursorColor = Color.White,
+                selectionColors = TextSelectionColors(
+                    handleColor = Color.White,
+                    backgroundColor = Color.White
+                ),
+                focusedIndicatorColor = Color.White,
+                unfocusedIndicatorColor = Color.White,
+                disabledIndicatorColor = Color.White,
             ),
             shape = RoundedCornerShape(12.dp),
             singleLine = true,
@@ -216,7 +223,7 @@ fun SearchScreen(
         Text(
             text = "Recent searches",
             color = Color(0xFF1A1A1A),
-            fontSize = TextSizes.sp_18,
+            fontSize = TextSizes.sp_16,
             fontWeight = FontWeight.SemiBold
         )
         
@@ -234,7 +241,7 @@ fun SearchScreen(
         Text(
             text = "Suggested destinations",
             color = Color(0xFF1A1A1A),
-            fontSize = TextSizes.sp_18,
+            fontSize = TextSizes.sp_16,
             fontWeight = FontWeight.SemiBold
         )
         

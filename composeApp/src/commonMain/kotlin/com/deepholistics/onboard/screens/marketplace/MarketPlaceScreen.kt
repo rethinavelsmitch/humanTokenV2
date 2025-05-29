@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,25 +15,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
-
 import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.ui.graphics.painter.Painter
-import org.jetbrains.compose.resources.painterResource
-import humantokenv2.composeapp.generated.resources.Res
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -42,7 +32,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -63,6 +52,9 @@ import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.TextSizes
+import com.deepholistics.utils.ui.onBoxClick
+import com.deepholistics.utils.ui.onRowClick
+import humantokenv2.composeapp.generated.resources.Res
 import humantokenv2.composeapp.generated.resources.ht_logo_196
 import org.jetbrains.compose.resources.painterResource
 
@@ -478,7 +470,10 @@ if (showSearchScreen) {
     ) {
         // Top row with search and filter
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .onRowClick {
+                    showSearchScreen = true
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -521,7 +516,6 @@ if (showSearchScreen) {
                     .weight(1f)
                     .height(52.dp)
                     .padding(end = 8.dp)
-                    .clickable { showSearchScreen = true }
             )
 
             Spacer(modifier = Modifier.width(12.dp))
