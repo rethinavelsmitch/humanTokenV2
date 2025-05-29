@@ -1,5 +1,5 @@
 
-package com.deepholistics.networking
+package com.deepholistics.data.networking
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
