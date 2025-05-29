@@ -23,9 +23,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
@@ -43,10 +40,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.deepholistics.res.AppColors
-import com.deepholistics.res.AppDimens
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.TextSizes
+import humantokenv2.composeapp.generated.resources.Res
+import humantokenv2.composeapp.generated.resources.ht_logo_196
+import org.jetbrains.compose.resources.painterResource
 
 data class Product(
     val id: Int,
@@ -134,9 +133,9 @@ private fun ProductCard(
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
-                
+
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Product Image",
                     tint = AppColors.TextGrey,
                     modifier = Modifier.size(32.dp)
@@ -168,7 +167,7 @@ private fun ProductCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Default.Star,
+                    painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Rating",
                     tint = Color(0xFFFFD700),
                     modifier = Modifier.size(12.dp)
@@ -221,7 +220,7 @@ private fun ProductCard(
                     modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Add,
+                        painter = painterResource(Res.drawable.ht_logo_196),
                         contentDescription = "Add to Cart",
                         tint = Color(0xFF8B5CF6),
                         modifier = Modifier.size(16.dp)
