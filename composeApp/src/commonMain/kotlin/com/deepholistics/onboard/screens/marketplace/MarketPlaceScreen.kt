@@ -423,7 +423,9 @@ fun MarketPlaceScreen() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = { showFilterBottomSheet = true }
+                onClick = { 
+                    showFilterBottomSheet = true 
+                }
             ) {
                 Icon(
                     imageVector = Icons.Default.FilterList,
