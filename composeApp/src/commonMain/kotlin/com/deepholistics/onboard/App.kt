@@ -20,9 +20,6 @@ fun App() {
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel() }
 
-
-
-
     MaterialTheme {
         when (currentScreen) {
             Screen.ONBOARDING -> {

@@ -1,6 +1,7 @@
 import org.gradle.kotlin.dsl.commonMain
 import org.gradle.kotlin.dsl.commonTest
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -50,7 +51,7 @@ kotlin {
 
             // Ktor client dependencies
             implementation(libs.bundles.ktor)
-
+            implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
 
 
 //            implementation(compose.resources)
@@ -78,16 +79,25 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
     buildTypes {
+
         getByName("release") {
+            isMinifyEnabled = true
+            isDebuggable = false
+        }
+
+        getByName("debug") {
             isMinifyEnabled = false
+            isDebuggable = true
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
