@@ -30,6 +30,9 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.ui.graphics.painter.Painter
+import org.jetbrains.compose.resources.painterResource
+import humantokenv2.composeapp.generated.resources.Res
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -151,7 +154,7 @@ private fun ProductCard(
                 }
                 
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Product Image",
                     tint = AppColors.TextGrey,
                     modifier = Modifier.size(32.dp)
@@ -183,7 +186,7 @@ private fun ProductCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Default.Star,
+                    painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Rating",
                     tint = Color(0xFFFFD700),
                     modifier = Modifier.size(12.dp)
@@ -236,7 +239,7 @@ private fun ProductCard(
                     modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Add,
+                        painter = painterResource(Res.drawable.ht_logo_196),
                         contentDescription = "Add to Cart",
                         tint = Color(0xFF8B5CF6),
                         modifier = Modifier.size(16.dp)
@@ -439,7 +442,7 @@ fun MarketPlaceScreen() {
                 },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Search,
+                        painter = painterResource(Res.drawable.ht_logo_196),
                         contentDescription = "Search",
                         tint = AppColors.TextGrey,
                         modifier = Modifier.size(20.dp)
@@ -467,7 +470,7 @@ fun MarketPlaceScreen() {
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Default.FilterList,
+                    painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Filter",
                     tint = AppColors.TextPrimary,
                     modifier = Modifier.size(24.dp)
