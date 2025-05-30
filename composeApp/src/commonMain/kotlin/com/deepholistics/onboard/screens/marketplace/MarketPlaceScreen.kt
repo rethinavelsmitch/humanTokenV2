@@ -2,7 +2,6 @@
 package com.deepholistics.onboard.screens.marketplace
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,13 +15,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -262,7 +259,7 @@ fun ProductCard(
                         }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Info,
+                        painter = painterResource(Res.drawable.ic_summary_calendar),
                         contentDescription = "Product Info",
                         tint = Color.White,
                         modifier = Modifier.size(16.dp)
@@ -430,7 +427,7 @@ fun InfoDialog(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         repeat(5) { index ->
                             Icon(
-                                imageVector = Icons.Default.Star,
+                                painter = painterResource(Res.drawable.ic_summary_calendar),
                                 contentDescription = null,
                                 tint = if (index < product.rating.toInt()) Color(0xFFFFC107) else Color(0xFFE0E0E0),
                                 modifier = Modifier.size(16.dp)
