@@ -2,6 +2,7 @@ package com.deepholistics.onboard.viewmodel
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.data.OnboardingState
+import com.deepholistics.data.models.apiresult.RecommendationResponse
 import com.deepholistics.data.repository.CommonRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
