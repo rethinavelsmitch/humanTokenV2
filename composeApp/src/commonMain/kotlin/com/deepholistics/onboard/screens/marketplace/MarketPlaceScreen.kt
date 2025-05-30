@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
@@ -23,10 +24,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppDimens
 
@@ -48,16 +55,27 @@ data class Product(
 fun MarketPlaceScreen() {
     var searchText by remember { mutableStateOf("") }
     var showFilterBottomSheet by remember { mutableStateOf(false) }
+    var showInfoDialog by remember { mutableStateOf(false) }
+    var selectedProduct by remember { mutableStateOf<Product?>(null) }
+    var dialogOffset by remember { mutableStateOf(IntOffset.Zero) }
     
     val products = remember {
         listOf(
-            Product(1, "Clay Plant Pot", "Shopify Store", "₹9.99", "₹15.99", 0f, 0, 0, listOf("Garden", "Kitchen", "Sale"), Color(0xFFE8B5A3)),
-            Product(2, "Copper Light", "Shopify Store", "₹59.99", null, 0f, 0, 0, listOf("Home Decor", "Bedding", "Vintage", "Budget-friendly"), Color(0xFFD4A574)),
-            Product(3, "Cream Sofa", "Shopify Store", "₹500.00", null, 0f, 0, 0, listOf("Furniture", "Seasonal", "Modern"), Color(0xFF9B8B7A)),
-            Product(4, "Antique Drawers", "Shopify Store", "₹250.00", null, 0f, 0, 0, listOf("Furniture", "Vintage"), Color(0xFFE8C4A0)),
-            Product(5, "Pink Armchair", "Shopify Store", "₹750.00", null, 0f, 0, 0, listOf("Furniture", "Modern"), Color(0xFFB8E6B8)),
-            Product(6, "Wooden Outdoor Table", "Shopify Store", "₹99.99", null, 0f, 0, 0, listOf("Furniture", "Outdoor"), Color(0xFF8FA68E))
+            Product(1, "Clay Plant Pot", "Shopify Store", "₹9.99", "₹15.99", 4.2f, 45, 85, listOf("Garden", "Kitchen", "Sale", "Eco-friendly", "Handmade"), Color(0xFFE8B5A3)),
+            Product(2, "Copper Light", "Shopify Store", "₹59.99", null, 4.5f, 128, 92, listOf("Home Decor", "Bedding", "Vintage", "Budget-friendly", "Modern"), Color(0xFFD4A574)),
+            Product(3, "Cream Sofa", "Shopify Store", "₹500.00", null, 4.8f, 89, 96, listOf("Furniture", "Seasonal", "Modern", "Comfort", "Premium"), Color(0xFF9B8B7A)),
+            Product(4, "Antique Drawers", "Shopify Store", "₹250.00", null, 4.1f, 67, 78, listOf("Furniture", "Vintage", "Storage", "Wood", "Classic"), Color(0xFFE8C4A0)),
+            Product(5, "Pink Armchair", "Shopify Store", "₹750.00", null, 4.6f, 234, 94, listOf("Furniture", "Modern", "Comfort", "Stylish", "Premium"), Color(0xFFB8E6B8)),
+            Product(6, "Wooden Outdoor Table", "Shopify Store", "₹99.99", null, 4.3f, 156, 88, listOf("Furniture", "Outdoor", "Wood", "Durable", "Weather-resistant"), Color(0xFF8FA68E))
         )
+    }
+    
+    // Filter products based on search text
+    val filteredProducts = products.filter { product ->
+        searchText.isEmpty() || 
+        product.name.contains(searchText, ignoreCase = true) ||
+        product.store.contains(searchText, ignoreCase = true) ||
+        product.tags.any { it.contains(searchText, ignoreCase = true) }
     }
     
     Column(
@@ -81,7 +99,9 @@ fun MarketPlaceScreen() {
                     Text(
                         "Search products...", 
                         color = AppColors.TextGrey,
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     ) 
                 },
                 leadingIcon = {
@@ -101,7 +121,8 @@ fun MarketPlaceScreen() {
                     focusedTextColor = AppColors.TextPrimary,
                     unfocusedTextColor = AppColors.TextPrimary
                 ),
-                singleLine = true
+                singleLine = true,
+                textStyle = LocalTextStyle.current.copy(fontSize = 14.sp)
             )
             
             // Filter Button
@@ -129,10 +150,25 @@ fun MarketPlaceScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
-            items(products) { product ->
-                ProductCard(product = product)
+            items(filteredProducts) { product ->
+                ProductCard(
+                    product = product,
+                    onInfoClick = { clickedProduct, offset ->
+                        selectedProduct = clickedProduct
+                        dialogOffset = offset
+                        showInfoDialog = true
+                    }
+                )
             }
         }
+    }
+    
+    // Info Dialog
+    if (showInfoDialog && selectedProduct != null) {
+        InfoDialog(
+            product = selectedProduct!!,
+            onDismiss = { showInfoDialog = false }
+        )
     }
     
     // Filter Bottom Sheet
@@ -161,7 +197,13 @@ fun MarketPlaceScreen() {
 }
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(
+    product: Product,
+    onInfoClick: (Product, IntOffset) -> Unit
+) {
+    val density = LocalDensity.current
+    var infoIconPosition by remember { mutableStateOf(IntOffset.Zero) }
+    
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,7 +215,7 @@ fun ProductCard(product: Product) {
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
-            // Product Image Box with Score
+            // Product Image Box with Score and Info Icon
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -186,7 +228,7 @@ fun ProductCard(product: Product) {
                 // Score Badge
                 Box(
                     modifier = Modifier
-                        .align(Alignment.TopEnd)
+                        .align(Alignment.TopStart)
                         .padding(8.dp)
                         .background(
                             Color.Black.copy(alpha = 0.7f),
@@ -199,6 +241,34 @@ fun ProductCard(product: Product) {
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium
+                    )
+                }
+                
+                // Info Icon
+                IconButton(
+                    onClick = {
+                        onInfoClick(product, infoIconPosition)
+                    },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(4.dp)
+                        .size(32.dp)
+                        .background(
+                            Color.Black.copy(alpha = 0.7f),
+                            CircleShape
+                        )
+                        .onGloballyPositioned { coordinates ->
+                            infoIconPosition = IntOffset(
+                                coordinates.localToWindow(androidx.compose.ui.geometry.Offset.Zero).x.toInt(),
+                                coordinates.localToWindow(androidx.compose.ui.geometry.Offset.Zero).y.toInt()
+                            )
+                        }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Product Info",
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }
@@ -222,26 +292,6 @@ fun ProductCard(product: Product) {
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 2.dp)
             )
-            
-            // Rating
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(top = 4.dp)
-            ) {
-                repeat(5) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        tint = Color(0xFF6B7280),
-                        modifier = Modifier.size(12.dp)
-                    )
-                }
-                Text(
-                    text = " (${product.reviewCount})",
-                    color = Color(0xFF9CA3AF),
-                    fontSize = 10.sp
-                )
-            }
             
             Spacer(modifier = Modifier.height(8.dp))
             
@@ -288,30 +338,145 @@ fun ProductCard(product: Product) {
                     )
                 }
             }
-            
-            // Tags
-            if (product.tags.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+}
+
+@Composable
+fun InfoDialog(
+    product: Product,
+    onDismiss: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Card(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp)
+            ) {
+                // Product Name
+                Text(
+                    text = product.name,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = AppColors.TextPrimary,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                
+                // Score
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 12.dp)
                 ) {
-                    product.tags.take(3).forEach { tag ->
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    Color(0xFF374151),
-                                    RoundedCornerShape(8.dp)
-                                )
-                                .padding(horizontal = 6.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = tag,
-                                color = Color(0xFF9CA3AF),
-                                fontSize = 10.sp
+                    Text(
+                        text = "Score: ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = AppColors.TextPrimary
+                    )
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                Color(0xFF8B5CF6),
+                                RoundedCornerShape(8.dp)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = "${product.score}",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+                
+                // Rating
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                ) {
+                    Text(
+                        text = "Rating: ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = AppColors.TextPrimary
+                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        repeat(5) { index ->
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = null,
+                                tint = if (index < product.rating.toInt()) Color(0xFFFFC107) else Color(0xFFE0E0E0),
+                                modifier = Modifier.size(16.dp)
                             )
                         }
+                        Text(
+                            text = " ${product.rating} (${product.reviewCount} reviews)",
+                            color = AppColors.TextGrey,
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
                     }
+                }
+                
+                // Tags (max 5)
+                Text(
+                    text = "Tags:",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = AppColors.TextPrimary,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    product.tags.take(5).chunked(3).forEach { tagRow ->
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            tagRow.forEach { tag ->
+                                Box(
+                                    modifier = Modifier
+                                        .background(
+                                            Color(0xFFF3F4F6),
+                                            RoundedCornerShape(16.dp)
+                                        )
+                                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                                ) {
+                                    Text(
+                                        text = tag,
+                                        color = AppColors.TextPrimary,
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(20.dp))
+                
+                // Close Button
+                Button(
+                    onClick = onDismiss,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF8B5CF6)
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("Close", color = Color.White)
                 }
             }
         }
