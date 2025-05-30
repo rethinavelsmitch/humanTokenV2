@@ -26,28 +26,14 @@ actual fun ShowDatePicker(
     onDateSelected: (String) -> Unit,
 ) {
     val view = LocalNativeViewFactory.current
-    UIKitViewController(modifier = modifier.height(Dimens.dp_160).fillMaxWidth(), factory = {
+    LaunchedEffect(Unit) {
         view.showDatePicker(
             selectedDate = selectedDate,
             onDismiss = onDismiss,
             onDateSelected = onDateSelected
         )
-    })
+    }
 }
-
-//@Composable
-//actual fun ShowAlertDialog(
-//    modifier: Modifier,
-//    title: String,
-//    message: String,
-//    onDismiss: () -> Unit
-//) {
-//    val view = LocalNativeViewFactory.current
-//    UIKitViewController(modifier = modifier.height(Dimens.dp_200).fillMaxWidth(), factory = {
-//        view.showAlertDialog(primaryText = title, secondaryText = message, onDismiss = onDismiss)
-//    }
-//    )
-//}
 
 @Composable
 actual fun ShowAlertDialog(
