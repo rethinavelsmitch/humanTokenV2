@@ -50,7 +50,8 @@ actual fun ShowAlertDialog(
     modifier: Modifier,
     title: String,
     message: String,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onLogout: () -> Unit,
 ) {
     AlertDialog(
         shape = RoundedCornerShape(46f),
@@ -88,7 +89,7 @@ actual fun ShowAlertDialog(
                     .onTextClick(
                         rippleEffect = true,
                         onClick = {
-                            onDismiss()
+                            onLogout()
                         }
                     )
             )

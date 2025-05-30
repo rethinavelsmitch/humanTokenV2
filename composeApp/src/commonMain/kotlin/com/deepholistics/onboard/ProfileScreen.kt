@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.deepholistics.onboard.helper.ScreenBackground
 import com.deepholistics.onboard.viewmodel.ProfileViewModel
 import com.deepholistics.res.AppColors
@@ -212,7 +213,8 @@ fun ProfileScreen(onNavigateBack: () -> Unit, profileViewModel: ProfileViewModel
                 message = "You will be logged out of your Deep Holistics account. However this doesn\\’t affect your logged data. Do you want to still logout?",
                 onDismiss = {
                     showAlertDialog = false
-                })
+                },
+                onLogout = { profileViewModel.userLogOut() })
         }
     }
 }

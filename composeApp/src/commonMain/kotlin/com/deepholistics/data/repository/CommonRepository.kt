@@ -4,6 +4,7 @@ import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.data.models.apiresult.RecommendationResponse
 import com.deepholistics.data.networking.ApiUrlConstant
 import com.deepholistics.data.networking.get
+import com.deepholistics.data.networking.post
 import io.ktor.client.HttpClient
 
 
@@ -14,7 +15,7 @@ class CommonRepository(private val httpClient: HttpClient) {
         accessToken = accessToken,
     )
 
-    suspend fun userLogOut(accessToken:String): Result<RecommendationResponse> = httpClient.get<RecommendationResponse>(
+    suspend fun userLogOut(accessToken:String) = httpClient.post<RecommendationResponse>(
         url = ApiUrlConstant.LOG_OUT_URL,
         accessToken = accessToken,
     )
