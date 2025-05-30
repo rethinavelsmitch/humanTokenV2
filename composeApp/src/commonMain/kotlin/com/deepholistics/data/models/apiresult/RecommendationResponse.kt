@@ -15,4 +15,10 @@ data class RecommendationData(
 )
 
 @Serializable
-data class Recommendation(val id: String? = null)
+data class Recommendation(
+    val id: String? = null,
+    val title: String? = null,
+    val description: String? = null,
+    val priority: String? = null,
+    val category: String? = null
+)

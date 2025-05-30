@@ -17,20 +17,21 @@ suspend inline fun <reified T> HttpClient.get(
     url: String,
     accessToken: String,
     parameters: Map<String, Any> = emptyMap(),
-): Result<ApiResult> {
+): Result<T> {
     return try {
         val response = this.get(url) {
-            // Add access token to header if provided
             header("access_token", accessToken)
-
-            // Add URL parameters
             parameters.forEach { (key, value) ->
                 parameter(key, value)
             }
         }
-        println("Recommendation--> raw ${response.bodyAsText()}")
-        Result.success(response.body<ApiResult>())
+        
+        println("API Response Status: ${response.status}")
+        println("API Response Body: ${response.bodyAsText()}")
+        
+        Result.success(response.body<T>())
     } catch (e: Exception) {
+        println("API Error: ${e.message}")
         Result.failure(e)
     }
 }
