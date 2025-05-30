@@ -215,34 +215,8 @@ fun ProductCard(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Bestseller Badge and Timer
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                Color(0xFFE91E63),
-                                RoundedCornerShape(4.dp)
-                            )
-                            .padding(horizontal = 6.dp, vertical = 2.dp)
-                    ) {
-                        Text(
-                            text = "Bestseller",
-                            color = Color.White,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                    
-                    Text(
-                        text = "15mins",
-                        color = Color(0xFF8B5CF6),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
+                // Spacer to maintain layout
+                Spacer(modifier = Modifier.height(4.dp))
                 
                 // Product Name
                 Text(
@@ -311,7 +285,9 @@ fun ProductCard(
                     
                     // More Details Button
                     OutlinedButton(
-                        onClick = { /* Handle more details */ },
+                        onClick = { 
+                            onInfoClick(product, infoIconPosition)
+                        },
                         modifier = Modifier.height(36.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = Color(0xFF9CA3AF)
@@ -331,29 +307,6 @@ fun ProductCard(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Info Icon
-                Box {
-                    IconButton(
-                        onClick = {
-                            onInfoClick(product, infoIconPosition)
-                        },
-                        modifier = Modifier
-                            .size(24.dp)
-                            .onGloballyPositioned { coordinates ->
-                                infoIconPosition = IntOffset(
-                                    coordinates.localToWindow(androidx.compose.ui.geometry.Offset.Zero).x.toInt(),
-                                    coordinates.localToWindow(androidx.compose.ui.geometry.Offset.Zero).y.toInt()
-                                )
-                            }
-                    ) {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_summary_calendar),
-                            contentDescription = "Product Info",
-                            tint = Color(0xFF9CA3AF),
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
                 
                 // Product Image
                 Box(
@@ -365,24 +318,7 @@ fun ProductCard(
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    // Score Badge
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .padding(6.dp)
-                            .background(
-                                Color.Black.copy(alpha = 0.7f),
-                                RoundedCornerShape(8.dp)
-                            )
-                            .padding(horizontal = 6.dp, vertical = 2.dp)
-                    ) {
-                        Text(
-                            text = "${product.score}",
-                            color = Color.White,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
+                    // Empty product image placeholder
                 }
                 
                 // Quantity Controls
