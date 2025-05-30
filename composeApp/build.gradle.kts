@@ -39,6 +39,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
+            implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -52,13 +53,14 @@ kotlin {
 
             // Ktor client dependencies
             implementation(libs.bundles.ktor)
-
+            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
 
 //            implementation(compose.resources)
 
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation("dev.whyoleg.cryptography:cryptography-provider-apple:0.4.0")
         }
 
         commonTest.dependencies {

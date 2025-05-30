@@ -36,7 +36,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun OnboardingScreen(
     viewModel: OnboardingViewModel, onCompleted: () -> Unit
