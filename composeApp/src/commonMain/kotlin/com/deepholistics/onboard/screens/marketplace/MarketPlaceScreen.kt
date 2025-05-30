@@ -597,7 +597,7 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
                 modifier = Modifier.weight(1f),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = Color(0xFF8B5CF6)
-                ),
+                )
             ) {
                 Text("Clear")
             }
