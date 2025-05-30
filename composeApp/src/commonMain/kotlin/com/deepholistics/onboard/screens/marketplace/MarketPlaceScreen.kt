@@ -1,13 +1,18 @@
 
 package com.deepholistics.onboard.screens.marketplace
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,23 +21,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.ui.graphics.painter.Painter
-import org.jetbrains.compose.resources.painterResource
-import humantokenv2.composeapp.generated.resources.Res
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -40,9 +38,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -53,14 +51,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.deepholistics.res.AppColors
-import com.deepholistics.res.AppDimens
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.TextSizes
+import com.deepholistics.utils.ui.onBoxClick
+import com.deepholistics.utils.ui.onRowClick
+import humantokenv2.composeapp.generated.resources.Res
+import humantokenv2.composeapp.generated.resources.ht_logo_196
+import org.jetbrains.compose.resources.painterResource
 
 data class Product(
     val id: Int,
@@ -83,12 +86,7 @@ private val healthProducts = listOf(
     Product(6, "Multivitamin Tablets", "WellnessPlus", "₹449", null, 4.7f, 156, listOf("Supplements", "Vitamins"), 90)
 )
 
-
 @Composable
-fun MarketPlaceScreen() {
-
-}
-/*@Composable
 private fun FilterChip(
     text: String,
     isSelected: Boolean,
@@ -351,52 +349,110 @@ private fun FilterBottomSheet(
         ) {
             // Categories Section
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.animateContentSize(
+                    animationSpec = tween(durationMillis = 300)
+                )
             ) {
                 Text(
                     text = "Categories",
                     color = Color(0xFF1A1A1A),
-                    fontSize = TextSizes.sp_18,
+                    fontSize = TextSizes.sp_16,
                     fontWeight = FontWeight.Bold
                 )
 
                 // Categories Grid
-                val visibleCategories = if (showMoreCategories) categories else categories.take(4)
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.height(if (showMoreCategories) 150.dp else 100.dp)
-                ) {
-                    items(visibleCategories) { category ->
-                        FilterOptionChip(
-                            text = category,
-                            isSelected = selectedCategories.contains(category),
-                            onClick = {
-                                selectedCategories = if (selectedCategories.contains(category)) {
-                                    selectedCategories - category
-                                } else {
-                                    selectedCategories + category
+                Column {
+                    // Always show first 4 categories
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.height(100.dp)
+                    ) {
+                        items(categories.take(4)) { category ->
+                            FilterOptionChip(
+                                text = category,
+                                isSelected = selectedCategories.contains(category),
+                                onClick = {
+                                    selectedCategories = if (selectedCategories.contains(category)) {
+                                        selectedCategories - category
+                                    } else {
+                                        selectedCategories + category
+                                    }
+                                }
+                            )
+                        }
+                    }
+
+                    // Animated additional categories
+                    AnimatedVisibility(
+                        visible = showMoreCategories,
+                        enter = expandVertically(
+                            animationSpec = tween(durationMillis = 300)
+                        ),
+                        exit = shrinkVertically(
+                            animationSpec = tween(durationMillis = 300)
+                        )
+                    ) {
+                        if (categories.size > 4) {
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(2),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                modifier = Modifier
+                                    .height(50.dp)
+                                    .padding(top = 8.dp)
+                            ) {
+                                items(categories.drop(4)) { category ->
+                                    FilterOptionChip(
+                                        text = category,
+                                        isSelected = selectedCategories.contains(category),
+                                        onClick = {
+                                            selectedCategories = if (selectedCategories.contains(category)) {
+                                                selectedCategories - category
+                                            } else {
+                                                selectedCategories + category
+                                            }
+                                        }
+                                    )
                                 }
                             }
-                        )
+                        }
                     }
                 }
 
                 if (categories.size > 4) {
-                    Text(
-                        text = if (showMoreCategories) "Show less" else "Show more",
-                        color = Color(0xFF8B5CF6),
-                        fontSize = TextSizes.sp_14,
-                        fontWeight = FontWeight.Medium,
+                    val rotationAngle by animateFloatAsState(
+                        targetValue = if (showMoreCategories) 180f else 0f,
+                        animationSpec = tween(durationMillis = 300)
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .clickable { showMoreCategories = !showMoreCategories }
                             .padding(vertical = 4.dp)
-                    )
+                    ) {
+                        Text(
+                            text = if (showMoreCategories) "Show less" else "Show more",
+                            color = Color(0xFF8B5CF6),
+                            fontSize = TextSizes.sp_14,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            painter = painterResource(Res.drawable.ht_logo_196),
+                            contentDescription = null,
+                            tint = Color(0xFF8B5CF6),
+                            modifier = Modifier
+                                .size(16.dp)
+                                .graphicsLayer(rotationZ = rotationAngle)
+                        )
+                    }
                 }
             }
-
-            // Divider
+// Divider
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -406,48 +462,107 @@ private fun FilterBottomSheet(
 
             // Health Needs Section
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.animateContentSize(
+                    animationSpec = tween(durationMillis = 300)
+                )
             ) {
                 Text(
                     text = "Health Needs",
                     color = Color(0xFF1A1A1A),
-                    fontSize = TextSizes.sp_18,
+                    fontSize = TextSizes.sp_16,
                     fontWeight = FontWeight.Bold
                 )
 
                 // Health Needs Grid
-                val visibleHealthNeeds = if (showMoreHealthNeeds) healthNeeds else healthNeeds.take(6)
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.height(if (showMoreHealthNeeds) 250.dp else 150.dp)
-                ) {
-                    items(visibleHealthNeeds) { healthNeed ->
-                        FilterOptionChip(
-                            text = healthNeed,
-                            isSelected = selectedHealthNeeds.contains(healthNeed),
-                            onClick = {
-                                selectedHealthNeeds = if (selectedHealthNeeds.contains(healthNeed)) {
-                                    selectedHealthNeeds - healthNeed
-                                } else {
-                                    selectedHealthNeeds + healthNeed
+                Column {
+                    // Always show first 6 health needs
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.height(150.dp)
+                    ) {
+                        items(healthNeeds.take(6)) { healthNeed ->
+                            FilterOptionChip(
+                                text = healthNeed,
+                                isSelected = selectedHealthNeeds.contains(healthNeed),
+                                onClick = {
+                                    selectedHealthNeeds = if (selectedHealthNeeds.contains(healthNeed)) {
+                                        selectedHealthNeeds - healthNeed
+                                    } else {
+                                        selectedHealthNeeds + healthNeed
+                                    }
+                                }
+                            )
+                        }
+                    }
+
+                    // Animated additional health needs
+                    AnimatedVisibility(
+                        visible = showMoreHealthNeeds,
+                        enter = expandVertically(
+                            animationSpec = tween(durationMillis = 300)
+                        ),
+                        exit = shrinkVertically(
+                            animationSpec = tween(durationMillis = 300)
+                        )
+                    ) {
+                        if (healthNeeds.size > 6) {
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(2),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                modifier = Modifier
+                                    .height(100.dp)
+                                    .padding(top = 8.dp)
+                            ) {
+                                items(healthNeeds.drop(6)) { healthNeed ->
+                                    FilterOptionChip(
+                                        text = healthNeed,
+                                        isSelected = selectedHealthNeeds.contains(healthNeed),
+                                        onClick = {
+                                            selectedHealthNeeds = if (selectedHealthNeeds.contains(healthNeed)) {
+                                                selectedHealthNeeds - healthNeed
+                                            } else {
+                                                selectedHealthNeeds + healthNeed
+                                            }
+                                        }
+                                    )
                                 }
                             }
-                        )
+                        }
                     }
                 }
 
                 if (healthNeeds.size > 6) {
-                    Text(
-                        text = if (showMoreHealthNeeds) "Show less" else "Show more",
-                        color = Color(0xFF8B5CF6),
-                        fontSize = TextSizes.sp_14,
-                        fontWeight = FontWeight.Medium,
+                    val rotationAngle by animateFloatAsState(
+                        targetValue = if (showMoreHealthNeeds) 180f else 0f,
+                        animationSpec = tween(durationMillis = 300)
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .clickable { showMoreHealthNeeds = !showMoreHealthNeeds }
                             .padding(vertical = 4.dp)
-                    )
+                    ) {
+                        Text(
+                            text = if (showMoreHealthNeeds) "Show less" else "Show more",
+                            color = Color(0xFF8B5CF6),
+                            fontSize = TextSizes.sp_14,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            painter = painterResource(Res.drawable.ht_logo_196),
+                            contentDescription = null,
+                            tint = Color(0xFF8B5CF6),
+                            modifier = Modifier
+                                .size(16.dp)
+                                .graphicsLayer(rotationZ = rotationAngle)
+                        )
+                    }
                 }
             }
         }
@@ -457,19 +572,8 @@ private fun FilterBottomSheet(
 @Composable
 fun MarketPlaceScreen() {
     var showFilterBottomSheet by remember { mutableStateOf(false) }
-    var showSearchScreen by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
 
-    if (showSearchScreen) {
-        SearchScreen(
-            onBackPressed = { showSearchScreen = false },
-            onSearchProduct = { query ->
-                searchQuery = query
-                showSearchScreen = false
-            }
-        )
-        return
-    }
 
     Column(
         modifier = Modifier
@@ -481,7 +585,9 @@ fun MarketPlaceScreen() {
     ) {
         // Top row with search and filter
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .onRowClick {
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -504,15 +610,19 @@ fun MarketPlaceScreen() {
                         modifier = Modifier.size(20.dp)
                     )
                 },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF8B5CF6),
-                    unfocusedBorderColor = Color(0xFFE0E0E0),
-                    focusedTextColor = Color(0xFF1A1A1A),
-                    unfocusedTextColor = Color(0xFF1A1A1A),
-                    cursorColor = Color(0xFF8B5CF6),
-                    containerColor = Color.White,
+                colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    cursorColor = Color(0xFF8B5CF6),
+                    errorCursorColor = Color.White,
+                    selectionColors = TextSelectionColors(
+                        handleColor = Color.White,
+                        backgroundColor = Color.White
+                    ),
+                    focusedIndicatorColor = Color.White,
+                    unfocusedIndicatorColor = Color.White,
+                    disabledIndicatorColor = Color.White,
                 ),
                 shape = RoundedCornerShape(24.dp),
                 singleLine = true,
@@ -520,7 +630,6 @@ fun MarketPlaceScreen() {
                     .weight(1f)
                     .height(52.dp)
                     .padding(end = 8.dp)
-                    .clickable { showSearchScreen = true }
             )
 
             Spacer(modifier = Modifier.width(12.dp))
@@ -559,4 +668,4 @@ fun MarketPlaceScreen() {
             onDismiss = { showFilterBottomSheet = false }
         )
     }
-}*/
+}

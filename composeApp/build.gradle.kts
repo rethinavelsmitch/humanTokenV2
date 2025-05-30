@@ -38,6 +38,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -51,7 +52,6 @@ kotlin {
 
             // Ktor client dependencies
             implementation(libs.bundles.ktor)
-            implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
 
 
 //            implementation(compose.resources)
