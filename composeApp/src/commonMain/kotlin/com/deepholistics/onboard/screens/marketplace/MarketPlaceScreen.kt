@@ -1,6 +1,4 @@
-
 package com.deepholistics.onboard.screens.marketplace
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +14,7 @@ import com.deepholistics.res.AppDimens
 import com.deepholistics.res.AppDimens.spacingLg
 import com.deepholistics.res.AppDimens.spacingMd
 import com.deepholistics.res.AppDimens.textSizeXl
-
+import com.deepholistics.res.TextSizes
 @Composable
 fun MarketPlaceScreen() {
     Column(
@@ -32,13 +30,17 @@ fun MarketPlaceScreen() {
             fontSize = textSizeXl,
             fontWeight = FontWeight.Bold
         )
-
         Text(
             text = "Discover health products, supplements, and services tailored to your unique health profile and biomarker results.",
             color = AppColors.TextGrey,
             fontSize = AppDimens.textSizeMedium
         )
-
         // Add marketplace content here
     }
 }
+
+
+
+
+
+
