@@ -17,7 +17,7 @@ suspend inline fun <reified T> HttpClient.get(
     url: String,
     accessToken: String,
     parameters: Map<String, Any> = emptyMap(),
-): Result<RecommendationResponse> {
+): Result<ApiResult> {
     return try {
         val response = this.get(url) {
             // Add access token to header if provided
@@ -29,7 +29,7 @@ suspend inline fun <reified T> HttpClient.get(
             }
         }
         println("Recommendation--> raw ${response.bodyAsText()}")
-        Result.success(response.body<RecommendationResponse>())
+        Result.success(response.body<ApiResult>())
     } catch (e: Exception) {
         Result.failure(e)
     }

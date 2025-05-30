@@ -25,7 +25,7 @@ fun createHttpClient(engine: HttpClientEngine): HttpClient {
         }
 
         defaultRequest {
-            header("client_id", "6tVjHMtvhLEKtcx0XDgzmKH5TY9YeC1Waroq")
+            header("client_id", "JmEfoQ2sP18APIiX9z0nY3vlDAKHIp8nKuyV")
             header("content-type", "application/json")
             header("user_timezone", "Asia/Calcutta")
             url("https://api.stg.dh.deepholistics.com/")

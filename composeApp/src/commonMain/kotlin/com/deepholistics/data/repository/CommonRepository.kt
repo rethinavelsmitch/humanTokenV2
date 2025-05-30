@@ -9,7 +9,7 @@ import io.ktor.client.HttpClient
 
 class CommonRepository(private val httpClient: HttpClient) {
 
-    suspend fun getRecommendation(accessToken:String): Result<RecommendationResponse> = httpClient.get<RecommendationResponse>(
+    suspend fun getRecommendation(accessToken:String)= httpClient.get<RecommendationResponse>(
         url = ApiUrlConstant.RECOMMENDATION_URL,
         accessToken = accessToken,
     )
