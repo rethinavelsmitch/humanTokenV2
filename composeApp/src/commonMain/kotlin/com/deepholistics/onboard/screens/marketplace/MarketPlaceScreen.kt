@@ -136,10 +136,11 @@ fun MarketPlaceScreen() {
             }
         }
         
-        // Products Horizontal List
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        // Products Vertical List
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier.fillMaxSize()
         ) {
             items(filteredProducts) { product ->
                 ProductCard(
@@ -198,7 +199,7 @@ fun ProductCard(
     
     Card(
         modifier = Modifier
-            .width(320.dp)
+            .fillMaxWidth()
             .clickable { /* Handle product click */ },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2D2D2D)),
