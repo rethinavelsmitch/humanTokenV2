@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.deepholistics.onboard.helper.ScreenBackground
+import com.deepholistics.onboard.viewmodel.ProfileViewModel
 import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppDimens.textSizeXl
 import com.deepholistics.ui.ShowAlertDialog
@@ -51,7 +52,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(onNavigateBack: () -> Unit) {
+fun ProfileScreen(onNavigateBack: () -> Unit, profileViewModel: ProfileViewModel) {
 
     var showAlertDialog by remember { mutableStateOf(false) }
     ScreenBackground {

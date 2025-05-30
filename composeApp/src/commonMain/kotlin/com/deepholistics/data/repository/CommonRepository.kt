@@ -14,4 +14,9 @@ class CommonRepository(private val httpClient: HttpClient) {
         accessToken = accessToken,
     )
 
+    suspend fun userLogOut(accessToken:String): Result<RecommendationResponse> = httpClient.get<RecommendationResponse>(
+        url = ApiUrlConstant.LOG_OUT_URL,
+        accessToken = accessToken,
+    )
+
 }

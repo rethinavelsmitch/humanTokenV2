@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.deepholistics.onboard.viewmodel.AuthViewModel
 import com.deepholistics.onboard.viewmodel.OnboardingViewModel
+import com.deepholistics.onboard.viewmodel.ProfileViewModel
 import io.ktor.client.HttpClient
 
 enum class Screen {
@@ -16,9 +17,10 @@ enum class Screen {
 
 @Composable
 fun App(httpClient: HttpClient) {
-    var currentScreen by remember { mutableStateOf(Screen.SCHEDULE_BLOOD_TEST) }
+    var currentScreen by remember { mutableStateOf(Screen.MAIN) }
     val authViewModel = remember { AuthViewModel() }
     val onboardingViewModel = remember { OnboardingViewModel(httpClient) }
+    val profileViewModel = remember { ProfileViewModel(httpClient) }
     MaterialTheme {
         when (currentScreen) {
             Screen.ONBOARDING -> {
@@ -75,9 +77,10 @@ fun App(httpClient: HttpClient) {
             }
 
             Screen.PROFILE -> {
-                ProfileScreen(onNavigateBack = {
-                    currentScreen = Screen.MAIN
-                })
+                ProfileScreen(
+                    onNavigateBack = { currentScreen = Screen.MAIN },
+                    profileViewModel = profileViewModel
+                )
             }
         }
     }
