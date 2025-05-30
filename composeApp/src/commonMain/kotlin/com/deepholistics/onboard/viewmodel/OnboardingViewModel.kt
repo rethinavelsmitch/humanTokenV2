@@ -2,6 +2,7 @@ package com.deepholistics.onboard.viewmodel
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.data.OnboardingState
+import com.deepholistics.data.models.apiresult.RecommendationResponse
 import com.deepholistics.data.repository.CommonRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
@@ -93,25 +94,45 @@ class OnboardingViewModel(private val httpClient: HttpClient) {
           }
       }*/
 
-    private val accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiQkVUQV8wMzcyNGE3Yi0wZjA5LTQ1ODYtYmYyMy1hYTQ1NzA5NzVhYjciLCJzZXNzaW9uX2lkIjoiOGM0MmFlMzAtZmVkMC00NTNjLWIwMzEtYmQyYmFjNzQ5N2Y0IiwidXNlcl9pbnRfaWQiOiI0NzUiLCJpYXQiOjE3NDg0OTkwODgsImV4cCI6MTc0OTEwMzg4OH0.jbbY5r1g-SSzYvII3EkcfzFfdDF2OHZwifx9DFuH20E"
+    private val accessToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiQkVUQV8wMzcyNGE3Yi0wZjA5LTQ1ODYtYmYyMy1hYTQ1NzA5NzVhYjciLCJzZXNzaW9uX2lkIjoiOGM0MmFlMzAtZmVkMC00NTNjLWIwMzEtYmQyYmFjNzQ5N2Y0IiwidXNlcl9pbnRfaWQiOiI0NzUiLCJpYXQiOjE3NDg0OTkwODgsImV4cCI6MTc0OTEwMzg4OH0.jbbY5r1g-SSzYvII3EkcfzFfdDF2OHZwifx9DFuH20E"
+    private val _recommendationState = MutableStateFlow<RecommendationResponse?>(null)
+    val recommendationState: StateFlow<RecommendationResponse?> = _recommendationState.asStateFlow()
 
     fun getRecommendation() {
         viewModelScope.launch {
-            val response = commonRepository.getRecommendation(accessToken = accessToken)
-            response.fold(
-                onSuccess = { apiResult ->
-                   // _apiState.value = apiResult
-                    println("Recommendation--> success: ${apiResult.message}")
-                },
-                onFailure = { exception ->
-                    _apiState.value = ApiResult(
-                        isSuccessful = false,
-                        message = "Failed to get health overview",
-                        errorMessage = exception.message
-                    )
-                    println("Recommendation--> Error: ${exception.message}")
-                }
-            )
+            _isLoading.value = true
+            try {
+                val response = commonRepository.getRecommendation(accessToken = accessToken)
+                response.fold(
+                    onSuccess = { recommendationResponse ->
+                        _recommendationState.value = recommendationResponse
+                        _apiState.value = ApiResult(
+                            isSuccessful = true,
+                            message = recommendationResponse.message,
+                            errorMessage = null
+                        )
+                        println("Recommendation success: ${recommendationResponse.message}")
+                    },
+                    onFailure = { exception ->
+                        _apiState.value = ApiResult(
+                            isSuccessful = false,
+                            message = "Failed to get recommendations",
+                            errorMessage = exception.message
+                        )
+                        println("Recommendation error: ${exception.message}")
+                    }
+                )
+            } catch (e: Exception) {
+                _apiState.value = ApiResult(
+                    isSuccessful = false,
+                    message = "Network error occurred",
+                    errorMessage = e.message
+                )
+                println("Recommendation exception: ${e.message}")
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 

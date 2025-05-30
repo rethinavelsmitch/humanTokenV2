@@ -59,8 +59,8 @@ fun App(httpClient: HttpClient) {
 
             Screen.SCHEDULE_BLOOD_TEST -> {
                 ScheduleBloodTestScreen(onClick = {
-                    onboardingViewModel.getRecommendation()
-                    //currentScreen = Screen.PAYMENT
+//                    onboardingViewModel.getRecommendation()
+                    currentScreen = Screen.PAYMENT
                 })
             }
 

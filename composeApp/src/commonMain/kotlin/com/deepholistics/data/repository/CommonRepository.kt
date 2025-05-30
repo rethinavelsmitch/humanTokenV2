@@ -1,6 +1,5 @@
 package com.deepholistics.data.repository
 
-import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.data.models.apiresult.RecommendationResponse
 import com.deepholistics.data.networking.ApiUrlConstant
 import com.deepholistics.data.networking.get
