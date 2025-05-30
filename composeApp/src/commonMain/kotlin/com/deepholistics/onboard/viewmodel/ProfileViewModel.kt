@@ -1,6 +1,7 @@
 package com.deepholistics.onboard.viewmodel
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
+import com.deepholistics.data.models.apiresult.RecommendationResponse
 import com.deepholistics.data.repository.CommonRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +23,10 @@ class ProfileViewModel(private val httpClient: HttpClient) {
     private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    private val accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiSU5UXzBiODkzN2IzLTU0M2ItNDYzYy1iODFjLWZmNzJkM2U1NWE2OCIsInNlc3Npb25faWQiOiI2MjA1ZDhhNy0wYzAxLTRhNGItYjVkZC02N2M4NWUxYjFkZDEiLCJ1c2VyX2ludF9pZCI6IjMyMCIsImlhdCI6MTc0ODU5NDUxNSwiZXhwIjoxNzQ5MTk5MzE1fQ.fiMnweusGWc86pJYruPK7KElfV3N90ZJIOh7REqmt1I"
+    private val accessToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiSU5UXzBiODkzN2IzLTU0M2ItNDYzYy1iODFjLWZmNzJkM2U1NWE2OCIsInNlc3Npb25faWQiOiI2MjA1ZDhhNy0wYzAxLTRhNGItYjVkZC02N2M4NWUxYjFkZDEiLCJ1c2VyX2ludF9pZCI6IjMyMCIsImlhdCI6MTc0ODU5NDUxNSwiZXhwIjoxNzQ5MTk5MzE1fQ.fiMnweusGWc86pJYruPK7KElfV3N90ZJIOh7REqmt1I"
+    private val _logOutState = MutableStateFlow<RecommendationResponse?>(null)
+    val logOutState: StateFlow<RecommendationResponse?> = _logOutState.asStateFlow()
 
     fun userLogOut() {
         viewModelScope.launch {
@@ -30,6 +34,11 @@ class ProfileViewModel(private val httpClient: HttpClient) {
             response.fold(
                 onSuccess = { apiResult ->
                     // _apiState.value = apiResult
+                    _apiState.value = ApiResult(
+                        isSuccessful = true,
+                        message = apiResult.message,
+                        errorMessage = null
+                    )
                     println("Recommendation--> success: ${apiResult.message}")
                 },
                 onFailure = { exception ->

@@ -217,6 +217,10 @@ fun ProfileScreen(onNavigateBack: () -> Unit, profileViewModel: ProfileViewModel
                 onLogout = { profileViewModel.userLogOut() })
         }
     }
+    val logOutApi by profileViewModel.apiState.collectAsStateWithLifecycle()
+    if(logOutApi?.isSuccessful == true){
+        showAlertDialog = false
+    }
 }
 
 @Composable
