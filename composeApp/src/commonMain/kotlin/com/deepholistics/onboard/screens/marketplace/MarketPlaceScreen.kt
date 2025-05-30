@@ -12,12 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,6 +30,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppDimens
+import humantokenv2.composeapp.generated.resources.Res
+import humantokenv2.composeapp.generated.resources.ic_summary_calendar
+import org.jetbrains.compose.resources.painterResource
 
 data class Product(
     val id: Int,
@@ -106,7 +103,7 @@ fun MarketPlaceScreen() {
                 },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Search,
+                        painter = painterResource(Res.drawable.ic_summary_calendar),
                         contentDescription = "Search",
                         tint = AppColors.TextGrey
                     )
@@ -136,7 +133,7 @@ fun MarketPlaceScreen() {
                     )
             ) {
                 Icon(
-                    imageVector = Icons.Default.FilterList,
+                    painter = painterResource(Res.drawable.ic_summary_calendar),
                     contentDescription = "Filter",
                     tint = Color.White
                 )
@@ -292,7 +289,28 @@ fun ProductCard(
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 2.dp)
             )
+        
+            // Rating
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 4.dp)
+            ) {
+                repeat(5) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_summary_calendar),
+                        contentDescription = null,
+                        tint = Color(0xFF6B7280),
+                        modifier = Modifier.size(12.dp)
+                    )
+                }
+                Text(
+                    text = " (${product.reviewCount})",
+                    color = Color(0xFF9CA3AF),
+                    fontSize = 10.sp
+                )
+            }
             
+
             Spacer(modifier = Modifier.height(8.dp))
             
             // Price and Add Button
@@ -331,7 +349,7 @@ fun ProductCard(
                         )
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Add,
+                        painter = painterResource(Res.drawable.ic_summary_calendar),
                         contentDescription = "Add to cart",
                         tint = Color.White,
                         modifier = Modifier.size(16.dp)
@@ -580,10 +598,6 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = Color(0xFF8B5CF6)
                 ),
-                border = ButtonDefaults.outlinedButtonBorder.copy(
-                    brush = null,
-                    width = 1.dp
-                )
             ) {
                 Text("Clear")
             }
