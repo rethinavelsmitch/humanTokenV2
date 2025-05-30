@@ -60,7 +60,7 @@ private val searchSuggestions = listOf(
     SearchSuggestion("Fish Oil", "Customers interested in Vitamin D3 also looked here", "home", SearchType.SUGGESTED)
 )
 
-@Composable
+/*@Composable
 private fun SearchSuggestionItem(
     suggestion: SearchSuggestion,
     onClick: () -> Unit,
@@ -363,4 +363,4 @@ fun SearchScreen(
         
         Spacer(modifier = Modifier.height(32.dp))
     }
-}
+}*/

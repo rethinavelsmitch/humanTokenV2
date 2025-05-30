@@ -19,39 +19,39 @@ class DashboardViewModel : ViewModel() {
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
     init {
-        loadHealthOverview()
+       // loadHealthOverview()
     }
 
-    fun loadHealthOverview() {
+    /*    fun loadHealthOverview() {
 
-        println("--> loadHealthOverview")
+            println("--> loadHealthOverview")
 
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            viewModelScope.launch {
+                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-            try {
-                apiService.getHealthOverview()
-                    .onSuccess { healthOverview ->
-    //                    _uiState.value = _uiState.value.copy(
-    //                        healthOverview = healthOverview,
-    //                        isLoading = false,
-    //                        error = null
-    //                    )
-                    }
-                    .onFailure { exception ->
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            error = exception.message
-                        )
-                    }
-            } catch (e: Exception) {
-               println("--> Exception: $e")
+                try {
+                    apiService.getHealthOverview()
+                        .onSuccess { healthOverview ->
+        //                    _uiState.value = _uiState.value.copy(
+        //                        healthOverview = healthOverview,
+        //                        isLoading = false,
+        //                        error = null
+        //                    )
+                        }
+                        .onFailure { exception ->
+                            _uiState.value = _uiState.value.copy(
+                                isLoading = false,
+                                error = exception.message
+                            )
+                        }
+                } catch (e: Exception) {
+                   println("--> Exception: $e")
+                }
             }
-        }
-    }
+        }*/
 
     fun retry() {
-        loadHealthOverview()
+        //loadHealthOverview()
     }
 
     override fun onCleared() {

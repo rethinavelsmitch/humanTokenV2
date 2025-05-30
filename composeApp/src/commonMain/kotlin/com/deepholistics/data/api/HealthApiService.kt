@@ -3,7 +3,6 @@ package com.deepholistics.data.api
 import com.deepholistics.data.models.HealthOverview
 import com.deepholistics.data.models.ApiResponse
 import com.deepholistics.data.models.ApiResult
-import com.deepholistics.httpClient
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -18,10 +17,10 @@ class HealthApiService {
     //private val baseUrl = "https://api.stg.dh.deepholistics.com/v4/human-token/health-data"
     private val baseUrl = "https://api.stg.dh.deepholistics.com/v4/human-token"
 
-    val client = httpClient()
+    //val client = httpClient()
 
-    suspend fun getHealthOverview(): Result<ApiResult> {
-        return try {
+  /*  suspend fun getHealthOverview(): Result<ApiResult> {
+     *//*   return try {
 
             println("--> Health overview API called.")
 
@@ -54,9 +53,9 @@ class HealthApiService {
 
             println("--> The exception is $e")
             Result.success(getMockHealthOverview())
-        } as Result<ApiResult>
-    }
-
+        } as Result<ApiResult>*//*
+    }as Result<ApiResult>
+*/
     private fun getMockHealthOverview(): HealthOverview {
         return HealthOverview(
             overallScore = 85,
@@ -148,6 +147,6 @@ class HealthApiService {
     }
 
     fun close() {
-        client.close()
+      //  client.close()
     }
 }

@@ -35,23 +35,3 @@ actual val marketPlaceIcon: ImageVector
     get() = Icons.Filled.Info
 actual val chatAssistant: ImageVector
     get() = Icons.Filled.FavoriteBorder
-
-actual fun httpClient(): HttpClient = HttpClient(OkHttp) {
-    install(ContentNegotiation) {
-        json(Json {
-            ignoreUnknownKeys = true
-            isLenient = true
-            prettyPrint = true
-
-        })
-    }
-
-    install(Logging) {
-        level = LogLevel.ALL
-        object : Logger {
-            override fun log(message: String) {
-              println("HTTP Client: $message")
-            }
-        }
-    }
-}

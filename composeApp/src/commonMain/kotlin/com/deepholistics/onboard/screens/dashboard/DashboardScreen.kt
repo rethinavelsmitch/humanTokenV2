@@ -582,7 +582,7 @@ private fun RecommendationsSection(recommendations: List<String>) {
 
 @Composable
 private fun NextStepsSection(
-    nextTestDue: String, lastUpdated: String
+    nextTestDue: String, lastUpdated: String,
 ) {
     Column {
         Text(

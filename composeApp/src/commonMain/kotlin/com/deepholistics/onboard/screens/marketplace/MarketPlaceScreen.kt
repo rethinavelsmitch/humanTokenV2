@@ -25,11 +25,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.ui.graphics.painter.Painter
 import org.jetbrains.compose.resources.painterResource
@@ -88,7 +83,12 @@ private val healthProducts = listOf(
     Product(6, "Multivitamin Tablets", "WellnessPlus", "₹449", null, 4.7f, 156, listOf("Supplements", "Vitamins"), 90)
 )
 
+
 @Composable
+fun MarketPlaceScreen() {
+
+}
+/*@Composable
 private fun FilterChip(
     text: String,
     isSelected: Boolean,
@@ -153,7 +153,7 @@ private fun ProductCard(
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
-                
+
                 Icon(
                     painter = painterResource(Res.drawable.ht_logo_196),
                     contentDescription = "Product Image",
@@ -161,9 +161,9 @@ private fun ProductCard(
                     modifier = Modifier.size(32.dp)
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Product Name
             Text(
                 text = product.name,
@@ -172,16 +172,16 @@ private fun ProductCard(
                 fontWeight = FontWeight.Medium,
                 maxLines = 2
             )
-            
+
             // Store Name
             Text(
                 text = product.store,
                 color = Color(0xFF666666),
                 fontSize = TextSizes.sp_12
             )
-            
+
             Spacer(modifier = Modifier.height(4.dp))
-            
+
             // Rating
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -205,9 +205,9 @@ private fun ProductCard(
                     fontSize = TextSizes.sp_12
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Price
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -223,7 +223,7 @@ private fun ProductCard(
                         fontSize = TextSizes.sp_14,
                         fontWeight = FontWeight.Bold
                     )
-                    
+
                     product.originalPrice?.let { originalPrice ->
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
@@ -234,7 +234,7 @@ private fun ProductCard(
                         )
                     }
                 }
-                
+
                 IconButton(
                     onClick = { },
                     modifier = Modifier.size(24.dp)
@@ -247,7 +247,7 @@ private fun ProductCard(
                     )
                 }
             }
-            
+
             // Categories
             Row {
                 product.categories.take(2).forEach { category ->
@@ -315,11 +315,11 @@ private fun FilterBottomSheet(
     var selectedHealthNeeds by remember { mutableStateOf(setOf<String>()) }
     var showMoreCategories by remember { mutableStateOf(false) }
     var showMoreHealthNeeds by remember { mutableStateOf(false) }
-    
+
     val categories = listOf("Product", "Blood", "Gene", "Gut", "Lab Tests", "Supplements")
     val healthNeeds = listOf(
         "Amino Acids",
-        "Bone & Joint", 
+        "Bone & Joint",
         "Children's Health",
         "Cognition & Focus",
         "Energy",
@@ -331,7 +331,7 @@ private fun FilterBottomSheet(
         "Brain Health",
         "Digestive Health"
     )
-    
+
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -359,7 +359,7 @@ private fun FilterBottomSheet(
                     fontSize = TextSizes.sp_18,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 // Categories Grid
                 val visibleCategories = if (showMoreCategories) categories else categories.take(4)
                 LazyVerticalGrid(
@@ -382,7 +382,7 @@ private fun FilterBottomSheet(
                         )
                     }
                 }
-                
+
                 if (categories.size > 4) {
                     Text(
                         text = if (showMoreCategories) "Show less" else "Show more",
@@ -395,7 +395,7 @@ private fun FilterBottomSheet(
                     )
                 }
             }
-            
+
             // Divider
             Box(
                 modifier = Modifier
@@ -403,7 +403,7 @@ private fun FilterBottomSheet(
                     .height(1.dp)
                     .background(Color(0xFFE0E0E0))
             )
-            
+
             // Health Needs Section
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -414,7 +414,7 @@ private fun FilterBottomSheet(
                     fontSize = TextSizes.sp_18,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 // Health Needs Grid
                 val visibleHealthNeeds = if (showMoreHealthNeeds) healthNeeds else healthNeeds.take(6)
                 LazyVerticalGrid(
@@ -437,7 +437,7 @@ private fun FilterBottomSheet(
                         )
                     }
                 }
-                
+
                 if (healthNeeds.size > 6) {
                     Text(
                         text = if (showMoreHealthNeeds) "Show less" else "Show more",
@@ -459,7 +459,7 @@ fun MarketPlaceScreen() {
     var showFilterBottomSheet by remember { mutableStateOf(false) }
     var showSearchScreen by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
-    
+
     if (showSearchScreen) {
         SearchScreen(
             onBackPressed = { showSearchScreen = false },
@@ -470,7 +470,7 @@ fun MarketPlaceScreen() {
         )
         return
     }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -522,13 +522,13 @@ fun MarketPlaceScreen() {
                     .padding(end = 8.dp)
                     .clickable { showSearchScreen = true }
             )
-            
+
             Spacer(modifier = Modifier.width(12.dp))
-            
+
             // Filter button
             IconButton(
-                onClick = { 
-                    showFilterBottomSheet = true 
+                onClick = {
+                    showFilterBottomSheet = true
                 }
             ) {
                 Icon(
@@ -539,7 +539,7 @@ fun MarketPlaceScreen() {
                 )
             }
         }
-        
+
         // Products Grid
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -552,11 +552,11 @@ fun MarketPlaceScreen() {
             }
         }
     }
-    
+
     // Filter Bottom Sheet
     if (showFilterBottomSheet) {
         FilterBottomSheet(
             onDismiss = { showFilterBottomSheet = false }
         )
     }
-}
+}*/
