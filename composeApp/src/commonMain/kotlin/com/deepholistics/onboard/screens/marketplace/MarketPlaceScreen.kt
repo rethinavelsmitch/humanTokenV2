@@ -197,6 +197,7 @@ fun ProductCard(
 ) {
     val density = LocalDensity.current
     var infoIconPosition by remember { mutableStateOf(IntOffset.Zero) }
+    var quantity by remember { mutableStateOf(1) }
     
     Card(
         modifier = Modifier
@@ -206,151 +207,234 @@ fun ProductCard(
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2D2D2D)),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Product Image Box with Score and Info Icon
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .background(
-                        color = product.backgroundColor,
-                        shape = RoundedCornerShape(12.dp)
-                    )
+            // Left Side - Product Details
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Score Badge
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(8.dp)
-                        .background(
-                            Color.Black.copy(alpha = 0.7f),
-                            RoundedCornerShape(12.dp)
-                        )
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                // Bestseller Badge and Timer
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                Color(0xFFE91E63),
+                                RoundedCornerShape(4.dp)
+                            )
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = "Bestseller",
+                            color = Color.White,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                    
                     Text(
-                        text = "${product.score} Score",
-                        color = Color.White,
-                        fontSize = 12.sp,
+                        text = "15mins",
+                        color = Color(0xFF8B5CF6),
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.Medium
                     )
                 }
                 
-                // Info Icon
-                IconButton(
-                    onClick = {
-                        onInfoClick(product, infoIconPosition)
-                    },
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(4.dp)
-                        .size(32.dp)
-                        .background(
-                            Color.Black.copy(alpha = 0.7f),
-                            CircleShape
-                        )
-                        .onGloballyPositioned { coordinates ->
-                            infoIconPosition = IntOffset(
-                                coordinates.localToWindow(androidx.compose.ui.geometry.Offset.Zero).x.toInt(),
-                                coordinates.localToWindow(androidx.compose.ui.geometry.Offset.Zero).y.toInt()
-                            )
-                        }
+                // Product Name
+                Text(
+                    text = product.name,
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                
+                // Price
+                Text(
+                    text = product.price,
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                
+                // Rating
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(Res.drawable.ic_summary_calendar),
-                        contentDescription = "Product Info",
-                        tint = Color.White,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(12.dp))
-            
-            // Product Name
-            Text(
-                text = product.name,
-                color = Color.White,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            
-            // Store Name
-            Text(
-                text = product.store,
-                color = Color(0xFF9CA3AF),
-                fontSize = 12.sp,
-                modifier = Modifier.padding(top = 2.dp)
-            )
-        
-            // Rating
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(top = 4.dp)
-            ) {
-                repeat(5) {
                     Icon(
                         painter = painterResource(Res.drawable.ic_summary_calendar),
                         contentDescription = null,
-                        tint = Color(0xFF6B7280),
-                        modifier = Modifier.size(12.dp)
+                        tint = Color(0xFF4CAF50),
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = "${product.rating}",
+                        color = Color(0xFF4CAF50),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        text = "(${product.reviewCount})",
+                        color = Color(0xFF9CA3AF),
+                        fontSize = 12.sp
                     )
                 }
-                Text(
-                    text = " (${product.reviewCount})",
-                    color = Color(0xFF9CA3AF),
-                    fontSize = 10.sp
-                )
+                
+                // Action Buttons
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(top = 4.dp)
+                ) {
+                    // Favorite Button
+                    IconButton(
+                        onClick = { /* Handle favorite */ },
+                        modifier = Modifier
+                            .size(36.dp)
+                            .background(
+                                Color(0xFF3A3A3A),
+                                RoundedCornerShape(8.dp)
+                            )
+                    ) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_summary_calendar),
+                            contentDescription = "Add to favorites",
+                            tint = Color.White,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    
+                    // More Details Button
+                    OutlinedButton(
+                        onClick = { /* Handle more details */ },
+                        modifier = Modifier.height(36.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color(0xFF9CA3AF)
+                        ),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = "More Details",
+                            fontSize = 12.sp
+                        )
+                    }
+                }
             }
             
-
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            // Price and Add Button
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            // Right Side - Product Image and Quantity
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = product.price,
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
+                // Info Icon
+                Box {
+                    IconButton(
+                        onClick = {
+                            onInfoClick(product, infoIconPosition)
+                        },
+                        modifier = Modifier
+                            .size(24.dp)
+                            .onGloballyPositioned { coordinates ->
+                                infoIconPosition = IntOffset(
+                                    coordinates.localToWindow(androidx.compose.ui.geometry.Offset.Zero).x.toInt(),
+                                    coordinates.localToWindow(androidx.compose.ui.geometry.Offset.Zero).y.toInt()
+                                )
+                            }
+                    ) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_summary_calendar),
+                            contentDescription = "Product Info",
+                            tint = Color(0xFF9CA3AF),
+                            modifier = Modifier.size(16.dp)
                         )
-                        product.originalPrice?.let { originalPrice ->
-                            Text(
-                                text = " $originalPrice",
-                                color = Color(0xFF9CA3AF),
-                                fontSize = 12.sp,
-                                modifier = Modifier.padding(start = 4.dp)
-                            )
-                        }
                     }
                 }
                 
-                // Add Button
-                IconButton(
-                    onClick = { /* Handle add to cart */ },
+                // Product Image
+                Box(
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(100.dp)
                         .background(
-                            Color(0xFFE91E63),
-                            CircleShape
-                        )
+                            color = product.backgroundColor,
+                            shape = RoundedCornerShape(12.dp)
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(Res.drawable.ic_summary_calendar),
-                        contentDescription = "Add to cart",
-                        tint = Color.White,
-                        modifier = Modifier.size(16.dp)
-                    )
+                    // Score Badge
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(6.dp)
+                            .background(
+                                Color.Black.copy(alpha = 0.7f),
+                                RoundedCornerShape(8.dp)
+                            )
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = "${product.score}",
+                            color = Color.White,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+                
+                // Quantity Controls
+                Box(
+                    modifier = Modifier
+                        .background(
+                            Color.White,
+                            RoundedCornerShape(20.dp)
+                        )
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        // Minus Button
+                        IconButton(
+                            onClick = { if (quantity > 1) quantity-- },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Text(
+                                text = "−",
+                                color = Color(0xFF4CAF50),
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        
+                        // Quantity
+                        Text(
+                            text = "$quantity",
+                            color = Color(0xFF4CAF50),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        
+                        // Plus Button
+                        IconButton(
+                            onClick = { quantity++ },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Text(
+                                text = "+",
+                                color = Color(0xFF4CAF50),
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
                 }
             }
         }
