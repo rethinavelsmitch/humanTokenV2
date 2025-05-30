@@ -40,7 +40,8 @@ actual fun ShowAlertDialog(
     modifier: Modifier,
     title: String,
     message: String,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onLogout: () -> Unit,
 ) {
     val view = LocalNativeViewFactory.current
 
@@ -48,7 +49,8 @@ actual fun ShowAlertDialog(
         view.showAlertDialog(
             primaryText = title,
             secondaryText = message,
-            onDismiss = onDismiss
+            onDismiss = onDismiss,
+            onLogout = onLogout
         )
     }
 }

@@ -41,7 +41,9 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.deepholistics.onboard.helper.ScreenBackground
+import com.deepholistics.onboard.viewmodel.ProfileViewModel
 import com.deepholistics.res.AppColors
 import com.deepholistics.res.AppDimens.textSizeXl
 import com.deepholistics.ui.ShowAlertDialog
@@ -51,7 +53,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(onNavigateBack: () -> Unit) {
+fun ProfileScreen(onNavigateBack: () -> Unit, profileViewModel: ProfileViewModel) {
 
     var showAlertDialog by remember { mutableStateOf(false) }
     ScreenBackground {
@@ -211,8 +213,13 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                 message = "You will be logged out of your Deep Holistics account. However this doesn\\’t affect your logged data. Do you want to still logout?",
                 onDismiss = {
                     showAlertDialog = false
-                })
+                },
+                onLogout = { profileViewModel.userLogOut() })
         }
+    }
+    val logOutApi by profileViewModel.apiState.collectAsStateWithLifecycle()
+    if(logOutApi?.isSuccessful == true){
+        showAlertDialog = false
     }
 }
 
