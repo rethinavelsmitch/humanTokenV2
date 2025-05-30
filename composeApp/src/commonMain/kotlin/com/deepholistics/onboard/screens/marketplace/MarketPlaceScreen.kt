@@ -1,21 +1,49 @@
-
 package com.deepholistics.onboard.screens.marketplace
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,7 +68,7 @@ data class Product(
     val reviewCount: Int,
     val score: Int,
     val tags: List<String>,
-    val backgroundColor: Color
+    val backgroundColor: Color,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,26 +79,92 @@ fun MarketPlaceScreen() {
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
     var dialogOffset by remember { mutableStateOf(IntOffset.Zero) }
-    
+
     val products = remember {
         listOf(
-            Product(1, "Clay Plant Pot", "Shopify Store", "₹9.99", "₹15.99", 4.2f, 45, 85, listOf("Garden", "Kitchen", "Sale", "Eco-friendly", "Handmade"), Color(0xFFE8B5A3)),
-            Product(2, "Copper Light", "Shopify Store", "₹59.99", null, 4.5f, 128, 92, listOf("Home Decor", "Bedding", "Vintage", "Budget-friendly", "Modern"), Color(0xFFD4A574)),
-            Product(3, "Cream Sofa", "Shopify Store", "₹500.00", null, 4.8f, 89, 96, listOf("Furniture", "Seasonal", "Modern", "Comfort", "Premium"), Color(0xFF9B8B7A)),
-            Product(4, "Antique Drawers", "Shopify Store", "₹250.00", null, 4.1f, 67, 78, listOf("Furniture", "Vintage", "Storage", "Wood", "Classic"), Color(0xFFE8C4A0)),
-            Product(5, "Pink Armchair", "Shopify Store", "₹750.00", null, 4.6f, 234, 94, listOf("Furniture", "Modern", "Comfort", "Stylish", "Premium"), Color(0xFFB8E6B8)),
-            Product(6, "Wooden Outdoor Table", "Shopify Store", "₹99.99", null, 4.3f, 156, 88, listOf("Furniture", "Outdoor", "Wood", "Durable", "Weather-resistant"), Color(0xFF8FA68E))
+            Product(
+                1,
+                "Clay Plant Pot",
+                "Shopify Store",
+                "₹9.99",
+                "₹15.99",
+                4.2f,
+                45,
+                85,
+                listOf("Garden", "Kitchen", "Sale", "Eco-friendly", "Handmade"),
+                Color(0xFFE8B5A3)
+            ),
+            Product(
+                2,
+                "Copper Light",
+                "Shopify Store",
+                "₹59.99",
+                null,
+                4.5f,
+                128,
+                92,
+                listOf("Home Decor", "Bedding", "Vintage", "Budget-friendly", "Modern"),
+                Color(0xFFD4A574)
+            ),
+            Product(
+                3,
+                "Cream Sofa",
+                "Shopify Store",
+                "₹500.00",
+                null,
+                4.8f,
+                89,
+                96,
+                listOf("Furniture", "Seasonal", "Modern", "Comfort", "Premium"),
+                Color(0xFF9B8B7A)
+            ),
+            Product(
+                4,
+                "Antique Drawers",
+                "Shopify Store",
+                "₹250.00",
+                null,
+                4.1f,
+                67,
+                78,
+                listOf("Furniture", "Vintage", "Storage", "Wood", "Classic"),
+                Color(0xFFE8C4A0)
+            ),
+            Product(
+                5,
+                "Pink Armchair",
+                "Shopify Store",
+                "₹750.00",
+                null,
+                4.6f,
+                234,
+                94,
+                listOf("Furniture", "Modern", "Comfort", "Stylish", "Premium"),
+                Color(0xFFB8E6B8)
+            ),
+            Product(
+                6,
+                "Wooden Outdoor Table",
+                "Shopify Store",
+                "₹99.99",
+                null,
+                4.3f,
+                156,
+                88,
+                listOf("Furniture", "Outdoor", "Wood", "Durable", "Weather-resistant"),
+                Color(0xFF8FA68E)
+            )
         )
     }
-    
+
     // Filter products based on search text
     val filteredProducts = products.filter { product ->
-        searchText.isEmpty() || 
-        product.name.contains(searchText, ignoreCase = true) ||
-        product.store.contains(searchText, ignoreCase = true) ||
-        product.tags.any { it.contains(searchText, ignoreCase = true) }
+        searchText.isEmpty() ||
+                product.name.contains(searchText, ignoreCase = true) ||
+                product.store.contains(searchText, ignoreCase = true) ||
+                product.tags.any { it.contains(searchText, ignoreCase = true) }
     }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -88,14 +182,14 @@ fun MarketPlaceScreen() {
             OutlinedTextField(
                 value = searchText,
                 onValueChange = { searchText = it },
-                placeholder = { 
+                placeholder = {
                     Text(
-                        "Search products...", 
+                        "Search products...",
                         color = AppColors.TextGrey,
                         fontSize = 14.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
-                    ) 
+                    )
                 },
                 leadingIcon = {
                     Icon(
@@ -117,7 +211,7 @@ fun MarketPlaceScreen() {
                 singleLine = true,
                 textStyle = LocalTextStyle.current.copy(fontSize = 14.sp)
             )
-            
+
             // Filter Button
             IconButton(
                 onClick = { showFilterBottomSheet = true },
@@ -135,7 +229,7 @@ fun MarketPlaceScreen() {
                 )
             }
         }
-        
+
         // Products Vertical List
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -154,7 +248,7 @@ fun MarketPlaceScreen() {
             }
         }
     }
-    
+
     // Info Dialog
     if (showInfoDialog && selectedProduct != null) {
         InfoDialog(
@@ -162,7 +256,7 @@ fun MarketPlaceScreen() {
             onDismiss = { showInfoDialog = false }
         )
     }
-    
+
     // Filter Bottom Sheet
     if (showFilterBottomSheet) {
         ModalBottomSheet(
@@ -191,12 +285,12 @@ fun MarketPlaceScreen() {
 @Composable
 fun ProductCard(
     product: Product,
-    onInfoClick: (Product, IntOffset) -> Unit
+    onInfoClick: (Product, IntOffset) -> Unit,
 ) {
     val density = LocalDensity.current
     var infoIconPosition by remember { mutableStateOf(IntOffset.Zero) }
     var quantity by remember { mutableStateOf(1) }
-    
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -218,7 +312,7 @@ fun ProductCard(
             ) {
                 // Spacer to maintain layout
                 Spacer(modifier = Modifier.height(4.dp))
-                
+
                 // Product Name
                 Text(
                     text = product.name,
@@ -228,7 +322,7 @@ fun ProductCard(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                
+
                 // Price
                 Text(
                     text = product.price,
@@ -236,7 +330,7 @@ fun ProductCard(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 // Rating
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -260,7 +354,7 @@ fun ProductCard(
                         fontSize = 12.sp
                     )
                 }
-                
+
                 // Action Buttons
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -283,10 +377,10 @@ fun ProductCard(
                             modifier = Modifier.size(16.dp)
                         )
                     }
-                    
+
                     // More Details Button
                     OutlinedButton(
-                        onClick = { 
+                        onClick = {
                             onInfoClick(product, infoIconPosition)
                         },
                         modifier = Modifier.height(36.dp),
@@ -302,13 +396,13 @@ fun ProductCard(
                     }
                 }
             }
-            
+
             // Right Side - Product Image and Quantity
             Column(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                
+
                 // Product Image
                 Box(
                     modifier = Modifier
@@ -321,7 +415,7 @@ fun ProductCard(
                 ) {
                     // Empty product image placeholder
                 }
-                
+
                 // Quantity Controls
                 Box(
                     modifier = Modifier
@@ -347,7 +441,7 @@ fun ProductCard(
                                 fontWeight = FontWeight.Bold
                             )
                         }
-                        
+
                         // Quantity
                         Text(
                             text = "$quantity",
@@ -355,7 +449,7 @@ fun ProductCard(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
-                        
+
                         // Plus Button
                         IconButton(
                             onClick = { quantity++ },
@@ -378,7 +472,7 @@ fun ProductCard(
 @Composable
 fun InfoDialog(
     product: Product,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismiss,
@@ -402,7 +496,7 @@ fun InfoDialog(
                     color = AppColors.TextPrimary,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-                
+
                 // Score
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -430,7 +524,7 @@ fun InfoDialog(
                         )
                     }
                 }
-                
+
                 // Rating
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -447,7 +541,9 @@ fun InfoDialog(
                             Icon(
                                 painter = painterResource(Res.drawable.ic_summary_calendar),
                                 contentDescription = null,
-                                tint = if (index < product.rating.toInt()) Color(0xFFFFC107) else Color(0xFFE0E0E0),
+                                tint = if (index < product.rating.toInt()) Color(0xFFFFC107) else Color(
+                                    0xFFE0E0E0
+                                ),
                                 modifier = Modifier.size(16.dp)
                             )
                         }
@@ -459,7 +555,7 @@ fun InfoDialog(
                         )
                     }
                 }
-                
+
                 // Tags (max 5)
                 Text(
                     text = "Tags:",
@@ -468,7 +564,7 @@ fun InfoDialog(
                     color = AppColors.TextPrimary,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
-                
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -497,9 +593,9 @@ fun InfoDialog(
                         }
                     }
                 }
-                
+
                 Spacer(modifier = Modifier.height(20.dp))
-                
+
                 // Close Button
                 Button(
                     onClick = onDismiss,
@@ -531,7 +627,7 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
             color = AppColors.TextPrimary,
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        
+
         // Categories
         Text(
             text = "Categories",
@@ -540,8 +636,9 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
             color = AppColors.TextPrimary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        
-        val categories = listOf("Garden", "Kitchen", "Home Decor", "Bedding", "Furniture", "Outdoor")
+
+        val categories =
+            listOf("Garden", "Kitchen", "Home Decor", "Bedding", "Furniture", "Outdoor")
         categories.forEach { category ->
             Row(
                 modifier = Modifier
@@ -564,9 +661,9 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         // Price Range
         Text(
             text = "Price Range",
@@ -575,7 +672,7 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
             color = AppColors.TextPrimary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        
+
         val priceRanges = listOf("Under ₹50", "₹50 - ₹100", "₹100 - ₹500", "Above ₹500")
         priceRanges.forEach { range ->
             Row(
@@ -599,9 +696,9 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(24.dp))
-        
+
         // Action Buttons
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -616,7 +713,7 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
             ) {
                 Text("Clear")
             }
-            
+
             Button(
                 onClick = onDismiss,
                 modifier = Modifier.weight(1f),
@@ -627,7 +724,7 @@ fun FilterBottomSheetContent(onDismiss: () -> Unit) {
                 Text("Apply", color = Color.White)
             }
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 }

@@ -1,19 +1,20 @@
-
 package com.deepholistics.utils
 
+import io.ktor.utils.io.charsets.Charsets
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
+
+private const val algorithm = "AES"
+private const val tokenKey = "4xlmO9YC71qv28qfWHJ4LVEYm6gNNuYi" //staging
+private const val padding = "AES/CBC/PKCS5Padding"
+private const val initVector = "lTayxxaZZfGhRs3j" //staging
+private const val ivSize = 16
+private const val keySize = 32
 
 object EncryptionUtils {
-    
-    // Your encryption constants - you'll need to define these
-    private const val tokenKey = "your_token_key_here" // Replace with your actual key
-    private const val initVector = "your_init_vector" // Replace with your actual IV
-    private const val padding = "AES/CBC/PKCS5Padding"
-    private const val algorithm = "AES"
-    private const val keySize = 16
-    private const val ivSize = 16
-    
+
+
+
     /**
      * Generic function to decrypt encrypted API response data
      * This handles the pattern where API returns encrypted data in response.data field
@@ -27,7 +28,7 @@ object EncryptionUtils {
             ""
         }
     }
-    
+
     /**
      * Generic decryption function that can be used across platforms
      */
@@ -35,39 +36,33 @@ object EncryptionUtils {
         // This is a placeholder implementation
         // You'll need to implement the actual decryption logic using expect/actual
         // or a common crypto library that works across platforms
-        
+
         // For now, returning the input as-is
         // You should implement the actual AES decryption here
         return encryptedText
     }
-    
+
     /**
      * Handles encrypted API responses generically
      * Takes raw API response and returns decrypted data if needed
      */
     inline fun <reified T> handleEncryptedResponse(
         responseBody: String,
-        isEncrypted: Boolean = true
     ): T? {
         return try {
             val json = Json { ignoreUnknownKeys = true }
-            
-            if (isEncrypted) {
-                // Parse the encrypted response structure
-                val encryptedResponse = json.decodeFromString<EncryptedApiResponse>(responseBody)
-                
-                // Decrypt the data field
-                val decryptedData = decryptApiResponse(encryptedResponse.data)
-                
-                // Parse the decrypted data as the expected type
-                if (decryptedData.isNotEmpty()) {
-                    json.decodeFromString<T>(decryptedData)
-                } else {
-                    null
-                }
+
+            // Parse the encrypted response structure
+            val encryptedResponse = json.decodeFromString<EncryptedApiResponse>(responseBody)
+
+            // Decrypt the data field
+            val decryptedData = decryptApiResponse(encryptedResponse.data)
+
+            // Parse the decrypted data as the expected type
+            if (decryptedData.isNotEmpty()) {
+                json.decodeFromString<T>(decryptedData)
             } else {
-                // Direct parsing for non-encrypted responses
-                json.decodeFromString<T>(responseBody)
+                null
             }
         } catch (e: Exception) {
             println("Failed to handle encrypted response: ${e.message}")
@@ -83,5 +78,5 @@ object EncryptionUtils {
 data class EncryptedApiResponse(
     val status: String,
     val message: String,
-    val data: String // This field contains the encrypted data
+    val data: String, // This field contains the encrypted data
 )

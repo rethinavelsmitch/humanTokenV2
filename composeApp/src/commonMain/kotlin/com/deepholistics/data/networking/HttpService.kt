@@ -1,7 +1,6 @@
 package com.deepholistics.data.networking
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
-import com.deepholistics.data.models.apiresult.RecommendationResponse
 import com.deepholistics.utils.EncryptionUtils
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -18,7 +17,6 @@ suspend inline fun <reified T> HttpClient.get(
     url: String,
     accessToken: String,
     parameters: Map<String, Any> = emptyMap(),
-    isEncrypted: Boolean = true
 ): Result<T> {
     return try {
         val response = this.get(url) {
@@ -27,22 +25,17 @@ suspend inline fun <reified T> HttpClient.get(
                 parameter(key, value)
             }
         }
-        
+
         println("API Response Status: ${response.status}")
         val responseBody = response.bodyAsText()
         println("API Response Body: $responseBody")
-        
-        if (isEncrypted) {
-            // Handle encrypted response
-            val decryptedData = EncryptionUtils.handleEncryptedResponse<T>(responseBody, isEncrypted)
-            if (decryptedData != null) {
-                Result.success(decryptedData)
-            } else {
-                Result.failure(Exception("Failed to decrypt response"))
-            }
+
+        // Handle encrypted response
+        val decryptedData = EncryptionUtils.handleEncryptedResponse<T>(responseBody)
+        if (decryptedData != null) {
+            Result.success(decryptedData)
         } else {
-            // Handle normal response
-            Result.success(response.body<T>())
+            Result.failure(Exception("Failed to decrypt response"))
         }
     } catch (e: Exception) {
         println("API Error: ${e.message}")
