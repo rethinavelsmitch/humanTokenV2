@@ -18,84 +18,39 @@ class IOSNativeViewFactory:  NativeViewFactory {
         return UIHostingController(rootView: view)
     }
     
-    func showDatePicker(selectedDate: String, onDismiss: @escaping () -> Void, onDateSelected: @escaping (String) -> Void) -> UIViewController {
-        
+    func showDatePicker(
+        selectedDate: String,
+        onDismiss: @escaping () -> Void,
+        onDateSelected: @escaping (String) -> Void
+    ) {
         let datePickerVC = UIHostingController(rootView: DatePickerWrapper(
-               initialDateString: selectedDate,
-               onDateSelected: onDateSelected,
-               onDismiss: onDismiss
-           ))
+            initialDateString: selectedDate,
+            onDateSelected: onDateSelected,
+            onDismiss: onDismiss
+        ))
+        
+        datePickerVC.modalPresentationStyle = .pageSheet
 
-           datePickerVC.modalPresentationStyle = .pageSheet
+        if let sheet = datePickerVC.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+        }
 
-           if let sheet = datePickerVC.sheetPresentationController {
-               sheet.detents = [.medium()]
-               sheet.prefersGrabberVisible = true
-           }
+        // ✅ Present the sheet on top of the current visible VC
+        DispatchQueue.main.async {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+                
+                var topVC = rootVC
+                while let presented = topVC.presentedViewController {
+                    topVC = presented
+                }
 
-           return datePickerVC
-
-
-//       let view=DatePickerWrapper(initialDateString:selectedDate,onDateSelected:onDateSelected,onDismiss:onDismiss)
-  //     return UIHostingController(rootView: view)
+                topVC.present(datePickerVC, animated: true)
+            }
+        }
     }
 
-//    func showAlertDialog(primaryText: String, secondaryText: String, onDismiss: @escaping () -> Void) -> UIViewController {
-//        let alert = UIAlertController(
-//            title: primaryText,
-//            message: secondaryText,
-//            preferredStyle: .alert
-//        )
-//        
-//        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-//            print("OK tapped")
-//            onDismiss()
-//        }
-//        
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-//            print("Cancel tapped")
-//            onDismiss()
-//        }
-//        
-//        alert.addAction(okAction)
-//        alert.addAction(cancelAction)
-//        
-//        return alert
-//    }
-    
-//    func showAlertDialog(primaryText: String, secondaryText: String, onDismiss: @escaping () -> Void)-> UIViewController {
-//        let alert = UIAlertController(
-//            title: primaryText,
-//            message: secondaryText,
-//            preferredStyle: .alert
-//        )
-//
-//        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-//            print("OK tapped")
-//            onDismiss()
-//        }
-//
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-//            print("Cancel tapped")
-//            onDismiss()
-//        }
-//
-//        alert.addAction(okAction)
-//        alert.addAction(cancelAction)
-//
-//        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-//           let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
-//
-//            var topVC = rootVC
-//            while let presented = topVC.presentedViewController {
-//                topVC = presented
-//            }
-//
-//            topVC.present(alert, animated: true, completion: nil)
-//        }
-//        return alert
-//    }
-    
     func showAlertDialog(primaryText: String, secondaryText: String, onDismiss: @escaping () -> Void) {
         let alert = UIAlertController(
             title: primaryText,
