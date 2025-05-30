@@ -2,6 +2,7 @@ package com.deepholistics.onboard.viewmodel
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.data.OnboardingState
+import com.deepholistics.data.models.apiresult.RecommendationResponse
 import com.deepholistics.data.repository.CommonRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
@@ -93,10 +94,12 @@ class OnboardingViewModel(private val httpClient: HttpClient) {
           }
       }*/
 
+    private val accessToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiQkVUQV8wMzcyNGE3Yi0wZjA5LTQ1ODYtYmYyMy1hYTQ1NzA5NzVhYjciLCJzZXNzaW9uX2lkIjoiOGM0MmFlMzAtZmVkMC00NTNjLWIwMzEtYmQyYmFjNzQ5N2Y0IiwidXNlcl9pbnRfaWQiOiI0NzUiLCJpYXQiOjE3NDg0OTkwODgsImV4cCI6MTc0OTEwMzg4OH0.jbbY5r1g-SSzYvII3EkcfzFfdDF2OHZwifx9DFuH20E"
     private val _recommendationState = MutableStateFlow<RecommendationResponse?>(null)
     val recommendationState: StateFlow<RecommendationResponse?> = _recommendationState.asStateFlow()
 
-    fun getRecommendation(accessToken: String) {
+    fun getRecommendation() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
