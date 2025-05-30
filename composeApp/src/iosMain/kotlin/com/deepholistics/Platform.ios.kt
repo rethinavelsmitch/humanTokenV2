@@ -46,16 +46,3 @@ actual val chatAssistant: ImageVector
         defaultWidth = 24.dp, defaultHeight = 24.dp, viewportWidth = 0f, viewportHeight = 0f
     ).build()
 
-
-actual fun httpClient(): HttpClient = HttpClient(Darwin) {
-    install(ContentNegotiation) {
-        json(Json {
-            ignoreUnknownKeys = true
-            isLenient = true
-        })
-    }
-
-    install(Logging) {
-        level = io.ktor.client.plugins.logging.LogLevel.ALL
-    }
-}

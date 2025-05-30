@@ -1,3 +1,4 @@
+/*
 package com.deepholistics.onboard.screens.dashboard
 
 import androidx.compose.animation.core.animateFloatAsState
@@ -582,7 +583,7 @@ private fun RecommendationsSection(recommendations: List<String>) {
 
 @Composable
 private fun NextStepsSection(
-    nextTestDue: String, lastUpdated: String
+    nextTestDue: String, lastUpdated: String,
 ) {
     Column {
         Text(
@@ -652,3 +653,4 @@ private fun getIconForMetric(iconName: String): ImageVector {
         else -> chatAssistant
     }
 }
+*/

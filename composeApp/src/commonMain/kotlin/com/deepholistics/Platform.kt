@@ -16,5 +16,4 @@ expect val recommendationIcon: ImageVector
 expect val marketPlaceIcon: ImageVector
 expect val chatAssistant: ImageVector
 
-expect fun httpClient(): HttpClient
 

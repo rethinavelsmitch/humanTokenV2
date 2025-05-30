@@ -28,7 +28,7 @@ fun createHttpClient(engine: HttpClientEngine): HttpClient {
             header("client_id", "6tVjHMtvhLEKtcx0XDgzmKH5TY9YeC1Waroq")
             header("content-type", "application/json")
             header("user_timezone", "Asia/Calcutta")
-            url("https://api.stg.dh.deepholistics.com/v4/human-token")
+            url("https://api.stg.dh.deepholistics.com/")
         }
 
         install(Auth) { // for refresh token

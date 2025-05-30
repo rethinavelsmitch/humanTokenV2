@@ -1,6 +1,7 @@
 package com.deepholistics.data.networking
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
+import com.deepholistics.data.models.apiresult.RecommendationResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -10,25 +11,25 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 
 suspend inline fun <reified T> HttpClient.get(
     url: String,
-    accessToken: String? = null,
+    accessToken: String,
     parameters: Map<String, Any> = emptyMap(),
-): Result<ApiResult> {
+): Result<RecommendationResponse> {
     return try {
         val response = this.get(url) {
             // Add access token to header if provided
-            accessToken?.let {
-                header("access_token", it)
-            }
+            header("access_token", accessToken)
 
             // Add URL parameters
             parameters.forEach { (key, value) ->
                 parameter(key, value)
             }
         }
-        Result.success(response.body<ApiResult>())
+        println("Recommendation--> raw ${response.bodyAsText()}")
+        Result.success(response.body<RecommendationResponse>())
     } catch (e: Exception) {
         Result.failure(e)
     }
