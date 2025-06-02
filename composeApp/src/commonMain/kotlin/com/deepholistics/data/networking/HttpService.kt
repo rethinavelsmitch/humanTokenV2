@@ -13,6 +13,7 @@ import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import kotlinx.serialization.json.JsonObject
 
 suspend inline fun <reified T> HttpClient.get(
     url: String,
@@ -46,7 +47,7 @@ suspend inline fun <reified T> HttpClient.get(
 suspend inline fun HttpClient.post(
     url: String,
     accessToken: String? = null,
-    body: Any? = null,
+    body: JsonObject? = null,
 ): Result<ApiResult> {
     return try {
         val response = this.post(url) {
