@@ -29,7 +29,7 @@ import CommonCrypto
 //    }
 //}
 
-@objcMembers
+
 class CryptionHandler: NSObject {
     private let aesKey = "4xlmO9YC71qv28qfWHJ4LVEYm6gNNuYi"
     private let aesId = "lTayxxaZZfGhRs3j"
