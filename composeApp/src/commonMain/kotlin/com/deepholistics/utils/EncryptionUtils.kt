@@ -2,7 +2,11 @@ package com.deepholistics.utils
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.data.networking.decrypt
+import com.deepholistics.data.networking.encrypt
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 
 object EncryptionUtils {
 
@@ -53,6 +57,14 @@ object EncryptionUtils {
         } catch (e: Exception) {
             println("Failed to handle encrypted response: ${e.message}")
             null
+        }
+    }
+
+    inline fun <reified T> T.toEncryptedRequestBody(): JsonObject {
+        val json = Json.encodeToString(this)
+        val encrypted = encrypt(json)
+        return buildJsonObject {
+            put("data", JsonPrimitive(encrypted))
         }
     }
 }

@@ -14,7 +14,7 @@ class CommonRepository(private val httpClient: HttpClient) {
         accessToken = accessToken,
     )
 
-    suspend fun userLogOut(accessToken: String) = httpClient.post<RecommendationData>(
+    suspend fun userLogOut(accessToken: String) = httpClient.post(
         url = ApiUrlConstant.LOG_OUT_URL,
         accessToken = accessToken,
     )

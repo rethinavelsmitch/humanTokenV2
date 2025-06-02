@@ -24,9 +24,9 @@ class ProfileViewModel(private val httpClient: HttpClient) {
 
 
     private val accessToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiSU5UXzBiODkzN2IzLTU0M2ItNDYzYy1iODFjLWZmNzJkM2U1NWE2OCIsInNlc3Npb25faWQiOiI2MjA1ZDhhNy0wYzAxLTRhNGItYjVkZC02N2M4NWUxYjFkZDEiLCJ1c2VyX2ludF9pZCI6IjMyMCIsImlhdCI6MTc0ODU5NDUxNSwiZXhwIjoxNzQ5MTk5MzE1fQ.fiMnweusGWc86pJYruPK7KElfV3N90ZJIOh7REqmt1I"
-    private val _logOutState = MutableStateFlow<RecommendationData?>(null)
-    val logOutState: StateFlow<RecommendationData?> = _logOutState.asStateFlow()
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWZjZGMyNDgtYTJmOC00ZTZhLTg1MzItMzlkMmJhYmM2YzgxIiwic2Vzc2lvbl9pZCI6IjQzZjNmMTExLWVhNTgtNDI4NC04YjUzLTA0MDA1Mzc0NGM1NSIsInVzZXJfaW50X2lkIjoiODkiLCJpYXQiOjE3NDg4Njc5OTQsImV4cCI6MTc0OTQ3Mjc5NH0.x9n5yJUuJx_naA3rarsOpGBcWw93NMO-CWdpr4fzCuU\",\"refresh_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWZjZGMyNDgtYTJmOC00ZTZhLTg1MzItMzlkMmJhYmM2YzgxIiwiaXNzdWVyIjoiU2MwMWFwcCIsInNlc3Npb25faWQiOiI0M2YzZjExMS1lYTU4LTQyODQtOGI1My0wNDAwNTM3NDRjNTUiLCJ1c2VyX2ludF9pZCI6Ijg5IiwiaWF0IjoxNzQ4ODY3OTk0LCJleHAiOjE3NTE0NTk5OTR9.g8klYXY98UfyaufUzFYmDW6wMnM8-Jv0b8ttU82v_F0"
+    private val _logOutState = MutableStateFlow<ApiResult?>(null)
+    val logOutState: StateFlow<ApiResult?> = _logOutState.asStateFlow()
 
     fun userLogOut() {
         viewModelScope.launch {

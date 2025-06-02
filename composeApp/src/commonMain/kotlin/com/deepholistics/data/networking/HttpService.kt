@@ -2,6 +2,7 @@ package com.deepholistics.data.networking
 
 import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.utils.EncryptionUtils
+import com.deepholistics.utils.EncryptionUtils.toEncryptedRequestBody
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -42,7 +43,7 @@ suspend inline fun <reified T> HttpClient.get(
     }
 }
 
-suspend inline fun <reified T> HttpClient.post(
+suspend inline fun HttpClient.post(
     url: String,
     accessToken: String? = null,
     body: Any? = null,
@@ -53,10 +54,9 @@ suspend inline fun <reified T> HttpClient.post(
             accessToken?.let {
                 header("access_token", it)
             }
-
-            // Set request body if provided
-            body?.let {
-                setBody(it)
+            if (body != null) {
+                // Set request body if provided
+                setBody(body.toEncryptedRequestBody())
             }
         }
         Result.success(response.body<ApiResult>())
@@ -65,7 +65,7 @@ suspend inline fun <reified T> HttpClient.post(
     }
 }
 
-suspend inline fun <reified T> HttpClient.put(
+suspend inline fun HttpClient.put(
     url: String,
     accessToken: String? = null,
     body: Any? = null,
@@ -88,7 +88,7 @@ suspend inline fun <reified T> HttpClient.put(
     }
 }
 
-suspend inline fun <reified T> HttpClient.delete(
+suspend inline fun HttpClient.delete(
     url: String,
     accessToken: String? = null,
 ): Result<ApiResult> {
