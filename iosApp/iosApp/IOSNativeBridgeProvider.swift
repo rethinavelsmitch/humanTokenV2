@@ -17,6 +17,6 @@ class IOSNativeBridgeProvider : IOSNativeBridge {
     func nativeEncrypt(data: String) -> String {
         CryptionHandler.shared.encryptString(data)
     }
-    
+
     
 }

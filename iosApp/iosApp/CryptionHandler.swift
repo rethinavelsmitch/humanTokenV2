@@ -41,6 +41,7 @@ class CryptionHandler: NSObject {
     }
 
     func decryptString(_ input: String) -> String {
+        
         return input.aesDecrypt(key: aesKey, initializationVector: aesId) ?? ""
     }
 }
