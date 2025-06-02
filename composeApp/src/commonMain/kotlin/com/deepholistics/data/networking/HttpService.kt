@@ -28,6 +28,7 @@ suspend inline fun <reified T> HttpClient.get(
             }
         }
 
+
         val responseBody = response.bodyAsText()
         println("API Response Body: $responseBody")
 
