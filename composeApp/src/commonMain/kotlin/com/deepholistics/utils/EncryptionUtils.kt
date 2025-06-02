@@ -1,19 +1,10 @@
 package com.deepholistics.utils
 
+import com.deepholistics.android.data.model.apiresult.ApiResult
 import com.deepholistics.data.networking.decrypt
-import io.ktor.utils.io.charsets.Charsets
-import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.json.Json
 
-private const val algorithm = "AES"
-private const val tokenKey = "4xlmO9YC71qv28qfWHJ4LVEYm6gNNuYi" //staging
-private const val padding = "AES/CBC/PKCS5Padding"
-private const val initVector = "lTayxxaZZfGhRs3j" //staging
-private const val ivSize = 16
-private const val keySize = 32
-
 object EncryptionUtils {
-
 
 
     /**
@@ -48,13 +39,13 @@ object EncryptionUtils {
             val json = Json { ignoreUnknownKeys = true }
 
             // Parse the encrypted response structure
-            val encryptedResponse = json.decodeFromString<EncryptedApiResponse>(responseBody)
+            val encryptedResponse = json.decodeFromString<ApiResult>(responseBody)
 
             // Decrypt the data field
-            val decryptedData = decryptApiResponse(encryptedResponse.data)
+            val decryptedData = encryptedResponse.data?.let { decryptApiResponse(it) }
 
             // Parse the decrypted data as the expected type
-            if (decryptedData.isNotEmpty()) {
+            if (decryptedData?.isNotEmpty() == true) {
                 json.decodeFromString<T>(decryptedData)
             } else {
                 null
@@ -66,12 +57,3 @@ object EncryptionUtils {
     }
 }
 
-/**
- * Data class to represent encrypted API response structure
- */
-@kotlinx.serialization.Serializable
-data class EncryptedApiResponse(
-    val status: String,
-    val message: String,
-    val data: String, // This field contains the encrypted data
-)
