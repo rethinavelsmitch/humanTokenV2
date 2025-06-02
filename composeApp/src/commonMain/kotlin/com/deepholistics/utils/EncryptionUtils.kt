@@ -1,5 +1,6 @@
 package com.deepholistics.utils
 
+import com.deepholistics.data.networking.decrypt
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.json.Json
@@ -33,13 +34,7 @@ object EncryptionUtils {
      * Generic decryption function that can be used across platforms
      */
     private fun decryptString(encryptedText: String): String {
-        // This is a placeholder implementation
-        // You'll need to implement the actual decryption logic using expect/actual
-        // or a common crypto library that works across platforms
-
-        // For now, returning the input as-is
-        // You should implement the actual AES decryption here
-        return encryptedText
+        return decrypt(encryptedText)
     }
 
     /**
